@@ -34,6 +34,38 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Theme Switcher (Dark Bunker vs Light Manila Dossier)
+  const btnThemeToggle = document.getElementById('btnThemeToggle');
+  const storedTheme = localStorage.getItem('yadro_theme');
+
+  function updateThemeUI(isLight) {
+    if (!btnThemeToggle) return;
+    const icon = btnThemeToggle.querySelector('.theme-icon');
+    const label = btnThemeToggle.querySelector('.theme-label');
+    if (isLight) {
+      document.body.classList.add('light-mode');
+      if (icon) icon.textContent = '🌙';
+      if (label) label.textContent = 'DARK BUNKER';
+    } else {
+      document.body.classList.remove('light-mode');
+      if (icon) icon.textContent = '☀';
+      if (label) label.textContent = 'LIGHT DOSSIER';
+    }
+  }
+
+  if (storedTheme === 'light') {
+    updateThemeUI(true);
+  }
+
+  if (btnThemeToggle) {
+    btnThemeToggle.addEventListener('click', () => {
+      const isNowLight = !document.body.classList.contains('light-mode');
+      updateThemeUI(isNowLight);
+      localStorage.setItem('yadro_theme', isNowLight ? 'light' : 'dark');
+      audio.playSingleClick(0.2);
+    });
+  }
+
   // Irradiated elements trigger higher Geiger frequency
   document.querySelectorAll('.irradiated').forEach(el => {
     el.addEventListener('mouseenter', () => {

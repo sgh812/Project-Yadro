@@ -124,7 +124,7 @@ body::before {
   gap: 12px;
 }
 
-.btn-audio-toggle, .btn-mode-toggle {
+.btn-audio-toggle, .btn-mode-toggle, .btn-theme-toggle {
   background: #191010;
   border: 1px solid #731b1b;
   color: #ffcccc;
@@ -139,7 +139,7 @@ body::before {
   transition: all 0.2s ease;
 }
 
-.btn-audio-toggle:hover, .btn-mode-toggle:hover {
+.btn-audio-toggle:hover, .btn-mode-toggle:hover, .btn-theme-toggle:hover {
   background: #3d1414;
   border-color: var(--soviet-red);
   color: #fff;
@@ -1685,4 +1685,279 @@ body.academic-mode .classification-banner {
 
 body.academic-mode .banner-badge {
   background-color: #0288d1;
+}
+
+/* --------------------------------------------------------------------------
+   Light Mode (Classified Manila Dossier Theme)
+   -------------------------------------------------------------------------- */
+body.light-mode {
+  color-scheme: light;
+  --bg-bunker: #f5f0e6;
+  --bg-panel: #ffffff;
+  --bg-panel-light: #faf6ee;
+  --text-primary: #191f1b;
+  --text-muted: #5e6b63;
+  --text-dark: #111412;
+  
+  --soviet-red: #ba1a1a;
+  --soviet-red-glow: rgba(186, 26, 26, 0.25);
+  --soviet-crimson: #8e0000;
+  
+  --phosphor-green: #0e7a1d;
+  --phosphor-dim: #095914;
+  --phosphor-glow: rgba(14, 122, 29, 0.2);
+  
+  --amber-warning: #b36b00;
+  --amber-glow: rgba(179, 107, 0, 0.2);
+  
+  --border-subtle: #d8cdba;
+  --border-heavy: #b8a992;
+}
+
+body.light-mode::before {
+  opacity: 0.12;
+}
+
+body.light-mode .classification-banner {
+  background-color: #fce8e8;
+  border-bottom: 2px solid var(--soviet-red);
+}
+
+body.light-mode .banner-notice {
+  color: #8c1414;
+}
+
+body.light-mode .btn-audio-toggle,
+body.light-mode .btn-mode-toggle,
+body.light-mode .btn-theme-toggle {
+  background: #ffffff;
+  border: 1px solid #d4a9a9;
+  color: #8c1414;
+}
+
+body.light-mode .btn-audio-toggle:hover,
+body.light-mode .btn-mode-toggle:hover,
+body.light-mode .btn-theme-toggle:hover {
+  background: #ffebeb;
+  border-color: var(--soviet-red);
+  color: #b71c1c;
+}
+
+body.light-mode .btn-audio-toggle.active {
+  border-color: var(--phosphor-green);
+  color: var(--phosphor-green);
+  box-shadow: 0 0 10px rgba(14, 122, 29, 0.25);
+}
+
+body.light-mode .btn-theme-toggle {
+  border-color: #ba8c50;
+  color: #7a4e10;
+}
+
+body.light-mode .archive-nav {
+  background: rgba(245, 240, 230, 0.95);
+  border-bottom: 1px solid #d8cdba;
+}
+
+body.light-mode .nav-title {
+  color: #111412;
+}
+
+body.light-mode .nav-links a {
+  color: #4a5750;
+}
+
+body.light-mode .nav-links a:hover,
+body.light-mode .nav-links a.active {
+  color: var(--soviet-red);
+}
+
+body.light-mode .nav-links a.active::after {
+  background-color: var(--soviet-red);
+  box-shadow: 0 0 6px var(--soviet-red-glow);
+}
+
+body.light-mode .section-title,
+body.light-mode .hero-title {
+  color: #111412;
+  text-shadow: none;
+}
+
+body.light-mode .hero-card {
+  background: linear-gradient(135deg, #ffffff, #faf5ec);
+  border-color: #d8cdba;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+}
+
+body.light-mode .hero-hook {
+  color: #2b332f;
+  border-left-color: #b8a992;
+}
+
+body.light-mode .telemetry-strip {
+  background: #ffffff;
+  border-color: #d8cdba;
+}
+
+body.light-mode .telemetry-value {
+  color: #111412;
+}
+
+body.light-mode .tape-info-card {
+  background: #ffffff;
+  border-color: #d8cdba;
+}
+
+body.light-mode .tape-transcript-box {
+  background: #faf6ee;
+  border-color: #d8cdba;
+  color: #191f1b;
+}
+
+body.light-mode .transcript-line {
+  border-bottom-color: #e5ded2;
+}
+
+body.light-mode .timeline-node {
+  background: #ffffff;
+  border-color: #d8cdba;
+}
+
+body.light-mode .timeline-year,
+body.light-mode .timeline-label {
+  color: #111412;
+}
+
+body.light-mode .timeline-detail-box {
+  background: #ffffff;
+  border-color: #d8cdba;
+}
+
+body.light-mode .dossier-card {
+  background: #ffffff;
+  border-color: #d8cdba;
+}
+
+body.light-mode .subject-profile-col h4,
+body.light-mode .spec-val {
+  color: #111412;
+}
+
+body.light-mode .subject-bio {
+  color: #2b332f;
+}
+
+body.light-mode .ability-box {
+  background: #faf6ee;
+  border-color: #d8cdba;
+}
+
+body.light-mode .ability-desc {
+  color: #4a5750;
+}
+
+body.light-mode .theory-poll-panel {
+  background: #ffffff;
+  border-color: #d8cdba;
+}
+
+body.light-mode .poll-question {
+  color: #111412;
+}
+
+body.light-mode .poll-option-btn {
+  background: #faf6ee;
+  border-color: #d8cdba;
+  color: #191f1b;
+}
+
+body.light-mode .poll-option-btn:hover {
+  background: #f0e9dc;
+}
+
+body.light-mode .memo-input-group input {
+  background: #ffffff;
+  border-color: #b8a992;
+  color: #111412;
+}
+
+body.light-mode .artefact-card {
+  background: #ffffff;
+  border-color: #d8cdba;
+}
+
+body.light-mode .artefact-name {
+  color: #111412;
+}
+
+body.light-mode .artefact-desc {
+  color: #4a5750;
+}
+
+body.light-mode .id-generator-wrapper {
+  background: linear-gradient(145deg, #ffffff, #faf6ee);
+  border-color: #d8cdba;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+}
+
+body.light-mode .id-form-col h4 {
+  color: #111412;
+}
+
+body.light-mode .preset-bar {
+  background: #faf6ee;
+  border-color: #d8cdba;
+}
+
+body.light-mode .btn-preset {
+  background: #ffffff;
+  border-color: #d8cdba;
+  color: #333;
+}
+
+body.light-mode .btn-preset:hover {
+  border-color: var(--soviet-red);
+  color: var(--soviet-red);
+}
+
+body.light-mode .form-group input,
+body.light-mode .form-group select {
+  background: #ffffff;
+  border-color: #b8a992;
+  color: #111412;
+}
+
+body.light-mode .clearance-badge-card {
+  background: #ffffff;
+  border-color: #d8cdba;
+}
+
+body.light-mode .clearance-badge-card .badge-letter {
+  color: #555;
+}
+
+body.light-mode .clearance-badge-card:hover {
+  background: #f7f3ea;
+}
+
+body.light-mode .academic-dossier-card {
+  background: #ffffff;
+  border-color: #d8cdba;
+}
+
+body.light-mode .academic-block h4,
+body.light-mode .team-name {
+  color: #111412;
+}
+
+body.light-mode .team-item,
+body.light-mode .roadmap-step {
+  background: #faf6ee;
+  border-color: #d8cdba;
+}
+
+body.light-mode .archive-footer {
+  background: #ebe3d3;
+  border-top-color: #d8cdba;
+  color: #4a5750;
 }
