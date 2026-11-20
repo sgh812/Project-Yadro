@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PROJECT YADRO // The Chernobyl Tapes: Classified KGB Digital Archive</title>
+  <meta name="description" content="Project Yadro: The Chernobyl Tapes is an alternate-history, Cold War sci-fi and psychological horror transmedia franchise created for BCM 216.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Mandatory Classification Notice & Ethical Top Bar -->
+  <header class="classification-banner" role="banner">
+    <div class="banner-notice">
+      <span class="banner-badge">DECLASSIFIED</span>
+      <span>FICTIONAL ALTERNATE-HISTORY ARCHIVE — Created for BCM 216. All KGB records & Project Yadro files are works of fiction created with respect for the real victims of the 1986 Chernobyl disaster.</span>
+    </div>
+    <div class="banner-controls">
+      <button type="button" class="btn-audio-toggle" id="btnAudioToggle" aria-label="Toggle Geiger Audio Atmosphere">
+        <span class="audio-led"></span>
+        <span class="btn-label">GEIGER AUDIO: MUTED</span>
+      </button>
+      <button type="button" class="btn-mode-toggle" id="btnModeToggle" aria-label="Toggle Academic Dossier View">
+        SWITCH: ACADEMIC DOSSIER
+      </button>
+    </div>
+  </header>
+
+  <!-- Navigation Bar -->
+  <nav class="archive-nav" aria-label="Archive Navigation">
+    <a href="#hero" class="nav-brand">
+      <span class="nav-emblem">☢</span>
+      <div>
+        <div class="nav-title">ПРОЕКТ ЯДРО</div>
+        <div class="nav-subtitle">CASE 1986-Y // ARCHIVE TERMINAL</div>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#audio-terminal">The Chernobyl Tapes</a></li>
+      <li><a href="#dossier">Subject: Dr. Yadro</a></li>
+      <li><a href="#timeline">Divergence Timeline</a></li>
+      <li><a href="#evidence">Evidence Wall</a></li>
+      <li><a href="#artefacts">Physical Artefacts</a></li>
+      <li><a href="#academic">Academic Dossier</a></li>
+    </ul>
+  </nav>
+
+  <main class="main-container">
+
+    <!-- 1. Hero & Briefing -->
+    <section id="hero" class="archive-section">
+      <div class="hero-card">
+        <div class="hero-stamp">СОВЕРШЕННО СЕКРЕТНО // TOP SECRET // KGB ARCHIVE 4</div>
+        <h1 class="hero-title">PROJECT YADRO: <span>THE CHERNOBYL TAPES</span></h1>
+        <p class="hero-tagline">AN INVESTIGATIVE TRANSMEDIA EXPERIENCE // BCM 216 (AUTUMN 2026)</p>
+        
+        <p class="hero-hook">
+          "What if the Chernobyl disaster was more than a nuclear accident? What if, beneath Reactor 4, the Soviet Union had created something far more dangerous than the radiation it unleashed?"
+        </p>
+
+        <!-- Live Telemetry Strip -->
+        <div class="telemetry-strip" aria-label="Facility Telemetry">
+          <div class="telemetry-item">
+            <span class="telemetry-label">SUB-FACILITY STATUS</span>
+            <span class="telemetry-value danger">BREACHED & TRANSFIGURED</span>
+          </div>
+          <div class="telemetry-item">
+            <span class="telemetry-label">DOSIMETRY RECORDING</span>
+            <span class="telemetry-value danger irradiated">3.6 R/h (METER PEGGED)</span>
+          </div>
+          <div class="telemetry-item">
+            <span class="telemetry-label">PRIMARY ARTEFACT</span>
+            <span class="telemetry-value phosphor">2-PART INVESTIGATIVE PODCAST</span>
+          </div>
+          <div class="telemetry-item">
+            <span class="telemetry-label">SUBJECT SURVIVAL</span>
+            <span class="telemetry-value phosphor">UNCONFIRMED / FUGITIVE</span>
+          </div>
+        </div>
+
+        <div class="hero-actions">
+          <a href="#audio-terminal" class="btn-primary">▶ PLAY TAPE 01</a>
+          <a href="#evidence" class="btn-secondary">📂 OPEN EVIDENCE LOCKER</a>
+          <a href="#id-generator" class="btn-secondary">🪪 ISSUE RESEARCH ID BADGE</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Audio Terminal (The Chernobyl Tapes Reel-to-Reel Deck) -->
+    <section id="audio-terminal" class="archive-section">
+      <div class="section-header">
+        <div>
+          <div class="section-ref">PRIMARY ARTEFACT // PILLAR 01</div>
+          <h2 class="section-title">THE CHERNOBYL TAPES: REEL-TO-REEL AUDIO TERMINAL</h2>
+        </div>
+        <span class="section-badge">DECK: ЭЛЕКТРОНИКА-100 / МЭЗ-22</span>
+      </div>
+
+      <div class="tape-terminal-grid">
+        <!-- Reel Deck Simulator -->
+        <div class="reel-deck-card">
+          <div class="deck-header">
+            <span class="deck-model">CCCP AUDIO DECK // SOVIET INTERCEPT UNIT</span>
+            <span class="deck-tape-counter" id="tapeCounter">00:00</span>
+          </div>
+
+          <!-- Dual Spinning Reels Assembly -->
+          <div class="reels-assembly">
+            <div class="tape-path"></div>
+            <div class="reel" id="reelLeft" aria-hidden="true">
+              <div class="reel-spoke"></div>
+              <div class="reel-spoke"></div>
+              <div class="reel-spoke"></div>
+              <div class="reel-hub"></div>
+            </div>
+            <div class="reel" id="reelRight" aria-hidden="true">
+              <div class="reel-spoke"></div>
+              <div class="reel-spoke"></div>
+              <div class="reel-spoke"></div>
+              <div class="reel-hub"></div>
+            </div>
+          </div>
+
+          <!-- Dual VU Meters -->
+          <div class="vu-meters-container">
+            <div class="vu-meter">
+              <div class="vu-scale">
+                <span>-20</span><span>-10</span><span>-5</span><span>0</span><span class="vu-scale-danger">+3</span>
+              </div>
+              <div class="vu-needle" id="vuNeedleLeft"></div>
+            </div>
+            <div class="vu-meter">
+              <div class="vu-scale">
+                <span>-20</span><span>-10</span><span>-5</span><span>0</span><span class="vu-scale-danger">+3</span>
+              </div>
+              <div class="vu-needle" id="vuNeedleRight"></div>
+            </div>
+          </div>
+
+          <!-- Deck Control Buttons -->
+          <div class="deck-controls">
+            <div class="deck-buttons">
+              <button type="button" class="deck-btn" id="btnTapePrev">◄◄ -15s</button>
+              <button type="button" class="deck-btn" id="btnTapePlay">▶ PLAY</button>
+              <button type="button" class="deck-btn" id="btnTapeStop">■ STOP</button>
+              <button type="button" class="deck-btn" id="btnTapeNext">+15s ►►</button>
+            </div>
+            <div class="deck-scrubber">
+              <span>00:00</span>
+              <input type="range" id="tapeScrubber" min="0" max="185" value="0" aria-label="Tape scrub bar">
+              <span>03:05</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Synchronized Transcripts & Propaganda vs Reality -->
+        <div class="tape-info-card">
+          <div class="tape-tab-buttons">
+            <button type="button" class="tape-tab-btn active" data-tape="1">TAPE 01: The Man Beneath Reactor 4</button>
+            <button type="button" class="tape-tab-btn" data-tape="2">TAPE 02: Who Destroyed the Soviet Union?</button>
+          </div>
+
+          <!-- Episode 1 Panel -->
+          <div class="tape-panel-content" id="tapePanel1">
+            <div class="tape-transcript-box">
+              <div class="transcript-line" data-time="0" data-endtime="35">
+                <span class="transcript-time">[00:00]</span>
+                <span class="transcript-speaker">RADIO PRIPYAT:</span>
+                "Attention comrades. An unforeseen technical defect has occurred at the Vladimir Ilyich Lenin Nuclear Power Plant. Normal conditions remain preserved. There is no cause for alarm..."
+              </div>
+              <div class="transcript-line" data-time="35" data-endtime="82">
+                <span class="transcript-time">[00:35]</span>
+                <span class="transcript-speaker">INVESTIGATOR:</span>
+                "They told the residents to shut their windows and drink tea. But four floors beneath the graphite floor of Reactor 4, inside the unmapped Sub-Basement 4-B, lead shielding eighteen inches thick was dissolving like wax."
+              </div>
+              <div class="transcript-line" data-time="82" data-endtime="135">
+                <span class="transcript-time">[01:22]</span>
+                <span class="transcript-speaker">KGB INTERCEPT #44:</span>
+                "Subject Dr. Yadro was inside the antimatter core compression chamber when the turbine surge triggered core rupture. His vital signs did not flatline. They ceased reading on biological instruments entirely..."
+              </div>
+              <div class="transcript-line irradiated" data-time="135" data-endtime="185">
+                <span class="transcript-time">[02:15]</span>
+                <span class="transcript-speaker">FIELD SURVEILLANCE:</span>
+                "[Static bursts]... We hear clicking... not from our dosimeters... from the corridor walls! He's altering the lead! The door is turning to dust! [Geiger alarm peaks] [Signal loss]."
+              </div>
+            </div>
+
+            <!-- Propaganda vs Reality Callout -->
+            <div class="propaganda-vs-reality">
+              <h4 style="color:#ffcccc; font-size:0.85rem; font-family:var(--font-display);">CRITICAL ANALYSIS: PROPAGANDA VS REALITY</h4>
+              <div class="comparison-grid">
+                <div class="comparison-col propaganda">
+                  <h5>Official Soviet Narrative</h5>
+                  <p>"Minor industrial mishap. Minor radioactive iodine release. Western alarmism strictly rejected."</p>
+                </div>
+                <div class="comparison-col reality">
+                  <h5>Recovered KGB Telemetry</h5>
+                  <p>"Sub-basement antimatter detonation verified. Lead containment transfigured into radioactive nitrogen gas."</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Episode 2 Panel -->
+          <div class="tape-panel-content" id="tapePanel2" style="display:none;">
+            <div class="tape-transcript-box">
+              <div class="transcript-line" data-time="0" data-endtime="40">
+                <span class="transcript-time">[00:00]</span>
+                <span class="transcript-speaker">NARRATOR:</span>
+                "In official history, the Soviet Union collapsed under the weight of perestroika, economic exhaustion, and political decay. But declassified military dossiers paint a far more terrifying picture..."
+              </div>
+              <div class="transcript-line" data-time="40" data-endtime="95">
+                <span class="transcript-time">[00:40]</span>
+                <span class="transcript-speaker">KGB INTERNAL CABLE:</span>
+                "Incident Novaya Zemlya: Reinforced missile silos corroded into brittle salt within seconds. Radiation levels 2,000 times background. No atomic warhead was triggered. A single silhouette was recorded on thermal imaging."
+              </div>
+              <div class="transcript-line" data-time="95" data-endtime="145">
+                <span class="transcript-time">[01:35]</span>
+                <span class="transcript-speaker">DR. YADRO (AUDIO FRAGMENT):</span>
+                "You took Katya. You took my son. You buried me in concrete under your steel monster. Now I am the decay in your bones. Every element you built your empire with belongs to me."
+              </div>
+              <div class="transcript-line" data-time="145" data-endtime="185">
+                <span class="transcript-time">[02:25]</span>
+                <span class="transcript-speaker">INVESTIGATOR NOTE:</span>
+                "Did Yadro systematically dismantle Soviet infrastructure, or did his accelerating cognitive blackouts cause unintentional disasters that terrified Moscow into surrender?"
+              </div>
+            </div>
+
+            <!-- Incident Markers -->
+            <div class="propaganda-vs-reality">
+              <h4 style="color:var(--phosphor-green); font-size:0.85rem; font-family:var(--font-display);">ANOMALOUS INCIDENT MARKERS (POST-1986)</h4>
+              <ul style="list-style:none; margin-top:8px; font-size:0.8rem; color:#c9d6cf;">
+                <li>📍 <strong>1987 — Semipalatinsk Polygon:</strong> Subterranean test chamber melted into crystalline bismuth.</li>
+                <li>📍 <strong>1988 — Moscow Lubyanka Sub-Level 2:</strong> KGB interrogation archive erased by localized neutron pulse.</li>
+                <li>📍 <strong>1989 — Chelyabinsk-65:</strong> Mayak reprocessing pipes restructured into brittle arsenic alloys.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Timeline & Subject File (Dr. Anatoly Yadro) -->
+    <section id="dossier" class="archive-section">
+      <div class="section-header">
+        <div>
+          <div class="section-ref">CLASSIFIED PERSONNEL FILE // DOSSIER 1986-04</div>
+          <h2 class="section-title">SUBJECT ARCHITECTURE: DR. ANATOLY YADRO</h2>
+        </div>
+        <button type="button" class="btn-secondary" id="btnOpenStory">📖 READ PRE-1986 BIOGRAPHY</button>
+      </div>
+
+      <!-- Character Dossier Card -->
+      <div class="dossier-card">
+        <div class="subject-portrait-col">
+          <div class="portrait-frame">
+            <img src="assets/yadro-portrait.jpg" alt="Dr. Anatoly Yadro in the underground Chernobyl laboratory" class="portrait-img">
+            <div class="portrait-caption">AI-Generated Conceptual Visual — Disclosed per BCM 216 Ethics Protocol</div>
+          </div>
+          <div class="subject-spec-table">
+            <div class="spec-row"><span class="spec-key">FULL NAME:</span><span class="spec-val">Dr. Anatoly Mikhailovich Yadro</span></div>
+            <div class="spec-row"><span class="spec-key">NATIONALITY:</span><span class="spec-val">Ukrainian SSR (Kyiv / Moscow Edu.)</span></div>
+            <div class="spec-row"><span class="spec-key">SPECIALIZATION:</span><span class="spec-val">Nuclear Physics & Antimatter Chemistry</span></div>
+            <div class="spec-row"><span class="spec-key">KGB RECRUITMENT:</span><span class="spec-val">Forced Coercion / Hostage Family</span></div>
+            <div class="spec-row"><span class="spec-key">CURRENT STATUS:</span><span class="spec-val" style="color:var(--soviet-red);">UNCONFIRMED AT LARGE</span></div>
+          </div>
+        </div>
+
+        <div class="subject-profile-col">
+          <h4>ORIGIN & COERCION ARCHITECTURE</h4>
+          <p class="subject-bio">
+            A brilliant Ukrainian nuclear physicist and chemist abducted by the KGB to spearhead the covert Soviet antimatter weapons programme beneath Chernobyl Reactor 4. His wife and child were held hostage in an undisclosed closed city to guarantee compliance. Surviving the April 26 explosion at ground zero, Yadro is driven by vengeance against the bureaucratic regime that weaponized science and destroyed his life.
+          </p>
+
+          <!-- Abilities Matrix -->
+          <div class="abilities-matrix">
+            <div class="ability-box">
+              <div class="ability-title">⚛ ELEMENTAL MANIPULATION</div>
+              <div class="ability-desc">Can alter and transmute atomic structures on the periodic table, strictly limited to elements whose chemical composition and crystal lattice he understands.</div>
+            </div>
+
+            <div class="ability-box irradiated">
+              <div class="ability-title">☢ IONISING RADIATION</div>
+              <div class="ability-desc">Emits lethal bursts of gamma and neutron radiation at will, destroying living organic tissue and melting electronics in his immediate proximity.</div>
+            </div>
+
+            <div class="ability-box irradiated">
+              <div class="ability-title">🔊 SENSORY MOTIF: GEIGER SIGNATURE</div>
+              <div class="ability-desc">Whenever radiation is emitted, an unmistakable Geiger counter clicking sounds as a terrifying auditory motif and final warning before death.</div>
+            </div>
+
+            <div class="ability-box">
+              <div class="ability-title">🧠 COGNITIVE DECAY (THE COST)</div>
+              <div class="ability-desc">Continuous power usage triggers mental deterioration, amnesia, and blackouts. His mind and faculties only regenerate when he ceases power usage.</div>
+            </div>
+          </div>
+
+          <!-- The Gap Mystery -->
+          <div class="gap-mystery-card">
+            <h5>THE INTENTIONAL "GAP" // FORENSIC NEGATIVE CAPABILITY (LONG, 2007)</h5>
+            <p>
+              Two foundational questions are deliberately withheld from canon across all media: <em>How could a mortal body survive the physical epicenter of a graphite reactor explosion?</em> and <em>How long can his cells survive before radiation self-destruction consumes him?</em>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Divergence Timeline -->
+    <section id="timeline" class="archive-section">
+      <div class="section-header">
+        <div>
+          <div class="section-ref">TEMPORAL DIVERGENCE MAP // 1969 — 1986+</div>
+          <h2 class="section-title">POINT OF DIVERGENCE: ALTERNATE SOVIET TIMELINE</h2>
+        </div>
+        <span class="section-badge">ETHICAL SAFEGUARD 02: DOCUMENTED VS FICTIONAL</span>
+      </div>
+
+      <div class="timeline-module">
+        <div class="timeline-track">
+          <div class="timeline-node active" data-key="1969">
+            <span class="timeline-year">1969</span>
+            <span class="timeline-type-badge type-fiction">DIVERGENT FICTION</span>
+            <div class="timeline-label">Space & Moon Race Victory</div>
+            <div class="timeline-snippet">USSR touches down first on the lunar surface, fueling ideological hubris.</div>
+          </div>
+
+          <div class="timeline-node" data-key="1975">
+            <span class="timeline-year">1975</span>
+            <span class="timeline-type-badge type-history">DOCUMENTED ACCIDENT</span>
+            <div class="timeline-label">Leningrad Reactor Incident</div>
+            <div class="timeline-snippet">Real-world precursor accident humiliates Moscow and spurs secret antimatter project.</div>
+          </div>
+
+          <div class="timeline-node" data-key="1983">
+            <span class="timeline-year">1983</span>
+            <span class="timeline-type-badge type-fiction">DIVERGENT EXPANSION</span>
+            <div class="timeline-label">Sub-Reactor 4 Facility</div>
+            <div class="timeline-snippet">Chernobyl built at breakneck speed (Klüppelberg, 2025) masking covert bunker.</div>
+          </div>
+
+          <div class="timeline-node" data-key="1986">
+            <span class="timeline-year">1986</span>
+            <span class="timeline-type-badge type-fiction">DISASTER & MUTATION</span>
+            <div class="timeline-label">The Chernobyl Disaster</div>
+            <div class="timeline-snippet">Core meltdown triggers sub-level antimatter chamber, transfiguring Dr. Yadro.</div>
+          </div>
+
+          <div class="timeline-node" data-key="post">
+            <span class="timeline-year">POST-1986</span>
+            <span class="timeline-type-badge type-fiction">SPECULATIVE NARRATIVE</span>
+            <div class="timeline-label">Alternate Collapse of the USSR</div>
+            <div class="timeline-snippet">Mysterious radiation events spark conflicting theories regarding Yadro's revenge.</div>
+          </div>
+        </div>
+
+        <div class="timeline-detail-box" id="timelineDetailBox">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <h4 style="font-family:var(--font-display); font-size:1.3rem; color:#fff;">1969 // Soviet Moon Landing (Space Victory)</h4>
+            <span class="timeline-type-badge type-fiction">DIVERGENT FICTION</span>
+          </div>
+          <p style="color:#64b5f6; font-size:0.86rem; margin-bottom:8px;"><strong>Real History: The United States landed Apollo 11 on the moon on July 20, 1969.</strong></p>
+          <p style="color:#c9d6cf; font-size:0.9rem; line-height:1.6; margin-bottom:12px;">In Project Yadro, the Soviet Union touches down first, shifting the global Cold War balance of power and fueling state hubris that leads to unchecked, dangerous scientific experiments.</p>
+          <p style="color:var(--text-muted); font-size:0.75rem; font-style:italic;">Academic Reference: Science Museum (2014) 'The first woman in space', Science Museum Blog.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Forensic Evidence Wall -->
+    <section id="evidence" class="archive-section">
+      <div class="section-header">
+        <div>
+          <div class="section-ref">DIGITAL INVESTIGATION // FORENSIC FANDOM (HARRISS, 2017)</div>
+          <h2 class="section-title">THE EVIDENCE WALL: CONFLICTING KGB ACCOUNTS</h2>
+        </div>
+        <span class="section-badge">INTERACTIVE: CLICK REDACTIONS TO REVEAL</span>
+      </div>
+
+      <div class="evidence-corkboard">
+        <div class="evidence-docs-grid">
+
+          <!-- Memo 1 -->
+          <article class="dossier-paper">
+            <div class="paper-pin"></div>
+            <div class="paper-stamp">СЕКРЕТНО</div>
+            <div class="paper-title">KGB INCIDENT LOG #86-4-Y</div>
+            <p class="paper-body">
+              <strong>DATE:</strong> 26-APR-1986 // 01:23:45<br>
+              <strong>LOCATION:</strong> SUB-BASEMENT 4-B<br>
+              Directly following the explosion of Reactor 4, containment bunker seal was vaporized. Internal sensors registered <span class="redacted" title="Click to reveal">ANTIMATTER REACTION BURST</span> exceeding 30,000 Roentgens. Dr. Anatoly Yadro was confirmed trapped at epicenter. Initial report listed him as <span class="redacted" title="Click to reveal">DECEASED</span>, but search team recovered <span class="redacted" title="Click to reveal">NO HUMAN REMAINS</span> in the chamber.
+            </p>
+          </article>
+
+          <!-- Memo 2 -->
+          <article class="dossier-paper">
+            <div class="paper-pin"></div>
+            <div class="paper-stamp">ДЕПОЗИЦИЯ</div>
+            <div class="paper-title">WITNESS DEPOSITION: PVT. MOROZOV</div>
+            <p class="paper-body">
+              <strong>SURVEILLANCE POST 7 (PERIMETER):</strong><br>
+              "We saw a figure walking out of the steam near turbine hall. His skin wasn't burned—it was glowing like phosphorescent chalk. As he passed the gate, the iron fence <span class="redacted" title="Click to reveal">CRUMBLED INTO GREY POWDER</span> without a sound. Our dosimeter needles snapped off their pins. Then came the clicking... like thousands of insects inside our helmets."
+            </p>
+          </article>
+
+          <!-- Memo 3 -->
+          <article class="dossier-paper">
+            <div class="paper-pin"></div>
+            <div class="paper-stamp">ГОСПИТАЛЬ 6</div>
+            <div class="paper-title">MOSCOW HOSPITAL NO. 6 LOG</div>
+            <p class="paper-body">
+              <strong>SECURITY PROTOCOL:</strong><br>
+              KGB Operatives transferred three recovered lead aprons from Sub-Reactor 4. Chemical assay revealed lead (Pb, 82) had been transfigured into <span class="redacted" title="Click to reveal">PURE BISMUTH AND GOLD ISOTOPES</span>. Chief of Unit Dr. G. concluded this process violates known thermodynamic physics unless triggered by an elemental catalyst.
+            </p>
+          </article>
+
+          <!-- Memo 4 -->
+          <article class="dossier-paper">
+            <div class="paper-pin"></div>
+            <div class="paper-stamp">ПЕРЕХВАТ</div>
+            <div class="paper-title">UNSENT LETTER TO KATYA YADRO</div>
+            <p class="paper-body">
+              <strong>RECOVERED FROM DESK 12:</strong><br>
+              "My dearest Katya. They promised me I would see you once the containment field was stable. They lied. Major Voronin told me yesterday that you and Misha are 'safe under state protection'. I know what that means. If anything happens to Reactor 4, remember that I did not <span class="redacted" title="Click to reveal">SURRENDER MY SOUL TO THEM</span>."
+            </p>
+          </article>
+        </div>
+
+        <!-- Participatory Theory Poll -->
+        <div class="theory-poll-panel">
+          <div class="poll-question">FORENSIC AUDIENCE INVESTIGATION: Did Dr. Yadro cause the collapse of the USSR?</div>
+          
+          <div class="poll-options">
+            <button type="button" class="poll-option-btn" data-option="opt1">
+              <div>
+                <strong>Option A: Deliberate Vengeance</strong>
+                <div style="font-size:0.75rem; color:var(--text-muted);">Yadro methodically sabotaged critical Soviet infrastructure in retaliation for his stolen family.</div>
+              </div>
+              <span class="poll-pct">42% (42 votes)</span>
+              <div class="poll-bar"><div class="poll-fill"></div></div>
+            </button>
+
+            <button type="button" class="poll-option-btn" data-option="opt2">
+              <div>
+                <strong>Option B: Unintentional Decay & Meltdowns</strong>
+                <div style="font-size:0.75rem; color:var(--text-muted);">Accelerating cognitive blackouts triggered uncontrolled elemental bursts without strategic intent.</div>
+              </div>
+              <span class="poll-pct">31% (31 votes)</span>
+              <div class="poll-bar"><div class="poll-fill"></div></div>
+            </button>
+
+            <button type="button" class="poll-option-btn" data-option="opt3">
+              <div>
+                <strong>Option C: Regime Cover-Up of Internal Rot</strong>
+                <div style="font-size:0.75rem; color:var(--text-muted);">The Soviet Union collapsed from its own hubris; Yadro was used by panicked bureaucrats as a scapegoat.</div>
+              </div>
+              <span class="poll-pct">27% (27 votes)</span>
+              <div class="poll-bar"><div class="poll-fill"></div></div>
+            </button>
+          </div>
+
+          <!-- Pinned Investigator Memos Form -->
+          <div class="memo-form-box">
+            <h5>PIN AN INVESTIGATOR NOTE TO THE BOARD</h5>
+            <div class="memo-input-group">
+              <input type="text" id="memoInput" placeholder="Enter theoretical deduction or observation..." maxlength="120">
+              <button type="button" class="btn-primary" id="btnPinMemo">PIN TO CORKBOARD</button>
+            </div>
+            <div class="pinned-memos-list" id="pinnedMemosList"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Physical Artefacts Lab -->
+    <section id="artefacts" class="archive-section">
+      <div class="section-header">
+        <div>
+          <div class="section-ref">DIEGETIC PHYSICAL ARTEFACTS // PILLAR 03</div>
+          <h2 class="section-title">RECOVERED MATERIAL & FABRICATION LAB</h2>
+        </div>
+        <span class="section-badge">BRIDGE BETWEEN DIGITAL & PHYSICAL WORLDBUILDING</span>
+      </div>
+
+      <div class="artefacts-grid">
+
+        <!-- Artefact 1: Soviet Propaganda Poster -->
+        <article class="artefact-card">
+          <div class="artefact-preview-box">
+            <img src="assets/poster.jpg" alt="Chernobyl Atomic Energy Fuels Progress Soviet Propaganda Poster" class="artefact-thumb open-lightbox" data-src="assets/poster.jpg" data-caption="Soviet Propaganda Poster: 'Atomic Energy Fuels Progress / Chernobyl — Power for the People!' Designed to project utopian state superiority while concealing the sub-reactor antimatter laboratory.">
+          </div>
+          <div class="artefact-info">
+            <div class="artefact-tag">ARTEFACT 01 // CULTURAL HEGEMONY</div>
+            <h3 class="artefact-name">Soviet Propaganda Poster</h3>
+            <p class="artefact-desc">
+              <em>"ATOMIC ENERGY FUELS PROGRESS / CHERNOBYL — POWER FOR THE PEOPLE!"</em> Illustrates the constructivist visual optimism used by Soviet authorities to normalize civilian proximity to nuclear installations while secretly excavating weapons facilities below.
+            </p>
+            <button type="button" class="btn-secondary open-lightbox" data-src="assets/poster.jpg" data-caption="Chernobyl Propaganda Poster // BCM 216 Diegetic Artefact">🔍 INSPECT HIGH-RES POSTER</button>
+          </div>
+        </article>
+
+        <!-- Artefact 2: DP-5B Dosimeter Papercraft Blueprint -->
+        <article class="artefact-card">
+          <div class="artefact-preview-box">
+            <img src="assets/dosimeter.jpg" alt="Soviet DP-5B Radiation Dosimeter Papercraft Blueprint" class="artefact-thumb open-lightbox" data-src="assets/dosimeter.jpg" data-caption="Soviet ДП-5Б (DP-5B) Radiation Dosimeter Printable Papercraft Kit. Complete with cut lines, fold lines, dials, and carrying bracket templates for A4/A3 cardstock.">
+          </div>
+          <div class="artefact-info">
+            <div class="artefact-tag">ARTEFACT 02 // DIY PHYSICAL PROP</div>
+            <h3 class="artefact-name">ДП-5Б (DP-5B) Dosimeter Blueprint</h3>
+            <p class="artefact-desc">
+              A printable DIY cardstock blueprint allowing audiences to build their own authentic Soviet field dosimeter. Features accurate μR/h dial scales, switch positions, and 6-step assembly instructions.
+            </p>
+            <a href="assets/dosimeter.jpg" download="DP-5B_Soviet_Dosimeter_Blueprint.jpg" class="btn-secondary">📥 DOWNLOAD A4/A3 PRINT KIT</a>
+          </div>
+        </article>
+
+      </div>
+
+      <!-- Artefact 3: Interactive Project Yadro ID Card Generator -->
+      <div id="id-generator" class="id-generator-wrapper" style="margin-top:32px;">
+        <div class="id-form-col">
+          <div class="artefact-tag">ARTEFACT 03 // INTERACTIVE BADGE MAKER</div>
+          <h4>ISSUE SOVIET RESEARCH ID CARD</h4>
+          <p>Generate and download your official Soviet Scientific Research Program credential with custom clearance level.</p>
+
+          <div class="form-group">
+            <label for="idNameInput">ИМЯ / RESEARCHER NAME:</label>
+            <input type="text" id="idNameInput" value="Dr. Anatoly Yadro" maxlength="28">
+          </div>
+
+          <div class="form-group">
+            <label for="idPosInput">ДОЛЖНОСТЬ / POSITION:</label>
+            <input type="text" id="idPosInput" value="Lead Nuclear Physicist" maxlength="32">
+          </div>
+
+          <div class="form-group">
+            <label for="idDeptInput">ОТДЕЛ / DEPARTMENT:</label>
+            <input type="text" id="idDeptInput" value="Dept. 4 (Sub-Reactor Laboratory)" maxlength="36">
+          </div>
+
+          <div class="form-group">
+            <label>ДОПУСК / CLEARANCE LEVEL:</label>
+            <div class="clearance-radio-group">
+              <label><input type="radio" name="clearanceLevel" value="A"> Level A (General)</label>
+              <label><input type="radio" name="clearanceLevel" value="B"> Level B (Restricted)</label>
+              <label><input type="radio" name="clearanceLevel" value="C" checked> Level C (Top Secret Antimatter)</label>
+            </div>
+          </div>
+
+          <div class="form-group" style="display:flex; gap:12px;">
+            <div style="flex:1;">
+              <label for="idNumInput">№ / ID NUMBER:</label>
+              <input type="text" id="idNumInput" value="86-Y-7102" maxlength="16">
+            </div>
+            <div style="flex:1;">
+              <label for="idSigInput">ПОДПИСЬ / SIGNATURE:</label>
+              <input type="text" id="idSigInput" value="A. Yadro" maxlength="20">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="idPhotoUpload">UPLOAD BADGE PHOTO (OPTIONAL):</label>
+            <input type="file" id="idPhotoUpload" accept="image/*">
+          </div>
+
+          <button type="button" class="btn-primary" id="btnDownloadId" style="width:100%; justify-content:center; margin-top:8px;">
+            🪪 DOWNLOAD COMPOSITED ID BADGE (PNG)
+          </button>
+        </div>
+
+        <div class="id-canvas-col">
+          <div class="canvas-container">
+            <canvas id="idCardCanvas"></canvas>
+          </div>
+          <p style="font-size:0.75rem; color:var(--text-muted); margin-top:10px; text-align:center;">
+            Live HTML5 Canvas composite rendering onto original Soviet ID card plate (1024x682).
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Academic & Ethics Dossier (Professor View) -->
+    <section id="academic" class="archive-section">
+      <div class="section-header">
+        <div>
+          <div class="section-ref">ACADEMIC ALIGNMENT // BCM 216 ASSESSMENT DOSSIER</div>
+          <h2 class="section-title">PROJECT PRODUCTION NOTES & ETHICAL FRAMEWORK</h2>
+        </div>
+        <span class="section-badge">AUTUMN 2026 // UNIVERSITY SHOWCASE</span>
+      </div>
+
+      <div class="academic-dossier-card">
+        <div class="academic-grid">
+
+          <!-- Team Credits -->
+          <div class="academic-block">
+            <h4><span>01 //</span> STUDENT PRODUCTION TEAM</h4>
+            <ul class="team-list">
+              <li class="team-item"><span class="team-name">Salman Ghafouri</span><span class="team-id">ID: 6679134</span></li>
+              <li class="team-item"><span class="team-name">Jad Madineh</span><span class="team-id">ID: 7102598</span></li>
+              <li class="team-item"><span class="team-name">Mohammed Rayyan Afzal</span><span class="team-id">ID: 8215832</span></li>
+              <li class="team-item"><span class="team-name">Mohamed Amine Abbad</span><span class="team-id">ID: 8560584</span></li>
+              <li class="team-item"><span class="team-name">Nick (Ninoosh) Ghiaee</span><span class="team-id">ID: 8840647</span></li>
+            </ul>
+          </div>
+
+          <!-- Academic Bibliography & Theory -->
+          <div class="academic-block" style="grid-column: span 2;">
+            <h4><span>02 //</span> TRANSMEDIA THEORY MAPPING</h4>
+            <table class="theory-table">
+              <thead>
+                <tr>
+                  <th>Academic Source</th>
+                  <th>Core Theoretical Framework</th>
+                  <th>Implementation in Project Yadro</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Jenkins (2007)</strong></td>
+                  <td>Distinct narrative contribution across multiple platforms</td>
+                  <td>Podcast provides audio investigation; Short Story provides personal internal biography; Website acts as declassified KGB archive.</td>
+                </tr>
+                <tr>
+                  <td><strong>Long (2007)</strong></td>
+                  <td>Negative capability & unanswered narrative questions</td>
+                  <td>"The Gap" deliberately conceals the exact mechanism of Yadro's physical survival and lifespan limitations.</td>
+                </tr>
+                <tr>
+                  <td><strong>McHugh (2016)</strong></td>
+                  <td>Intimate audio storytelling & affective sonic texture</td>
+                  <td>Reel-to-reel audio player uses authentic tape hiss, radio frequency static, and the Geiger counter signature as sensory motif.</td>
+                </tr>
+                <tr>
+                  <td><strong>Harriss (2017)</strong></td>
+                  <td>Forensic fandom & participatory investigation</td>
+                  <td>Declassified memos with redaction reveal mechanics and community poll on the cause of the Soviet collapse.</td>
+                </tr>
+                <tr>
+                  <td><strong>Klüppelberg (2025)</strong></td>
+                  <td>Chernobyl construction history and systemic deadline pressure</td>
+                  <td>Grounds the sub-reactor antimatter laboratory within verified historical shortcuts taken during plant erection.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Ethical Safeguards -->
+          <div class="academic-block" style="grid-column: span 2;">
+            <h4><span>03 //</span> ETHICAL SAFEGUARDS STATEMENT</h4>
+            <div style="font-size:0.86rem; color:#c9d6cf; line-height:1.7;">
+              <p style="margin-bottom:10px;">
+                <strong>1. Respect for Real Chernobyl Victims:</strong> The 1986 disaster caused devastating loss of life, displacement, and generational trauma. The project explicitly labels itself as speculative alternate-history fiction on every viewport and does not suggest that real victims or real human errors were supernatural in origin.
+              </p>
+              <p style="margin-bottom:10px;">
+                <strong>2. Separation of Documented History vs. Fiction:</strong> All fictional KGB cables, transcripts, and character dossiers are marked with fictional provenance tags to avoid disinformation or confusion with real historical state archives.
+              </p>
+              <p>
+                <strong>3. Responsible AI & Archival Material Disclosure:</strong> Visual assets generated via AI tools (Midjourney, Gemini) are transparently disclosed under ethics guidelines. No images or testimonies of identifiable real disaster victims were used in AI prompt engineering.
+              </p>
+            </div>
+          </div>
+
+          <!-- Production Roadmap -->
+          <div class="academic-block">
+            <h4><span>04 //</span> WEEKS 7–10 ROADMAP</h4>
+            <div class="roadmap-timeline">
+              <div class="roadmap-step">
+                <div class="roadmap-week">WEEK 7 // SCRIPTS & RESEARCH</div>
+                Finalize 2x 3-minute podcast scripts, timeline mapping, and short story outline.
+              </div>
+              <div class="roadmap-step">
+                <div class="roadmap-week">WEEK 8 // RECORDING & ASSETS</div>
+                Record Soviet broadcasts, investigator voiceovers, assemble physical papercraft models.
+              </div>
+              <div class="roadmap-step">
+                <div class="roadmap-week">WEEK 9 // EDITING & AUDIO FX</div>
+                Mix tape hiss, frequency distortion, and Geiger counter sensory motif into audio master.
+              </div>
+              <div class="roadmap-step">
+                <div class="roadmap-week">WEEK 10 // TESTING & SUBMISSION</div>
+                Final transmedia testing, review continuity checkpoints, deliver live archive showcase.
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Pre-1986 Short Story Modal (Modern Web Guidance Compliant) -->
+  <dialog id="storyDialog" aria-labelledby="storyTitle">
+    <div class="dialog-content">
+      <button type="button" class="dialog-close-btn" onclick="document.getElementById('storyDialog').close()" aria-label="Close story reader">✕</button>
+      <article class="story-drawer-paper">
+        <h3 id="storyTitle">THE MAN IN THE LEAD APRON: PRE-1986 RECOVERED BIOGRAPHY</h3>
+        <div class="story-meta">RECOVERED PERSONAL DIARY // DR. ANATOLY YADRO // CLASSIFIED TRANSCRIBED EXTRACT</div>
+        
+        <p>The snow in Voronezh was three feet deep the morning Major Voronin knocked on our apartment door. He did not introduce himself as KGB. He did not need to. The black Volga idling on the curb with its exhaust smoking in the freezing dawn spoke with sufficient clarity.</p>
+        
+        <p>"Pack one satchel, Doctor Yadro," Voronin said, taking off his leather gloves and warming his hands over Katya’s radiator. "Your country requires your chemistry. Specifically, your doctoral dissertation on relativistic sub-atomic particle collisions."</p>
+        
+        <p>I told him I was a teacher. I told him my son Misha was recovering from scarlet fever. Voronin smiled—a cold, bureaucratic twitch of the lip. "Comrade Yadro, your family will remain in this flat under the benevolent protection of the State. Their comfort, their rations, their continued health will correspond exactly with your productivity at the Vladimir Ilyich Lenin Power Station."</p>
+        
+        <p>Two days later, I was taken through the underground freight tunnel below Pripyat, past the civilian cooling pumps, down into Sub-Basement 4-B. They had excavated four stories beneath the foundation raft of Reactor 4 before the reactor hall above was even roofed. Concrete walls lined with cast lead blocks. In the center sat the magnetic compression ring—our machine. They called it the 'Antimatter Accumulator'.</p>
+        
+        <p>For three years, I worked twelve hours a day beneath the hum of the turbines. Above my head, ordinary engineers and technicians monitored gauges and lived in sunny Pripyat flats, unaware that directly below their boots sat enough concentrated antimatter to crack the Eurasian plate.</p>
+        
+        <p>Every letter I wrote to Katya was blacked out by Voronin's red pen. By March 1986, the pressure was unendurable. The construction above was rushed; the concrete was poor; the safety margins were slashed to meet the Five-Year Plan deadlines. I warned Voronin that the thermal flux from the reactor above was interfering with our magnetic containment coils. He told me that Soviet science does not accommodate bourgeois caution.</p>
+        
+        <p>On the night of April 25, 1986, the alarms began shrieking through the ceiling pipes. The ceiling groaned like a dying beast. When the graphite roof collapsed and the core ruptured, the shockwave sheared our antimatter containment seals in a microsecond.</p>
+        
+        <p>I remember no fire. I remember only light—a color that does not exist in nature, peeling apart the electrons of my hands, my chest, my bones. And then, the silence... followed by the sound of clicking.</p>
+      </article>
+    </div>
+  </dialog>
+
+  <!-- Lightbox Modal for Artefacts -->
+  <dialog id="lightboxDialog" aria-labelledby="lightboxCaption">
+    <div class="dialog-content" style="text-align:center;">
+      <button type="button" class="dialog-close-btn" onclick="document.getElementById('lightboxDialog').close()" aria-label="Close image inspector">✕</button>
+      <img id="lightboxImg" src="" alt="Enlarged artefact display" style="max-width:100%; max-height:75vh; border-radius:3px; box-shadow:0 0 20px rgba(0,0,0,0.8);">
+      <p id="lightboxCaption" style="margin-top:14px; font-size:0.88rem; color:#d6e2db; font-style:italic;"></p>
+    </div>
+  </dialog>
+
+  <!-- Footer -->
+  <footer class="archive-footer" role="contentinfo">
+    <div class="footer-inner">
+      <p class="footer-disclaimer">
+        <strong>FICTIONAL ENTERTAINMENT & ACADEMIC PROJECT DISCLAIMER:</strong><br>
+        <em>Project Yadro: The Chernobyl Tapes</em> is an alternate-history student transmedia project created for BCM 216 at the University of Wollongong (Autumn 2026). All characters, secret KGB documents, and supernatural events are entirely fictional. The project holds solemn reverence for the genuine firefighters, liquidators, and citizens affected by the 1986 Chernobyl disaster.
+      </p>
+      <p class="footer-credits">
+        BCM 216 Production Team: Salman Ghafouri, Jad Madineh, Mohammed Rayyan Afzal, Mohamed Amine Abbad, Nick Ghiaee.
+      </p>
+    </div>
+  </footer>
+
+  <script src="audio.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
