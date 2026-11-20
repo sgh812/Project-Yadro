@@ -67,7 +67,16 @@ body::before {
   z-index: 999;
   background-size: 100% 3px, 6px 100%;
   pointer-events: none;
-  opacity: 0.7;
+  opacity: 0.65;
+}
+
+/* Icons */
+.svg-icon {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+  vertical-align: middle;
+  display: inline-block;
 }
 
 /* --------------------------------------------------------------------------
@@ -119,13 +128,13 @@ body::before {
   background: #191010;
   border: 1px solid #731b1b;
   color: #ffcccc;
-  padding: 4px 12px;
+  padding: 5px 14px;
   font-family: var(--font-mono);
   font-size: 0.78rem;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   border-radius: 3px;
   transition: all 0.2s ease;
 }
@@ -160,7 +169,7 @@ body::before {
    Navigation Header
    -------------------------------------------------------------------------- */
 .archive-nav {
-  background: rgba(18, 22, 20, 0.92);
+  background: rgba(18, 22, 20, 0.95);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--border-subtle);
   padding: 12px 24px;
@@ -1156,7 +1165,7 @@ body::before {
 }
 
 /* --------------------------------------------------------------------------
-   5. Physical Artefacts Lab
+   5. Physical Artefacts Lab & ID Card Generator
    -------------------------------------------------------------------------- */
 .artefacts-grid {
   display: grid;
@@ -1230,16 +1239,18 @@ body::before {
 /* ID Card Interactive Generator Container */
 .id-generator-wrapper {
   grid-column: 1 / -1;
-  background: var(--bg-panel);
-  border: 2px solid #3d4a42;
+  background: linear-gradient(145deg, #131715, #0d100e);
+  border: 2px solid #2e3a33;
+  border-left: 6px solid var(--soviet-red);
   border-radius: 6px;
   padding: 32px;
   display: grid;
-  grid-template-columns: 1fr 1.2fr;
+  grid-template-columns: 1fr 1.25fr;
   gap: 36px;
+  box-shadow: 0 10px 35px rgba(0,0,0,0.6);
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1040px) {
   .id-generator-wrapper {
     grid-template-columns: 1fr;
   }
@@ -1247,15 +1258,61 @@ body::before {
 
 .id-form-col h4 {
   font-family: var(--font-display);
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   color: #fff;
-  margin-bottom: 8px;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
 }
 
 .id-form-col p {
   font-size: 0.85rem;
   color: var(--text-muted);
-  margin-bottom: 24px;
+  margin-bottom: 18px;
+}
+
+/* Presets Bar */
+.preset-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+}
+
+.preset-title {
+  width: 100%;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 2px;
+}
+
+.btn-preset {
+  background: #19201c;
+  border: 1px solid #2d3b33;
+  color: #ccc;
+  padding: 6px 12px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: all 0.2s ease;
+}
+
+.btn-preset:hover {
+  border-color: var(--phosphor-green);
+  color: #fff;
+}
+
+.btn-preset.active {
+  background: rgba(198, 40, 40, 0.25);
+  border-color: var(--soviet-red);
+  color: #fff;
 }
 
 .form-group {
@@ -1273,7 +1330,7 @@ body::before {
 
 .form-group input, .form-group select {
   width: 100%;
-  background: #090c0a;
+  background: #080a09;
   border: 1px solid var(--border-heavy);
   color: #fff;
   padding: 10px 14px;
@@ -1281,6 +1338,7 @@ body::before {
   font-size: 0.88rem;
   border-radius: 3px;
   outline: none;
+  transition: border-color 0.2s;
 }
 
 .form-group input:focus, .form-group select:focus {
@@ -1288,19 +1346,66 @@ body::before {
   box-shadow: 0 0 8px var(--phosphor-glow);
 }
 
-.clearance-radio-group {
-  display: flex;
-  gap: 16px;
+/* Tactical Clearance Selector Badges */
+.clearance-badge-group {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
   margin-top: 4px;
 }
 
-.clearance-radio-group label {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: #fff;
-  font-size: 0.85rem;
+.clearance-badge-card {
+  position: relative;
+  background: #090c0a;
+  border: 1px solid #2c3831;
+  border-radius: 4px;
+  padding: 10px 8px;
   cursor: pointer;
+  text-align: center;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.clearance-badge-card input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.clearance-badge-card .badge-letter {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  color: #888;
+  margin-bottom: 2px;
+}
+
+.clearance-badge-card .badge-desc {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  line-height: 1.2;
+}
+
+.clearance-badge-card:hover {
+  border-color: #4a5c51;
+  background: #111714;
+}
+
+.clearance-badge-card.active {
+  border-color: var(--soviet-red);
+  background: rgba(198, 40, 40, 0.15);
+  box-shadow: 0 0 12px rgba(198, 40, 40, 0.3);
+}
+
+.clearance-badge-card.active .badge-letter {
+  color: var(--soviet-red);
+}
+
+.clearance-badge-card.active .badge-desc {
+  color: #fff;
+  font-weight: 600;
 }
 
 .id-canvas-col {
@@ -1312,18 +1417,44 @@ body::before {
 
 .canvas-container {
   width: 100%;
-  max-width: 580px;
+  max-width: 600px;
   border: 3px solid #28302b;
-  border-radius: 4px;
+  border-radius: 6px;
   overflow: hidden;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.8);
+  box-shadow: 0 10px 35px rgba(0,0,0,0.85);
   background: #000;
+  position: relative;
 }
 
 #idCardCanvas {
   width: 100%;
   height: auto;
   display: block;
+}
+
+.badge-toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: #192b1f;
+  border: 1px solid var(--phosphor-green);
+  color: var(--phosphor-green);
+  padding: 12px 20px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.8);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+.badge-toast.show {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* --------------------------------------------------------------------------

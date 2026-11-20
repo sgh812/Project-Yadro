@@ -11,24 +11,28 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnAudioToggle = document.getElementById('btnAudioToggle');
   const btnModeToggle = document.getElementById('btnModeToggle');
 
-  btnAudioToggle.addEventListener('click', () => {
-    const isUnmuted = audio.toggleMute();
-    btnAudioToggle.classList.toggle('active', isUnmuted);
-    const label = btnAudioToggle.querySelector('.btn-label');
-    if (label) {
-      label.textContent = isUnmuted ? 'GEIGER AUDIO: ACTIVE' : 'GEIGER AUDIO: MUTED';
-    }
-  });
+  if (btnAudioToggle) {
+    btnAudioToggle.addEventListener('click', () => {
+      const isUnmuted = audio.toggleMute();
+      btnAudioToggle.classList.toggle('active', isUnmuted);
+      const label = btnAudioToggle.querySelector('.btn-label');
+      if (label) {
+        label.textContent = isUnmuted ? 'GEIGER AUDIO: ACTIVE' : 'GEIGER AUDIO: MUTED';
+      }
+    });
+  }
 
   // Clearance Mode Switch (In-Universe vs Academic Dossier)
-  btnModeToggle.addEventListener('click', () => {
-    document.body.classList.toggle('academic-mode');
-    const isAcademic = document.body.classList.contains('academic-mode');
-    btnModeToggle.textContent = isAcademic ? 'SWITCH: IN-UNIVERSE ARCHIVE' : 'SWITCH: ACADEMIC DOSSIER';
-    if (isAcademic) {
-      document.getElementById('academic').scrollIntoView({ behavior: 'smooth' });
-    }
-  });
+  if (btnModeToggle) {
+    btnModeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('academic-mode');
+      const isAcademic = document.body.classList.contains('academic-mode');
+      btnModeToggle.textContent = isAcademic ? 'SWITCH: IN-UNIVERSE ARCHIVE' : 'SWITCH: ACADEMIC DOSSIER';
+      if (isAcademic) {
+        document.getElementById('academic').scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  }
 
   // Irradiated elements trigger higher Geiger frequency
   document.querySelectorAll('.irradiated').forEach(el => {
@@ -60,26 +64,30 @@ document.addEventListener('DOMContentLoaded', () => {
     if (audio.isPlayingTape) {
       const angleL = -35 + Math.random() * 45;
       const angleR = -35 + Math.random() * 48;
-      vuNeedleLeft.style.transform = `rotate(${angleL}deg)`;
-      vuNeedleRight.style.transform = `rotate(${angleR}deg)`;
+      if (vuNeedleLeft) vuNeedleLeft.style.transform = `rotate(${angleL}deg)`;
+      if (vuNeedleRight) vuNeedleRight.style.transform = `rotate(${angleR}deg)`;
     } else {
-      vuNeedleLeft.style.transform = 'rotate(-35deg)';
-      vuNeedleRight.style.transform = 'rotate(-35deg)';
+      if (vuNeedleLeft) vuNeedleLeft.style.transform = 'rotate(-35deg)';
+      if (vuNeedleRight) vuNeedleRight.style.transform = 'rotate(-35deg)';
     }
   }
 
   audio.onUpdate(state => {
     if (state.isPlaying) {
-      reelLeft.classList.add('spinning-reel');
-      reelRight.classList.add('spinning-reel');
-      btnTapePlay.textContent = '❚❚ PAUSE';
-      btnTapePlay.classList.add('active');
+      if (reelLeft) reelLeft.classList.add('spinning-reel');
+      if (reelRight) reelRight.classList.add('spinning-reel');
+      if (btnTapePlay) {
+        btnTapePlay.textContent = '❚❚ PAUSE';
+        btnTapePlay.classList.add('active');
+      }
       if (!vuInterval) vuInterval = setInterval(updateVU, 90);
     } else {
-      reelLeft.classList.remove('spinning-reel');
-      reelRight.classList.remove('spinning-reel');
-      btnTapePlay.textContent = '▶ PLAY';
-      btnTapePlay.classList.remove('active');
+      if (reelLeft) reelLeft.classList.remove('spinning-reel');
+      if (reelRight) reelRight.classList.remove('spinning-reel');
+      if (btnTapePlay) {
+        btnTapePlay.textContent = '▶ PLAY';
+        btnTapePlay.classList.remove('active');
+      }
       if (vuInterval) {
         clearInterval(vuInterval);
         vuInterval = null;
@@ -87,40 +95,52 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    // Format mm:ss
-    const mins = Math.floor(state.progress / 60).toString().padStart(2, '0');
-    const secs = (state.progress % 60).toString().padStart(2, '0');
-    tapeCounter.textContent = `${mins}:${secs}`;
-    tapeScrubber.value = state.progress;
+    if (tapeCounter) {
+      const mins = Math.floor(state.progress / 60).toString().padStart(2, '0');
+      const secs = (state.progress % 60).toString().padStart(2, '0');
+      tapeCounter.textContent = `${mins}:${secs}`;
+    }
+    if (tapeScrubber) {
+      tapeScrubber.value = state.progress;
+    }
 
-    // Highlight active transcript line
     highlightActiveTranscript(state.progress);
   });
 
-  btnTapePlay.addEventListener('click', () => {
-    if (audio.isPlayingTape) {
+  if (btnTapePlay) {
+    btnTapePlay.addEventListener('click', () => {
+      if (audio.isPlayingTape) {
+        audio.pauseTape();
+      } else {
+        audio.playTape(activeTapeId);
+      }
+    });
+  }
+
+  if (btnTapeStop) {
+    btnTapeStop.addEventListener('click', () => {
       audio.pauseTape();
-    } else {
-      audio.playTape(activeTapeId);
-    }
-  });
+      audio.seekTape(0);
+    });
+  }
 
-  btnTapeStop.addEventListener('click', () => {
-    audio.pauseTape();
-    audio.seekTape(0);
-  });
+  if (btnTapePrev) {
+    btnTapePrev.addEventListener('click', () => {
+      audio.seekTape(Math.max(0, audio.tapeProgress - 15));
+    });
+  }
 
-  btnTapePrev.addEventListener('click', () => {
-    audio.seekTape(Math.max(0, audio.tapeProgress - 15));
-  });
+  if (btnTapeNext) {
+    btnTapeNext.addEventListener('click', () => {
+      audio.seekTape(Math.min(185, audio.tapeProgress + 15));
+    });
+  }
 
-  btnTapeNext.addEventListener('click', () => {
-    audio.seekTape(Math.min(185, audio.tapeProgress + 15));
-  });
-
-  tapeScrubber.addEventListener('input', e => {
-    audio.seekTape(parseInt(e.target.value, 10));
-  });
+  if (tapeScrubber) {
+    tapeScrubber.addEventListener('input', e => {
+      audio.seekTape(parseInt(e.target.value, 10));
+    });
+  }
 
   // Tape Tab Switching
   let activeTapeId = 1;
@@ -336,14 +356,113 @@ document.addEventListener('DOMContentLoaded', () => {
   const deptInput = document.getElementById('idDeptInput');
   const idNumInput = document.getElementById('idNumInput');
   const sigInput = document.getElementById('idSigInput');
-  const clearanceRadios = document.querySelectorAll('input[name="clearanceLevel"]');
   const btnDownloadId = document.getElementById('btnDownloadId');
   const photoUpload = document.getElementById('idPhotoUpload');
+  const clearanceCards = document.querySelectorAll('.clearance-badge-card');
+  const presetButtons = document.querySelectorAll('.btn-preset');
 
   let baseCardImg = new Image();
   baseCardImg.src = 'assets/id-card.jpg';
 
-  let userPhotoImg = null;
+  let defaultPhotoImg = new Image();
+  defaultPhotoImg.src = 'assets/yadro-badge-photo.jpg';
+
+  let userUploadedPhoto = null;
+  let activeClearance = 'C';
+
+  // Preset Configurations
+  const presets = {
+    yadro: {
+      name: "Dr. Anatoly Yadro",
+      position: "Lead Nuclear Physicist",
+      department: "Dept. 4 (Sub-Reactor Laboratory)",
+      clearance: "C",
+      idNum: "86-Y-7102",
+      signature: "A. Yadro",
+      useDefaultPhoto: true
+    },
+    voronin: {
+      name: "Major Oleg Voronin",
+      position: "Senior Directorate Officer",
+      department: "KGB Directorate S (Special Operations)",
+      clearance: "C",
+      idNum: "83-K-0914",
+      signature: "O. Voronin",
+      useDefaultPhoto: false
+    },
+    legasov: {
+      name: "Dr. Boris Legasov",
+      position: "Chief Radiation Chemist",
+      department: "Kurchatov Institute Research Group",
+      clearance: "B",
+      idNum: "86-A-4401",
+      signature: "B. Legasov",
+      useDefaultPhoto: false
+    },
+    evaluator: {
+      name: "BCM 216 Assessment Panel",
+      position: "External Evaluator",
+      department: "University Transmedia Showcase",
+      clearance: "A",
+      idNum: "26-EVAL-001",
+      signature: "Evaluator",
+      useDefaultPhoto: false
+    }
+  };
+
+  function applyPreset(presetKey) {
+    const data = presets[presetKey];
+    if (!data) return;
+
+    if (nameInput) nameInput.value = data.name;
+    if (posInput) posInput.value = data.position;
+    if (deptInput) deptInput.value = data.department;
+    if (idNumInput) idNumInput.value = data.idNum;
+    if (sigInput) sigInput.value = data.signature;
+
+    activeClearance = data.clearance;
+    clearanceCards.forEach(c => {
+      const radio = c.querySelector('input');
+      if (radio && radio.value === activeClearance) {
+        radio.checked = true;
+        c.classList.add('active');
+      } else {
+        c.classList.remove('active');
+      }
+    });
+
+    if (data.useDefaultPhoto) {
+      userUploadedPhoto = null;
+    }
+
+    presetButtons.forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.preset === presetKey);
+    });
+
+    drawIdCard();
+  }
+
+  presetButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      applyPreset(btn.dataset.preset);
+      audio.playSingleClick(0.2);
+    });
+  });
+
+  // Clearance badge selection
+  clearanceCards.forEach(card => {
+    card.addEventListener('click', () => {
+      clearanceCards.forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+      const radio = card.querySelector('input');
+      if (radio) {
+        radio.checked = true;
+        activeClearance = radio.value;
+      }
+      drawIdCard();
+      audio.playSingleClick(0.2);
+    });
+  });
 
   function drawIdCard() {
     if (!idCanvas) return;
@@ -353,7 +472,7 @@ document.addEventListener('DOMContentLoaded', () => {
     idCanvas.width = width;
     idCanvas.height = height;
 
-    // 1. Draw original template
+    // 1. Draw original template base plate
     if (baseCardImg.complete && baseCardImg.naturalWidth > 0) {
       ctx.drawImage(baseCardImg, 0, 0, width, height);
     } else {
@@ -361,89 +480,132 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.fillRect(0, 0, width, height);
     }
 
-    // 2. Draw Photo in photo frame [X:48, Y:285, W:230, H:320]
-    if (userPhotoImg) {
-      ctx.save();
-      ctx.beginPath();
-      ctx.rect(52, 288, 222, 314);
-      ctx.clip();
-      ctx.drawImage(userPhotoImg, 52, 288, 222, 314);
-      // Sepia tone / grain overlay
-      ctx.fillStyle = 'rgba(70, 50, 30, 0.2)';
-      ctx.fillRect(52, 288, 222, 314);
-      ctx.restore();
+    // 2. Draw Photo in Frame [X:52, Y:288, W:222, H:318]
+    const activePhoto = userUploadedPhoto || (defaultPhotoImg.complete && defaultPhotoImg.naturalWidth > 0 ? defaultPhotoImg : null);
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(52, 288, 222, 318);
+    ctx.clip();
+
+    if (activePhoto) {
+      ctx.drawImage(activePhoto, 52, 288, 222, 318);
+      // Sepia / Soviet grain overlay
+      ctx.fillStyle = 'rgba(60, 45, 25, 0.15)';
+      ctx.fillRect(52, 288, 222, 318);
     } else {
-      // Default placeholder silhouette
-      ctx.fillStyle = '#d5ccb8';
-      ctx.fillRect(52, 288, 222, 314);
-      ctx.fillStyle = '#8c7d6b';
-      ctx.font = '16px "Courier Prime", monospace';
+      ctx.fillStyle = '#c7baa3';
+      ctx.fillRect(52, 288, 222, 318);
+      ctx.fillStyle = '#6e5f4d';
+      ctx.font = 'bold 15px "Courier Prime", monospace';
       ctx.textAlign = 'center';
       ctx.fillText('[ ФОТО / PHOTO ]', 163, 450);
     }
+    ctx.restore();
 
-    // 3. Draw Form Fields with Typewriter font
+    // 3. Official Soviet Department Personnel Round Stamp on Photo Corner
+    // Positioned at X=250, Y=540 overlapping the photo and document line
+    ctx.save();
+    ctx.translate(250, 540);
+    ctx.strokeStyle = 'rgba(160, 30, 30, 0.65)';
+    ctx.fillStyle = 'rgba(160, 30, 30, 0.65)';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.arc(0, 0, 44, 0, Math.PI * 2);
+    ctx.stroke();
+
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.arc(0, 0, 36, 0, Math.PI * 2);
+    ctx.stroke();
+
+    ctx.font = 'bold 9px "Russo One", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('★ CCCP ★', 0, -18);
+    ctx.font = 'bold 8px "Courier Prime", monospace';
+    ctx.fillText('ОТДЕЛ КАДРОВ', 0, 0);
+    ctx.font = 'bold 8px "Courier Prime", monospace';
+    ctx.fillText('ПРБ № 04', 0, 18);
+    ctx.restore();
+
+    // 4. Fill in Document Fields — Pixel-accurate to Underlines!
     ctx.textAlign = 'left';
-    ctx.fillStyle = '#111111';
-    ctx.font = 'bold 22px "Courier Prime", monospace';
+    ctx.textBaseline = 'alphabetic';
+    ctx.fillStyle = '#111312';
 
-    // Name
+    // A. NAME (Underline starts at X=436, Y=319)
+    ctx.font = 'bold 21px "Courier Prime", "IBM Plex Mono", monospace';
     const nameVal = nameInput ? nameInput.value.toUpperCase() : "DR. ANATOLY YADRO";
-    ctx.fillText(nameVal, 420, 316);
+    ctx.fillText(nameVal, 448, 311);
 
-    // Position
-    const posVal = posInput ? posInput.value.toUpperCase() : "CHIEF NUCLEAR PHYSICIST";
-    ctx.fillText(posVal, 540, 365);
+    // B. POSITION (Underline starts at X=548, Y=368)
+    ctx.font = 'bold 18px "Courier Prime", "IBM Plex Mono", monospace';
+    const posVal = posInput ? posInput.value.toUpperCase() : "LEAD NUCLEAR PHYSICIST";
+    ctx.fillText(posVal, 558, 360);
 
-    // Department
-    const deptVal = deptInput ? deptInput.value.toUpperCase() : "DEPARTMENT 4 (SUB-REACTOR LAB)";
-    ctx.fillText(deptVal, 530, 418);
+    // C. DEPARTMENT (Underline starts at X=527, Y=418)
+    ctx.font = 'bold 17px "Courier Prime", "IBM Plex Mono", monospace';
+    const deptVal = deptInput ? deptInput.value.toUpperCase() : "DEPT. 4 (SUB-REACTOR LABORATORY)";
+    ctx.fillText(deptVal, 538, 410);
 
-    // Clearance Checkboxes: Box A ~ 585, Box B ~ 660, Box C ~ 738, Y ~ 460
-    let selectedLevel = 'A';
-    clearanceRadios.forEach(r => {
-      if (r.checked) selectedLevel = r.value;
-    });
+    // D. CLEARANCE CHECKBOXES (A: 603, B: 680, C: 760, Y: 452)
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = '#c62828';
+    ctx.font = 'bold 24px "Russo One", sans-serif';
 
-    ctx.font = 'bold 28px "Russo One", sans-serif';
-    ctx.fillStyle = '#b71c1c';
-    if (selectedLevel === 'A') ctx.fillText('X', 585, 467);
-    if (selectedLevel === 'B') ctx.fillText('X', 660, 467);
-    if (selectedLevel === 'C') {
-      ctx.fillText('X', 738, 467);
-      // Extra Classified Watermark for Level C
+    if (activeClearance === 'A') {
+      ctx.fillText('X', 603, 452);
+    } else if (activeClearance === 'B') {
+      ctx.fillText('X', 680, 452);
+    } else if (activeClearance === 'C') {
+      ctx.fillText('X', 760, 452);
+
+      // Classified Red Top Stamp for Level C
       ctx.save();
-      ctx.translate(500, 200);
-      ctx.rotate(-0.15);
-      ctx.strokeStyle = 'rgba(183, 28, 28, 0.4)';
-      ctx.lineWidth = 4;
-      ctx.strokeRect(-120, -30, 240, 60);
-      ctx.fillStyle = 'rgba(183, 28, 28, 0.4)';
-      ctx.font = 'bold 26px "Russo One", sans-serif';
+      ctx.translate(650, 160);
+      ctx.rotate(-0.12);
+      ctx.strokeStyle = 'rgba(183, 28, 28, 0.7)';
+      ctx.fillStyle = 'rgba(183, 28, 28, 0.7)';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(-125, -22, 250, 44);
+      ctx.lineWidth = 1;
+      ctx.strokeRect(-121, -18, 242, 36);
+
+      ctx.font = 'bold 17px "Russo One", sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText('СОВ. СЕКРЕТНО', 0, 10);
+      ctx.textBaseline = 'middle';
+      ctx.fillText('СОВЕРШЕННО СЕКРЕТНО', 0, 1);
       ctx.restore();
     }
 
-    // ID Number
-    ctx.fillStyle = '#111111';
-    ctx.font = 'bold 22px "Courier Prime", monospace';
+    // E. ID NUMBER (Underline starts at X=417, Y=518)
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'alphabetic';
+    ctx.fillStyle = '#111312';
+    ctx.font = 'bold 21px "Courier Prime", "IBM Plex Mono", monospace';
     const idVal = idNumInput ? idNumInput.value : "86-Y-7102";
-    ctx.fillText(idVal, 420, 518);
+    ctx.fillText(idVal, 428, 511);
 
-    // Signature
+    // F. SIGNATURE (Underline starts at X=530, Y=589)
+    ctx.font = 'italic 28px "Special Elite", "Courier Prime", cursive';
+    ctx.fillStyle = '#152542'; // Authentic vintage dark blue-black fountain pen ink
     const sigVal = sigInput ? sigInput.value : "A. Yadro";
-    ctx.font = 'italic 26px "Special Elite", cursive';
-    ctx.fillStyle = '#102040';
-    ctx.fillText(sigVal, 540, 588);
+    ctx.fillText(sigVal, 548, 582);
   }
 
-  baseCardImg.onload = drawIdCard;
+  // Ensure fonts and images are ready before rendering
+  baseCardImg.onload = () => {
+    document.fonts.ready.then(() => drawIdCard());
+  };
+  defaultPhotoImg.onload = () => {
+    drawIdCard();
+  };
 
   [nameInput, posInput, deptInput, idNumInput, sigInput].forEach(inp => {
     if (inp) inp.addEventListener('input', drawIdCard);
   });
-  clearanceRadios.forEach(r => r.addEventListener('change', drawIdCard));
 
   if (photoUpload) {
     photoUpload.addEventListener('change', e => {
@@ -451,21 +613,40 @@ document.addEventListener('DOMContentLoaded', () => {
       if (file) {
         const reader = new FileReader();
         reader.onload = evt => {
-          userPhotoImg = new Image();
-          userPhotoImg.onload = drawIdCard;
-          userPhotoImg.src = evt.target.result;
+          userUploadedPhoto = new Image();
+          userUploadedPhoto.onload = drawIdCard;
+          userUploadedPhoto.src = evt.target.result;
         };
         reader.readAsDataURL(file);
       }
     });
   }
 
-  if (btnDownloadId) {
+  // Toast notification helper
+  function showToast(msg) {
+    let toast = document.getElementById('badgeToast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'badgeToast';
+      toast.className = 'badge-toast';
+      document.body.appendChild(toast);
+    }
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => {
+      toast.classList.remove('show');
+    }, 3200);
+  }
+
+  if (btnDownloadId && idCanvas) {
     btnDownloadId.addEventListener('click', () => {
       const link = document.createElement('a');
-      link.download = `Project-Yadro-Badge-${nameInput.value.replace(/\s+/g, '_') || 'Official'}.png`;
+      const cleanName = (nameInput.value || 'Soviet_ID').replace(/[^a-zA-Z0-9]/g, '_');
+      link.download = `Project_Yadro_Badge_${cleanName}.png`;
       link.href = idCanvas.toDataURL('image/png');
       link.click();
+      audio.playSingleClick(0.4);
+      showToast('✓ Soviet Research ID Card Generated & Downloaded');
     });
   }
 
@@ -513,4 +694,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
+
+  // Initial draw
+  document.fonts.ready.then(() => drawIdCard());
 });
