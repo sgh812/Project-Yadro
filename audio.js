@@ -1,42 +1,59 @@
 /**
- * Project Yadro - Audio Engine
- * Features:
- * 1. Web Audio API Geiger counter sound generator (Poisson-distributed clicks with adjustable CPM).
- * 2. Analog tape hiss & 50Hz mains hum simulation.
- * 3. Synthetic speech / sound effects for Tape 01 and Tape 02.
+ * Project Yadro - Audio Engine (Dual HTML5 Audio + Web Audio API)
+ * Provides reliable, loud, authentic Soviet audio:
+ * 1. Looping Geiger Ambient dosimeter clicks (assets/geiger-ambient.wav)
+ * 2. High-radiation Geiger crackle (assets/geiger-lethal.wav)
+ * 3. Single discharge click (assets/geiger-click.wav)
+ * 4. Tape Episode 1 & 2 radio intercept broadcasts (assets/tape-episode-1.wav / tape-episode-2.wav)
  */
 
 class YadroAudioEngine {
   constructor() {
-    this.ctx = null;
     this.isMuted = true;
-    this.geigerNode = null;
-    this.hissNode = null;
-    this.cpm = 20; // counts per minute
-    this.geigerInterval = null;
     this.isPlayingTape = false;
     this.currentTape = 1;
     this.tapeProgress = 0;
     this.tapeTimer = null;
     this.listeners = [];
+
+    // HTML5 Audio Elements for 100% reliable cross-browser playback
+    this.clickAudio = new Audio('assets/geiger-click.wav');
+    this.clickAudio.volume = 0.8;
+
+    this.ambientGeiger = new Audio('assets/geiger-ambient.wav');
+    this.ambientGeiger.loop = true;
+    this.ambientGeiger.volume = 0.75;
+
+    this.lethalGeiger = new Audio('assets/geiger-lethal.wav');
+    this.lethalGeiger.loop = true;
+    this.lethalGeiger.volume = 0.85;
+
+    this.tapeAudio1 = new Audio('assets/tape-episode-1.wav');
+    this.tapeAudio1.volume = 0.85;
+
+    this.tapeAudio2 = new Audio('assets/tape-episode-2.wav');
+    this.tapeAudio2.volume = 0.85;
+
+    this.activeTapeAudio = this.tapeAudio1;
+
+    // Track real audio progress
+    [this.tapeAudio1, this.tapeAudio2].forEach((tape, idx) => {
+      tape.addEventListener('timeupdate', () => {
+        if (this.currentTape === idx + 1 && this.isPlayingTape) {
+          this.tapeProgress = Math.floor(tape.currentTime);
+          this.notifyState();
+        }
+      });
+      tape.addEventListener('ended', () => {
+        this.pauseTape();
+        this.tapeProgress = 0;
+        this.notifyState();
+      });
+    });
   }
 
-  init() {
-    if (this.ctx) return;
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    this.ctx = new AudioContext();
-    this.setupTapeHiss();
-  }
-
-  ensureContext() {
-    this.init();
-    if (this.ctx && this.ctx.state === 'suspended') {
-      this.ctx.resume();
-    }
-  }
-
+  // --- Geiger Audio Toggle ---
   toggleMute(forcedState = null) {
-    this.ensureContext();
     if (forcedState !== null) {
       this.isMuted = !forcedState;
     } else {
@@ -44,176 +61,87 @@ class YadroAudioEngine {
     }
 
     if (!this.isMuted) {
-      this.startGeiger(this.cpm);
-      if (this.isPlayingTape) this.startTapeHiss();
+      // Immediate audible test click
+      this.playSingleClick();
+
+      // Start ambient looping dosimeter clicks
+      this.ambientGeiger.currentTime = 0;
+      this.ambientGeiger.play().catch(e => console.warn('Ambient play blocked:', e));
     } else {
-      this.stopGeiger();
-      this.stopTapeHiss();
+      this.ambientGeiger.pause();
+      this.lethalGeiger.pause();
     }
+
     return !this.isMuted;
   }
 
-  // --- Geiger Counter Click Synthesizer ---
-  playSingleClick(volume = 0.4) {
-    if (this.isMuted || !this.ctx) return;
+  playSingleClick(volume = 0.8) {
     try {
-      const now = this.ctx.currentTime;
-      const osc = this.ctx.createOscillator();
-      const gain = this.ctx.createGain();
-      const filter = this.ctx.createBiquadFilter();
-
-      // Sharp, metallic Geiger discharge burst
-      filter.type = 'bandpass';
-      filter.frequency.value = 2400 + (Math.random() * 800 - 400);
-      filter.Q.value = 5.0;
-
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(150 + Math.random() * 80, now);
-      osc.frequency.exponentialRampToValueAtTime(40, now + 0.006);
-
-      gain.gain.setValueAtTime(volume * (0.8 + Math.random() * 0.4), now);
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.008);
-
-      osc.connect(filter);
-      filter.connect(gain);
-      gain.connect(this.ctx.destination);
-
-      osc.start(now);
-      osc.stop(now + 0.009);
+      const click = this.clickAudio.cloneNode();
+      click.volume = volume;
+      click.play().catch(() => {});
     } catch (e) {
-      console.warn("Geiger audio error:", e);
-    }
-  }
-
-  startGeiger(targetCPM = 30) {
-    this.stopGeiger();
-    this.cpm = targetCPM;
-    if (this.isMuted || !this.ctx) return;
-
-    // Simulate Poisson random arrivals
-    const scheduleNext = () => {
-      if (this.isMuted) return;
-      this.playSingleClick();
-      const meanIntervalMs = (60 / this.cpm) * 1000;
-      // Exponential distribution for realistic radioactive decay timing
-      const nextDelay = -Math.log(1.0 - Math.random()) * meanIntervalMs;
-      this.geigerInterval = setTimeout(scheduleNext, Math.max(8, nextDelay));
-    };
-
-    scheduleNext();
-  }
-
-  stopGeiger() {
-    if (this.geigerInterval) {
-      clearTimeout(this.geigerInterval);
-      this.geigerInterval = null;
+      console.warn("Click play error:", e);
     }
   }
 
   setGeigerIntensity(level) {
-    // level: 'ambient' (~24 cpm), 'medium' (~240 cpm), 'lethal' (~1800 cpm)
-    let cpm = 24;
-    if (level === 'medium') cpm = 280;
-    if (level === 'lethal') cpm = 2200;
-    this.cpm = cpm;
-    if (!this.isMuted) {
-      this.startGeiger(cpm);
+    if (this.isMuted) return;
+
+    if (level === 'lethal') {
+      this.ambientGeiger.pause();
+      this.lethalGeiger.currentTime = 0;
+      this.lethalGeiger.play().catch(() => {});
+    } else {
+      this.lethalGeiger.pause();
+      this.ambientGeiger.play().catch(() => {});
     }
   }
 
-  // --- Analog Tape Hiss & 50Hz Mains Hum ---
-  setupTapeHiss() {
-    if (!this.ctx) return;
-    try {
-      const bufferSize = this.ctx.sampleRate * 2;
-      const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
-      const output = noiseBuffer.getChannelData(0);
-      let b0 = 0, b1 = 0, b2 = 0;
-      // Pink/Brownish analog tape noise
-      for (let i = 0; i < bufferSize; i++) {
-        const white = Math.random() * 2 - 1;
-        b0 = 0.99 * b0 + white * 0.05;
-        b1 = 0.95 * b1 + white * 0.05;
-        b2 = 0.85 * b2 + white * 0.1;
-        output[i] = (b0 + b1 + b2) * 0.15;
-      }
-
-      this.hissSource = this.ctx.createBufferSource();
-      this.hissSource.buffer = noiseBuffer;
-      this.hissSource.loop = true;
-
-      this.hissGain = this.ctx.createGain();
-      this.hissGain.gain.value = 0.0001;
-
-      const filter = this.ctx.createBiquadFilter();
-      filter.type = 'lowpass';
-      filter.frequency.value = 3500;
-
-      this.hissSource.connect(filter);
-      filter.connect(this.hissGain);
-      this.hissGain.connect(this.ctx.destination);
-      this.hissSource.start(0);
-    } catch (e) {
-      console.warn("Hiss setup failed:", e);
-    }
-  }
-
-  startTapeHiss() {
-    if (this.hissGain && this.ctx) {
-      const now = this.ctx.currentTime;
-      this.hissGain.gain.setValueAtTime(this.hissGain.gain.value, now);
-      this.hissGain.gain.linearRampToValueAtTime(0.06, now + 0.3);
-    }
-  }
-
-  stopTapeHiss() {
-    if (this.hissGain && this.ctx) {
-      const now = this.ctx.currentTime;
-      this.hissGain.gain.setValueAtTime(this.hissGain.gain.value, now);
-      this.hissGain.gain.linearRampToValueAtTime(0.0001, now + 0.3);
-    }
-  }
-
-  // --- Reel-to-Reel Tape Playback Engine ---
-  playTape(tapeNumber) {
-    this.ensureContext();
+  // --- Reel-to-Reel Tape Playback ---
+  playTape(tapeNumber = 1) {
     this.currentTape = tapeNumber;
     this.isPlayingTape = true;
-    if (!this.isMuted) this.startTapeHiss();
-    this.startTapeTimer();
+
+    // Stop both first
+    this.tapeAudio1.pause();
+    this.tapeAudio2.pause();
+
+    this.activeTapeAudio = (tapeNumber === 2) ? this.tapeAudio2 : this.tapeAudio1;
+    this.activeTapeAudio.currentTime = this.tapeProgress;
+    this.activeTapeAudio.play().catch(e => {
+      console.warn("Tape audio playback notice:", e);
+    });
+
     this.notifyState();
   }
 
   pauseTape() {
     this.isPlayingTape = false;
-    this.stopTapeHiss();
-    this.stopTapeTimer();
+    if (this.activeTapeAudio) {
+      this.activeTapeAudio.pause();
+    }
     this.notifyState();
   }
 
   seekTape(seconds) {
-    this.tapeProgress = Math.max(0, Math.min(185, seconds));
+    this.tapeProgress = Math.max(0, seconds);
+    if (this.activeTapeAudio) {
+      this.activeTapeAudio.currentTime = this.tapeProgress;
+    }
     this.notifyState();
   }
 
-  startTapeTimer() {
-    this.stopTapeTimer();
-    this.tapeTimer = setInterval(() => {
-      if (this.isPlayingTape) {
-        this.tapeProgress += 1;
-        if (this.tapeProgress >= 185) {
-          this.pauseTape();
-          this.tapeProgress = 0;
-        }
-        this.notifyState();
-      }
-    }, 1000);
-  }
-
-  stopTapeTimer() {
-    if (this.tapeTimer) {
-      clearInterval(this.tapeTimer);
-      this.tapeTimer = null;
+  // Allow custom MP3 upload for Episode 1 or 2
+  loadCustomAudio(tapeNumber, file) {
+    const url = URL.createObjectURL(file);
+    if (tapeNumber === 1) {
+      this.tapeAudio1.src = url;
+    } else {
+      this.tapeAudio2.src = url;
+    }
+    if (this.currentTape === tapeNumber && this.isPlayingTape) {
+      this.playTape(tapeNumber);
     }
   }
 
@@ -227,7 +155,7 @@ class YadroAudioEngine {
       currentTape: this.currentTape,
       progress: this.tapeProgress,
       isMuted: this.isMuted,
-      cpm: this.cpm
+      duration: (this.activeTapeAudio && !isNaN(this.activeTapeAudio.duration)) ? Math.floor(this.activeTapeAudio.duration) : 35
     }));
   }
 }

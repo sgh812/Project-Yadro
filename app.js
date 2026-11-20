@@ -100,12 +100,31 @@ document.addEventListener('DOMContentLoaded', () => {
       const secs = (state.progress % 60).toString().padStart(2, '0');
       tapeCounter.textContent = `${mins}:${secs}`;
     }
+    const tapeDurationDisplay = document.getElementById('tapeDurationDisplay');
+    if (tapeDurationDisplay && state.duration) {
+      const dmins = Math.floor(state.duration / 60).toString().padStart(2, '0');
+      const dsecs = (state.duration % 60).toString().padStart(2, '0');
+      tapeDurationDisplay.textContent = `${dmins}:${dsecs}`;
+    }
     if (tapeScrubber) {
+      if (state.duration) tapeScrubber.max = state.duration;
       tapeScrubber.value = state.progress;
     }
 
     highlightActiveTranscript(state.progress);
   });
+
+  const customAudioInput = document.getElementById('customAudioInput');
+  if (customAudioInput) {
+    customAudioInput.addEventListener('change', e => {
+      const file = e.target.files[0];
+      if (file) {
+        audio.loadCustomAudio(activeTapeId, file);
+        showToast(`✓ Loaded ${file.name} for Tape 0${activeTapeId}`);
+        audio.playTape(activeTapeId);
+      }
+    });
+  }
 
   if (btnTapePlay) {
     btnTapePlay.addEventListener('click', () => {

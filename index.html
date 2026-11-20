@@ -156,8 +156,15 @@
             </div>
             <div class="deck-scrubber">
               <span>00:00</span>
-              <input type="range" id="tapeScrubber" min="0" max="185" value="0" aria-label="Tape scrub bar">
-              <span>03:05</span>
+              <input type="range" id="tapeScrubber" min="0" max="35" value="0" aria-label="Tape scrub bar">
+              <span id="tapeDurationDisplay">00:35</span>
+            </div>
+            <div style="margin-top:12px; display:flex; justify-content:space-between; align-items:center; background:#0d100e; padding:8px 12px; border:1px dashed #2d3832; border-radius:3px;">
+              <span style="font-size:0.75rem; color:var(--text-muted);">HAVE TEAM RECORDING?</span>
+              <label style="font-size:0.72rem; padding:4px 10px; cursor:pointer; background:#1b241f; border:1px solid #3d4a42; color:#a3d9b8; border-radius:2px; font-weight:700; text-transform:uppercase;">
+                <input type="file" id="customAudioInput" accept="audio/*" style="display:none;">
+                <span>📂 LOAD EPISODE MP3 / WAV</span>
+              </label>
             </div>
           </div>
         </div>
