@@ -143,6 +143,31 @@ document.addEventListener('DOMContentLoaded', () => {
       tapeScrubber.value = state.progress;
     }
 
+    // Custom audio loaded/revert indicator update
+    const customAudioBox = document.getElementById('customAudioBox');
+    const customAudioLed = document.getElementById('customAudioLed');
+    const customAudioLabel = document.getElementById('customAudioLabel');
+    const customUploadText = document.getElementById('customUploadText');
+    const btnRemoveCustomAudio = document.getElementById('btnRemoveCustomAudio');
+
+    if (customAudioBox && customAudioLabel) {
+      if (state.isCustom && state.customFileName) {
+        customAudioBox.classList.add('has-custom-audio');
+        if (customAudioLed) customAudioLed.classList.add('active');
+        customAudioLabel.textContent = `LOADED: ${state.customFileName} (Tape 0${state.currentTape})`;
+        customAudioLabel.title = `Custom recording active: ${state.customFileName}`;
+        if (customUploadText) customUploadText.textContent = '🔄 REPLACE FILE';
+        if (btnRemoveCustomAudio) btnRemoveCustomAudio.style.display = 'inline-flex';
+      } else {
+        customAudioBox.classList.remove('has-custom-audio');
+        if (customAudioLed) customAudioLed.classList.remove('active');
+        customAudioLabel.textContent = `HAVE TEAM RECORDING? (Tape 0${state.currentTape})`;
+        customAudioLabel.title = 'Upload custom MP3/WAV recording for this tape';
+        if (customUploadText) customUploadText.textContent = '📂 LOAD EPISODE MP3 / WAV';
+        if (btnRemoveCustomAudio) btnRemoveCustomAudio.style.display = 'none';
+      }
+    }
+
     highlightActiveTranscript(state.progress);
   });
 
@@ -152,9 +177,19 @@ document.addEventListener('DOMContentLoaded', () => {
       const file = e.target.files[0];
       if (file) {
         audio.loadCustomAudio(activeTapeId, file);
-        showToast(`✓ Loaded ${file.name} for Tape 0${activeTapeId}`);
+        showToast(`✓ Loaded "${file.name}" for Tape 0${activeTapeId}`);
         audio.playTape(activeTapeId);
       }
+    });
+  }
+
+  const btnRemoveCustomAudio = document.getElementById('btnRemoveCustomAudio');
+  if (btnRemoveCustomAudio) {
+    btnRemoveCustomAudio.addEventListener('click', () => {
+      audio.removeCustomAudio(activeTapeId);
+      if (customAudioInput) customAudioInput.value = '';
+      showToast(`↺ Restored default Soviet broadcast for Tape 0${activeTapeId}`);
+      audio.playSingleClick(0.3);
     });
   }
 
@@ -209,7 +244,9 @@ document.addEventListener('DOMContentLoaded', () => {
       if (targetPanel) targetPanel.style.display = 'block';
 
       audio.pauseTape();
+      audio.currentTape = activeTapeId;
       audio.seekTape(0);
+      audio.notifyState();
     });
   });
 

@@ -1688,11 +1688,64 @@ dialog::backdrop {
   padding: 8px 12px;
   border: 1px dashed #2d3832;
   border-radius: 3px;
+  gap: 10px;
+  transition: all 0.2s ease;
+}
+
+.custom-audio-box.has-custom-audio {
+  background: rgba(14, 122, 29, 0.12);
+  border: 1px solid var(--phosphor-green);
+  box-shadow: 0 0 10px rgba(57, 255, 20, 0.15);
+}
+
+.custom-audio-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow: hidden;
+  flex: 1;
+}
+
+.custom-audio-led {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #3a4740;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.custom-audio-led.active {
+  background: var(--phosphor-green);
+  box-shadow: 0 0 8px var(--phosphor-green);
+  animation: pulse-audio-led 2s infinite ease-in-out;
+}
+
+@keyframes pulse-audio-led {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.55; transform: scale(0.85); }
 }
 
 .custom-audio-label {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
+  font-family: var(--font-mono);
   color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: 0.5px;
+}
+
+.has-custom-audio .custom-audio-label {
+  color: var(--phosphor-green);
+  font-weight: 700;
+}
+
+.custom-audio-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
 }
 
 .btn-custom-upload {
@@ -1708,12 +1761,36 @@ dialog::backdrop {
   display: inline-flex;
   align-items: center;
   transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
 .btn-custom-upload:hover {
   background: #25332b;
   border-color: var(--phosphor-green);
   color: var(--phosphor-green);
+}
+
+.btn-remove-audio {
+  font-size: 0.72rem;
+  padding: 4px 10px;
+  cursor: pointer;
+  background: rgba(186, 26, 26, 0.2);
+  border: 1px solid var(--soviet-red);
+  color: #ff9999;
+  border-radius: 2px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-remove-audio:hover {
+  background: var(--soviet-red);
+  color: #ffffff;
+  box-shadow: 0 0 8px rgba(186, 26, 26, 0.4);
 }
 
 .propaganda-analysis-title {
@@ -2037,9 +2114,28 @@ body.light-mode .custom-audio-box {
   border-color: #b8a992;
 }
 
+body.light-mode .custom-audio-box.has-custom-audio {
+  background: #eef7ee;
+  border: 1px solid #0e7a1d;
+  box-shadow: 0 0 10px rgba(14, 122, 29, 0.15);
+}
+
+body.light-mode .custom-audio-led {
+  background: #b8a992;
+}
+
+body.light-mode .custom-audio-led.active {
+  background: #0e7a1d;
+  box-shadow: 0 0 8px rgba(14, 122, 29, 0.5);
+}
+
 body.light-mode .custom-audio-label {
   color: #4a5750;
   font-weight: 700;
+}
+
+body.light-mode .has-custom-audio .custom-audio-label {
+  color: #0e7a1d;
 }
 
 body.light-mode .btn-custom-upload {
@@ -2051,6 +2147,18 @@ body.light-mode .btn-custom-upload {
 body.light-mode .btn-custom-upload:hover {
   background: #e5ded2;
   border-color: #0e7a1d;
+}
+
+body.light-mode .btn-remove-audio {
+  background: #fdf2f2;
+  border-color: #d4a9a9;
+  color: #ba1a1a;
+}
+
+body.light-mode .btn-remove-audio:hover {
+  background: #ba1a1a;
+  border-color: #ba1a1a;
+  color: #ffffff;
 }
 
 /* Audio Player Info & Synchronized Transcripts */

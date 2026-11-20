@@ -163,12 +163,20 @@
               <input type="range" id="tapeScrubber" min="0" max="35" value="0" aria-label="Tape scrub bar">
               <span id="tapeDurationDisplay">00:35</span>
             </div>
-            <div class="custom-audio-box">
-              <span class="custom-audio-label">HAVE TEAM RECORDING?</span>
-              <label class="btn-custom-upload">
-                <input type="file" id="customAudioInput" accept="audio/*" style="display:none;">
-                <span>📂 LOAD EPISODE MP3 / WAV</span>
-              </label>
+            <div class="custom-audio-box" id="customAudioBox">
+              <div class="custom-audio-status">
+                <span class="custom-audio-led" id="customAudioLed" aria-hidden="true"></span>
+                <span class="custom-audio-label" id="customAudioLabel">HAVE TEAM RECORDING?</span>
+              </div>
+              <div class="custom-audio-actions">
+                <label class="btn-custom-upload" id="btnCustomUpload">
+                  <input type="file" id="customAudioInput" accept="audio/*" style="display:none;">
+                  <span id="customUploadText">📂 LOAD EPISODE MP3 / WAV</span>
+                </label>
+                <button type="button" class="btn-remove-audio" id="btnRemoveCustomAudio" style="display:none;" title="Remove uploaded recording and revert to authentic Soviet archive tape">
+                  ✕ REVERT TO ARCHIVE
+                </button>
+              </div>
             </div>
           </div>
         </div>

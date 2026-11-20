@@ -28,16 +28,26 @@ class YadroAudioEngine {
     this.lethalGeiger.loop = true;
     this.lethalGeiger.volume = 0.85;
 
-    this.tapeAudio1 = new Audio('assets/tape-episode-1.wav');
+    this.defaultAudioSrc1 = 'assets/tape-episode-1.wav';
+    this.defaultAudioSrc2 = 'assets/tape-episode-2.wav';
+    this.customFile1Name = null;
+    this.customFile2Name = null;
+
+    this.tapeAudio1 = new Audio(this.defaultAudioSrc1);
     this.tapeAudio1.volume = 0.85;
 
-    this.tapeAudio2 = new Audio('assets/tape-episode-2.wav');
+    this.tapeAudio2 = new Audio(this.defaultAudioSrc2);
     this.tapeAudio2.volume = 0.85;
 
     this.activeTapeAudio = this.tapeAudio1;
 
-    // Track real audio progress
+    // Track real audio progress & metadata
     [this.tapeAudio1, this.tapeAudio2].forEach((tape, idx) => {
+      tape.addEventListener('loadedmetadata', () => {
+        if (this.currentTape === idx + 1) {
+          this.notifyState();
+        }
+      });
       tape.addEventListener('timeupdate', () => {
         if (this.currentTape === idx + 1 && this.isPlayingTape) {
           this.tapeProgress = Math.floor(tape.currentTime);
@@ -136,13 +146,35 @@ class YadroAudioEngine {
   loadCustomAudio(tapeNumber, file) {
     const url = URL.createObjectURL(file);
     if (tapeNumber === 1) {
+      this.customFile1Name = file.name;
       this.tapeAudio1.src = url;
+      this.tapeAudio1.load();
     } else {
+      this.customFile2Name = file.name;
       this.tapeAudio2.src = url;
+      this.tapeAudio2.load();
     }
-    if (this.currentTape === tapeNumber && this.isPlayingTape) {
+    this.tapeProgress = 0;
+    this.notifyState();
+    if (this.isPlayingTape) {
       this.playTape(tapeNumber);
     }
+  }
+
+  // Remove custom audio and revert to authentic Soviet broadcast
+  removeCustomAudio(tapeNumber) {
+    this.pauseTape();
+    this.tapeProgress = 0;
+    if (tapeNumber === 1) {
+      this.customFile1Name = null;
+      this.tapeAudio1.src = this.defaultAudioSrc1;
+      this.tapeAudio1.load();
+    } else {
+      this.customFile2Name = null;
+      this.tapeAudio2.src = this.defaultAudioSrc2;
+      this.tapeAudio2.load();
+    }
+    this.notifyState();
   }
 
   onUpdate(cb) {
@@ -150,12 +182,20 @@ class YadroAudioEngine {
   }
 
   notifyState() {
+    const activeAudio = (this.currentTape === 2) ? this.tapeAudio2 : this.tapeAudio1;
+    const dur = (activeAudio && !isNaN(activeAudio.duration) && isFinite(activeAudio.duration) && activeAudio.duration > 0)
+      ? Math.floor(activeAudio.duration)
+      : 35;
+    const customFileName = (this.currentTape === 2) ? this.customFile2Name : this.customFile1Name;
+
     this.listeners.forEach(cb => cb({
       isPlaying: this.isPlayingTape,
       currentTape: this.currentTape,
       progress: this.tapeProgress,
       isMuted: this.isMuted,
-      duration: (this.activeTapeAudio && !isNaN(this.activeTapeAudio.duration)) ? Math.floor(this.activeTapeAudio.duration) : 35
+      duration: dur,
+      customFileName: customFileName,
+      isCustom: !!customFileName
     }));
   }
 }
