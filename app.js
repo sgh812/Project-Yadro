@@ -409,7 +409,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const sigInput = document.getElementById('idSigInput');
   const btnDownloadId = document.getElementById('btnDownloadId');
   const photoUpload = document.getElementById('idPhotoUpload');
-  const clearanceCards = document.querySelectorAll('.clearance-badge-card');
+  const clearancePills = document.querySelectorAll('.clearance-pill, .clearance-badge-card');
   const presetButtons = document.querySelectorAll('.btn-preset');
 
   let baseCardImg = new Image();
@@ -426,7 +426,7 @@ document.addEventListener('DOMContentLoaded', () => {
     yadro: {
       name: "Dr. Anatoly Yadro",
       position: "Lead Nuclear Physicist",
-      department: "Dept. 4 (Sub-Reactor Laboratory)",
+      department: "Dept. 4 (Sub-Reactor Lab)",
       clearance: "C",
       idNum: "86-Y-7102",
       signature: "A. Yadro",
@@ -435,29 +435,29 @@ document.addEventListener('DOMContentLoaded', () => {
     voronin: {
       name: "Major Oleg Voronin",
       position: "Senior Directorate Officer",
-      department: "KGB Directorate S (Special Operations)",
+      department: "KGB Directorate S",
       clearance: "C",
       idNum: "83-K-0914",
       signature: "O. Voronin",
-      useDefaultPhoto: false
+      useDefaultPhoto: true
     },
     legasov: {
       name: "Dr. Boris Legasov",
       position: "Chief Radiation Chemist",
-      department: "Kurchatov Institute Research Group",
+      department: "Kurchatov Institute",
       clearance: "B",
       idNum: "86-A-4401",
       signature: "B. Legasov",
-      useDefaultPhoto: false
+      useDefaultPhoto: true
     },
     evaluator: {
-      name: "BCM 216 Assessment Panel",
+      name: "BCM 216 Evaluator",
       position: "External Evaluator",
-      department: "University Transmedia Showcase",
+      department: "Univ. Assessment Panel",
       clearance: "A",
       idNum: "26-EVAL-001",
       signature: "Evaluator",
-      useDefaultPhoto: false
+      useDefaultPhoto: true
     }
   };
 
@@ -472,7 +472,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (sigInput) sigInput.value = data.signature;
 
     activeClearance = data.clearance;
-    clearanceCards.forEach(c => {
+    clearancePills.forEach(c => {
       const radio = c.querySelector('input');
       if (radio && radio.value === activeClearance) {
         radio.checked = true;
@@ -500,12 +500,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Clearance badge selection
-  clearanceCards.forEach(card => {
-    card.addEventListener('click', () => {
-      clearanceCards.forEach(c => c.classList.remove('active'));
-      card.classList.add('active');
-      const radio = card.querySelector('input');
+  // Clearance badge/pill selection
+  clearancePills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      clearancePills.forEach(c => c.classList.remove('active'));
+      pill.classList.add('active');
+      const radio = pill.querySelector('input');
       if (radio) {
         radio.checked = true;
         activeClearance = radio.value;

@@ -1236,68 +1236,67 @@ body::before {
   flex: 1;
 }
 
-/* ID Card Interactive Generator Container */
+/* Compact ID Card Interactive Generator Container */
 .id-generator-wrapper {
   grid-column: 1 / -1;
   background: linear-gradient(145deg, #131715, #0d100e);
   border: 2px solid #2e3a33;
-  border-left: 6px solid var(--soviet-red);
+  border-left: 5px solid var(--soviet-red);
   border-radius: 6px;
-  padding: 32px;
+  padding: 20px 24px;
   display: grid;
-  grid-template-columns: 1fr 1.25fr;
-  gap: 36px;
-  box-shadow: 0 10px 35px rgba(0,0,0,0.6);
+  grid-template-columns: 1.05fr 1.15fr;
+  gap: 24px;
+  align-items: center;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.6);
 }
 
-@media (max-width: 1040px) {
+@media (max-width: 980px) {
   .id-generator-wrapper {
     grid-template-columns: 1fr;
+    gap: 20px;
   }
 }
 
-.id-form-col h4 {
+.id-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.id-title-wrap h4 {
   font-family: var(--font-display);
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   color: #fff;
   letter-spacing: 1px;
-  margin-bottom: 6px;
 }
 
-.id-form-col p {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  margin-bottom: 18px;
-}
-
-/* Presets Bar */
-.preset-bar {
+.preset-inline-bar {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 20px;
-  padding: 10px;
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px solid var(--border-subtle);
-  border-radius: 4px;
+  align-items: center;
+  gap: 6px;
 }
 
-.preset-title {
-  width: 100%;
-  font-size: 0.7rem;
+.preset-label {
+  font-size: 0.68rem;
   color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 2px;
+  margin-right: 4px;
 }
 
 .btn-preset {
-  background: #19201c;
+  background: #18201c;
   border: 1px solid #2d3b33;
-  color: #ccc;
-  padding: 6px 12px;
+  color: #bbb;
+  padding: 4px 10px;
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 600;
   cursor: pointer;
   border-radius: 3px;
@@ -1315,97 +1314,87 @@ body::before {
   color: #fff;
 }
 
-.form-group {
-  margin-bottom: 16px;
+/* Compact 2-column input grid */
+.id-fields-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 14px;
+  margin-bottom: 14px;
 }
 
-.form-group label {
-  display: block;
-  font-size: 0.78rem;
+.form-group-compact {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group-compact label {
+  font-size: 0.7rem;
   text-transform: uppercase;
   color: var(--text-muted);
-  letter-spacing: 1px;
-  margin-bottom: 6px;
+  letter-spacing: 0.5px;
+  margin-bottom: 3px;
 }
 
-.form-group input, .form-group select {
-  width: 100%;
+.form-group-compact input {
   background: #080a09;
   border: 1px solid var(--border-heavy);
   color: #fff;
-  padding: 10px 14px;
+  padding: 7px 10px;
   font-family: var(--font-mono);
-  font-size: 0.88rem;
+  font-size: 0.82rem;
   border-radius: 3px;
   outline: none;
   transition: border-color 0.2s;
 }
 
-.form-group input:focus, .form-group select:focus {
+.form-group-compact input:focus {
   border-color: var(--phosphor-green);
-  box-shadow: 0 0 8px var(--phosphor-glow);
+  box-shadow: 0 0 6px var(--phosphor-glow);
 }
 
-/* Tactical Clearance Selector Badges */
-.clearance-badge-group {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin-top: 4px;
+/* Compact Clearance Pills */
+.clearance-pills {
+  display: flex;
+  gap: 6px;
 }
 
-.clearance-badge-card {
-  position: relative;
-  background: #090c0a;
-  border: 1px solid #2c3831;
-  border-radius: 4px;
-  padding: 10px 8px;
+.clearance-pill {
+  flex: 1;
+  background: #080a09;
+  border: 1px solid var(--border-heavy);
+  border-radius: 3px;
+  padding: 6px 8px;
   cursor: pointer;
   text-align: center;
+  font-size: 0.72rem;
+  color: #aaa;
+  font-family: var(--font-mono);
   transition: all 0.2s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  user-select: none;
 }
 
-.clearance-badge-card input[type="radio"] {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
+.clearance-pill input {
+  display: none;
 }
 
-.clearance-badge-card .badge-letter {
-  font-family: var(--font-display);
-  font-size: 1.4rem;
-  color: #888;
-  margin-bottom: 2px;
+.clearance-pill:hover {
+  background: #151c18;
+  border-color: #4a5d52;
 }
 
-.clearance-badge-card .badge-desc {
-  font-size: 0.68rem;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  line-height: 1.2;
-}
-
-.clearance-badge-card:hover {
-  border-color: #4a5c51;
-  background: #111714;
-}
-
-.clearance-badge-card.active {
+.clearance-pill.active {
+  background: rgba(198, 40, 40, 0.25);
   border-color: var(--soviet-red);
-  background: rgba(198, 40, 40, 0.15);
-  box-shadow: 0 0 12px rgba(198, 40, 40, 0.3);
-}
-
-.clearance-badge-card.active .badge-letter {
-  color: var(--soviet-red);
-}
-
-.clearance-badge-card.active .badge-desc {
   color: #fff;
-  font-weight: 600;
+  font-weight: 700;
+  box-shadow: 0 0 8px rgba(198, 40, 40, 0.3);
+}
+
+.btn-download-compact {
+  width: 100%;
+  padding: 9px 16px;
+  font-size: 0.82rem;
+  margin-top: 4px;
 }
 
 .id-canvas-col {
@@ -1417,11 +1406,11 @@ body::before {
 
 .canvas-container {
   width: 100%;
-  max-width: 600px;
-  border: 3px solid #28302b;
-  border-radius: 6px;
+  max-width: 530px;
+  border: 2px solid #28302b;
+  border-radius: 4px;
   overflow: hidden;
-  box-shadow: 0 10px 35px rgba(0,0,0,0.85);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.8);
   background: #000;
   position: relative;
 }
@@ -1921,22 +1910,32 @@ body.light-mode .btn-preset:hover {
 }
 
 body.light-mode .form-group input,
-body.light-mode .form-group select {
+body.light-mode .form-group select,
+body.light-mode .form-group-compact input {
   background: #ffffff;
   border-color: #b8a992;
   color: #111412;
 }
 
-body.light-mode .clearance-badge-card {
+body.light-mode .clearance-badge-card,
+body.light-mode .clearance-pill {
   background: #ffffff;
   border-color: #d8cdba;
+  color: #444;
+}
+
+body.light-mode .clearance-pill.active {
+  background: rgba(186, 26, 26, 0.15);
+  border-color: var(--soviet-red);
+  color: var(--soviet-red);
 }
 
 body.light-mode .clearance-badge-card .badge-letter {
   color: #555;
 }
 
-body.light-mode .clearance-badge-card:hover {
+body.light-mode .clearance-badge-card:hover,
+body.light-mode .clearance-pill:hover {
   background: #f7f3ea;
 }
 

@@ -544,76 +544,67 @@
 
       </div>
 
-      <!-- Artefact 3: Interactive Project Yadro ID Card Generator -->
-      <div id="id-generator" class="id-generator-wrapper" style="margin-top:32px;">
+      <!-- Artefact 3: Interactive Project Yadro ID Card Generator (Compact Layout) -->
+      <div id="id-generator" class="id-generator-wrapper" style="margin-top:28px;">
         <div class="id-form-col">
-          <div class="artefact-tag">ARTEFACT 03 // INTERACTIVE BADGE MAKER</div>
-          <h4>ISSUE SOVIET RESEARCH ID CARD</h4>
-          <p>Generate and download your official Soviet Scientific Research Program credential with custom clearance level.</p>
-
-          <!-- Quick Preset Switcher -->
-          <div class="preset-bar">
-            <span class="preset-title">QUICK IDENTITY PRESETS:</span>
-            <button type="button" class="btn-preset active" data-preset="yadro">Dr. Anatoly Yadro</button>
-            <button type="button" class="btn-preset" data-preset="voronin">Major Voronin (KGB)</button>
-            <button type="button" class="btn-preset" data-preset="legasov">Dr. Boris Legasov</button>
-            <button type="button" class="btn-preset" data-preset="evaluator">BCM 216 Evaluator</button>
-          </div>
-
-          <div class="form-group">
-            <label for="idNameInput">ИМЯ / RESEARCHER NAME:</label>
-            <input type="text" id="idNameInput" value="Dr. Anatoly Yadro" maxlength="28">
-          </div>
-
-          <div class="form-group">
-            <label for="idPosInput">ДОЛЖНОСТЬ / POSITION:</label>
-            <input type="text" id="idPosInput" value="Lead Nuclear Physicist" maxlength="32">
-          </div>
-
-          <div class="form-group">
-            <label for="idDeptInput">ОТДЕЛ / DEPARTMENT:</label>
-            <input type="text" id="idDeptInput" value="Dept. 4 (Sub-Reactor Laboratory)" maxlength="36">
-          </div>
-
-          <!-- Tactile Clearance Selector Cards -->
-          <div class="form-group">
-            <label>ДОПУСК / CLEARANCE LEVEL:</label>
-            <div class="clearance-badge-group">
-              <label class="clearance-badge-card" data-level="A">
-                <input type="radio" name="clearanceRadio" value="A">
-                <span class="badge-letter">A</span>
-                <span class="badge-desc">General</span>
-              </label>
-              <label class="clearance-badge-card" data-level="B">
-                <input type="radio" name="clearanceRadio" value="B">
-                <span class="badge-letter">B</span>
-                <span class="badge-desc">Restricted</span>
-              </label>
-              <label class="clearance-badge-card active" data-level="C">
-                <input type="radio" name="clearanceRadio" value="C" checked>
-                <span class="badge-letter">C</span>
-                <span class="badge-desc">Top Secret (Antimatter)</span>
-              </label>
+          <div class="id-header-row">
+            <div class="id-title-wrap">
+              <div class="artefact-tag">ARTEFACT 03 // DIEGETIC CREDENTIAL</div>
+              <h4>ISSUE SOVIET ID BADGE</h4>
+            </div>
+            <div class="preset-inline-bar">
+              <span class="preset-label">PRESET:</span>
+              <button type="button" class="btn-preset active" data-preset="yadro">Dr. Yadro</button>
+              <button type="button" class="btn-preset" data-preset="voronin">Voronin</button>
+              <button type="button" class="btn-preset" data-preset="legasov">Legasov</button>
+              <button type="button" class="btn-preset" data-preset="evaluator">Evaluator</button>
             </div>
           </div>
 
-          <div class="form-group" style="display:flex; gap:12px;">
-            <div style="flex:1;">
+          <!-- Compact 2-Column Fields Grid -->
+          <div class="id-fields-grid">
+            <div class="form-group-compact">
+              <label for="idNameInput">ИМЯ / NAME:</label>
+              <input type="text" id="idNameInput" value="Dr. Anatoly Yadro" maxlength="28">
+            </div>
+
+            <div class="form-group-compact">
               <label for="idNumInput">№ / ID NUMBER:</label>
               <input type="text" id="idNumInput" value="86-Y-7102" maxlength="16">
             </div>
-            <div style="flex:1;">
+
+            <div class="form-group-compact">
+              <label for="idPosInput">ДОЛЖНОСТЬ / POSITION:</label>
+              <input type="text" id="idPosInput" value="Lead Nuclear Physicist" maxlength="30">
+            </div>
+
+            <div class="form-group-compact">
+              <label for="idDeptInput">ОТДЕЛ / DEPARTMENT:</label>
+              <input type="text" id="idDeptInput" value="Dept. 4 (Sub-Reactor Lab)" maxlength="32">
+            </div>
+
+            <div class="form-group-compact">
+              <label>ДОПУСК / CLEARANCE:</label>
+              <div class="clearance-pills">
+                <label class="clearance-pill" data-level="A">
+                  <input type="radio" name="clearanceRadio" value="A"> Level A
+                </label>
+                <label class="clearance-pill" data-level="B">
+                  <input type="radio" name="clearanceRadio" value="B"> Level B
+                </label>
+                <label class="clearance-pill active" data-level="C">
+                  <input type="radio" name="clearanceRadio" value="C" checked> Level C (Secret)
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group-compact">
               <label for="idSigInput">ПОДПИСЬ / SIGNATURE:</label>
               <input type="text" id="idSigInput" value="A. Yadro" maxlength="20">
             </div>
           </div>
 
-          <div class="form-group">
-            <label for="idPhotoUpload">CUSTOM BADGE PHOTO (OPTIONAL):</label>
-            <input type="file" id="idPhotoUpload" accept="image/*">
-          </div>
-
-          <button type="button" class="btn-primary" id="btnDownloadId" style="width:100%; justify-content:center; margin-top:10px;">
+          <button type="button" class="btn-primary btn-download-compact" id="btnDownloadId" style="justify-content:center;">
             <svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             <span>DOWNLOAD COMPOSITED ID BADGE (PNG)</span>
           </button>
