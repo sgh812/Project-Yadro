@@ -300,13 +300,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const data = timelineData[key];
       if (data && detailBox) {
         detailBox.innerHTML = `
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-            <h4 style="font-family:var(--font-display); font-size:1.3rem; color:#fff;">${data.year} // ${data.title}</h4>
+          <div class="timeline-detail-header">
+            <h4 class="detail-title">${data.year} // ${data.title}</h4>
             <span class="timeline-type-badge ${data.badgeClass}">${data.type}</span>
           </div>
-          <p style="color:#64b5f6; font-size:0.86rem; margin-bottom:8px;"><strong>${data.realHistory}</strong></p>
-          <p style="color:#c9d6cf; font-size:0.9rem; line-height:1.6; margin-bottom:12px;">${data.divergence}</p>
-          <p style="color:var(--text-muted); font-size:0.75rem; font-style:italic;">Academic Reference: ${data.citation}</p>
+          <p class="detail-real-history"><strong>${data.realHistory}</strong></p>
+          <p class="detail-divergence">${data.divergence}</p>
+          <p class="detail-citation">Academic Reference: ${data.citation}</p>
         `;
       }
     });
@@ -448,6 +448,24 @@ document.addEventListener('DOMContentLoaded', () => {
       clearance: "B",
       idNum: "86-A-4401",
       signature: "B. Legasov",
+      useDefaultPhoto: true
+    },
+    stevenson: {
+      name: "Dr. David Stevenson",
+      position: "Course Lecturer / Chief Evaluator",
+      department: "BCM 216 Assessment Directorate",
+      clearance: "C",
+      idNum: "26-DS-LECT",
+      signature: "D. Stevenson",
+      useDefaultPhoto: true
+    },
+    hamda: {
+      name: "Hamda Al Khaja",
+      position: "Tutorial Assessment Lead / Tutor",
+      department: "BCM 216 Tutorial Directorate",
+      clearance: "B",
+      idNum: "26-HK-TUTR",
+      signature: "H. Al Khaja",
       useDefaultPhoto: true
     },
     evaluator: {

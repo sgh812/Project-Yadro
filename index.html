@@ -163,9 +163,9 @@
               <input type="range" id="tapeScrubber" min="0" max="35" value="0" aria-label="Tape scrub bar">
               <span id="tapeDurationDisplay">00:35</span>
             </div>
-            <div style="margin-top:12px; display:flex; justify-content:space-between; align-items:center; background:#0d100e; padding:8px 12px; border:1px dashed #2d3832; border-radius:3px;">
-              <span style="font-size:0.75rem; color:var(--text-muted);">HAVE TEAM RECORDING?</span>
-              <label style="font-size:0.72rem; padding:4px 10px; cursor:pointer; background:#1b241f; border:1px solid #3d4a42; color:#a3d9b8; border-radius:2px; font-weight:700; text-transform:uppercase;">
+            <div class="custom-audio-box">
+              <span class="custom-audio-label">HAVE TEAM RECORDING?</span>
+              <label class="btn-custom-upload">
                 <input type="file" id="customAudioInput" accept="audio/*" style="display:none;">
                 <span>📂 LOAD EPISODE MP3 / WAV</span>
               </label>
@@ -207,7 +207,7 @@
 
             <!-- Propaganda vs Reality Callout -->
             <div class="propaganda-vs-reality">
-              <h4 style="color:#ffcccc; font-size:0.85rem; font-family:var(--font-display);">CRITICAL ANALYSIS: PROPAGANDA VS REALITY</h4>
+              <h4 class="propaganda-analysis-title">CRITICAL ANALYSIS: PROPAGANDA VS REALITY</h4>
               <div class="comparison-grid">
                 <div class="comparison-col propaganda">
                   <h5>Official Soviet Narrative</h5>
@@ -248,8 +248,8 @@
 
             <!-- Incident Markers -->
             <div class="propaganda-vs-reality">
-              <h4 style="color:var(--phosphor-green); font-size:0.85rem; font-family:var(--font-display);">ANOMALOUS INCIDENT MARKERS (POST-1986)</h4>
-              <ul style="list-style:none; margin-top:8px; font-size:0.8rem; color:#c9d6cf;">
+              <h4 class="incident-markers-title">ANOMALOUS INCIDENT MARKERS (POST-1986)</h4>
+              <ul class="incident-markers-list">
                 <li>📍 <strong>1987 — Semipalatinsk Polygon:</strong> Subterranean test chamber melted into crystalline bismuth.</li>
                 <li>📍 <strong>1988 — Moscow Lubyanka Sub-Level 2:</strong> KGB interrogation archive erased by localized neutron pulse.</li>
                 <li>📍 <strong>1989 — Chelyabinsk-65:</strong> Mayak reprocessing pipes restructured into brittle arsenic alloys.</li>
@@ -285,7 +285,7 @@
             <div class="spec-row"><span class="spec-key">NATIONALITY:</span><span class="spec-val">Ukrainian SSR (Kyiv / Moscow Edu.)</span></div>
             <div class="spec-row"><span class="spec-key">SPECIALIZATION:</span><span class="spec-val">Nuclear Physics & Antimatter Chemistry</span></div>
             <div class="spec-row"><span class="spec-key">KGB RECRUITMENT:</span><span class="spec-val">Forced Coercion / Hostage Family</span></div>
-            <div class="spec-row"><span class="spec-key">CURRENT STATUS:</span><span class="spec-val" style="color:var(--soviet-red);">UNCONFIRMED AT LARGE</span></div>
+            <div class="spec-row"><span class="spec-key">CURRENT STATUS:</span><span class="spec-val status-fugitive">UNCONFIRMED AT LARGE</span></div>
           </div>
         </div>
 
@@ -378,13 +378,13 @@
         </div>
 
         <div class="timeline-detail-box" id="timelineDetailBox">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-            <h4 style="font-family:var(--font-display); font-size:1.3rem; color:#fff;">1969 // Soviet Moon Landing (Space Victory)</h4>
+          <div class="timeline-detail-header">
+            <h4 class="detail-title">1969 // Soviet Moon Landing (Space Victory)</h4>
             <span class="timeline-type-badge type-fiction">DIVERGENT FICTION</span>
           </div>
-          <p style="color:#64b5f6; font-size:0.86rem; margin-bottom:8px;"><strong>Real History: The United States landed Apollo 11 on the moon on July 20, 1969.</strong></p>
-          <p style="color:#c9d6cf; font-size:0.9rem; line-height:1.6; margin-bottom:12px;">In Project Yadro, the Soviet Union touches down first, shifting the global Cold War balance of power and fueling state hubris that leads to unchecked, dangerous scientific experiments.</p>
-          <p style="color:var(--text-muted); font-size:0.75rem; font-style:italic;">Academic Reference: Science Museum (2014) 'The first woman in space', Science Museum Blog.</p>
+          <p class="detail-real-history"><strong>Real History: The United States landed Apollo 11 on the moon on July 20, 1969.</strong></p>
+          <p class="detail-divergence">In Project Yadro, the Soviet Union touches down first, shifting the global Cold War balance of power and fueling state hubris that leads to unchecked, dangerous scientific experiments.</p>
+          <p class="detail-citation">Academic Reference: Science Museum (2014) 'The first woman in space', Science Museum Blog.</p>
         </div>
       </div>
     </section>
@@ -456,7 +456,7 @@
             <button type="button" class="poll-option-btn" data-option="opt1">
               <div>
                 <strong>Option A: Deliberate Vengeance</strong>
-                <div style="font-size:0.75rem; color:var(--text-muted);">Yadro methodically sabotaged critical Soviet infrastructure in retaliation for his stolen family.</div>
+                <div class="poll-option-desc">Yadro methodically sabotaged critical Soviet infrastructure in retaliation for his stolen family.</div>
               </div>
               <span class="poll-pct">42% (42 votes)</span>
               <div class="poll-bar"><div class="poll-fill"></div></div>
@@ -465,7 +465,7 @@
             <button type="button" class="poll-option-btn" data-option="opt2">
               <div>
                 <strong>Option B: Unintentional Decay & Meltdowns</strong>
-                <div style="font-size:0.75rem; color:var(--text-muted);">Accelerating cognitive blackouts triggered uncontrolled elemental bursts without strategic intent.</div>
+                <div class="poll-option-desc">Accelerating cognitive blackouts triggered uncontrolled elemental bursts without strategic intent.</div>
               </div>
               <span class="poll-pct">31% (31 votes)</span>
               <div class="poll-bar"><div class="poll-fill"></div></div>
@@ -474,7 +474,7 @@
             <button type="button" class="poll-option-btn" data-option="opt3">
               <div>
                 <strong>Option C: Regime Cover-Up of Internal Rot</strong>
-                <div style="font-size:0.75rem; color:var(--text-muted);">The Soviet Union collapsed from its own hubris; Yadro was used by panicked bureaucrats as a scapegoat.</div>
+                <div class="poll-option-desc">The Soviet Union collapsed from its own hubris; Yadro was used by panicked bureaucrats as a scapegoat.</div>
               </div>
               <span class="poll-pct">27% (27 votes)</span>
               <div class="poll-bar"><div class="poll-fill"></div></div>
@@ -553,10 +553,12 @@
               <h4>ISSUE SOVIET ID BADGE</h4>
             </div>
             <div class="preset-inline-bar">
-              <span class="preset-label">PRESET:</span>
+              <span class="preset-label">PRESETS:</span>
               <button type="button" class="btn-preset active" data-preset="yadro">Dr. Yadro</button>
               <button type="button" class="btn-preset" data-preset="voronin">Voronin</button>
               <button type="button" class="btn-preset" data-preset="legasov">Legasov</button>
+              <button type="button" class="btn-preset" data-preset="stevenson" title="Dr. David Stevenson (Course Lecturer)">Dr. Stevenson (Lecturer)</button>
+              <button type="button" class="btn-preset" data-preset="hamda" title="Hamda Al Khaja (Course Tutor)">Hamda Al Khaja (Tutor)</button>
               <button type="button" class="btn-preset" data-preset="evaluator">Evaluator</button>
             </div>
           </div>
@@ -614,7 +616,7 @@
           <div class="canvas-container">
             <canvas id="idCardCanvas"></canvas>
           </div>
-          <p style="font-size:0.75rem; color:var(--text-muted); margin-top:10px; text-align:center;">
+          <p class="canvas-plate-note">
             Live HTML5 Canvas composite rendering onto original Soviet ID card plate (1024x682).
           </p>
         </div>
@@ -646,9 +648,32 @@
             </ul>
           </div>
 
+          <!-- Course & Faculty Supervision -->
+          <div class="academic-block">
+            <h4><span>02 //</span> COURSE & FACULTY SUPERVISION</h4>
+            <ul class="team-list">
+              <li class="team-item">
+                <span class="team-name">Dr. David Stevenson</span>
+                <span class="team-id faculty-badge">Lecturer / Subject Coordinator</span>
+              </li>
+              <li class="team-item">
+                <span class="team-name">Hamda Al Khaja</span>
+                <span class="team-id faculty-badge">Tutor & Assessment Lead</span>
+              </li>
+              <li class="team-item">
+                <span class="team-name">BCM 216</span>
+                <span class="team-id">Transmedia Storytelling (Autumn 2026)</span>
+              </li>
+              <li class="team-item">
+                <span class="team-name">Institution</span>
+                <span class="team-id">University of Wollongong</span>
+              </li>
+            </ul>
+          </div>
+
           <!-- Academic Bibliography & Theory -->
           <div class="academic-block" style="grid-column: span 2;">
-            <h4><span>02 //</span> TRANSMEDIA THEORY MAPPING</h4>
+            <h4><span>03 //</span> TRANSMEDIA THEORY MAPPING</h4>
             <table class="theory-table">
               <thead>
                 <tr>
@@ -689,12 +714,12 @@
 
           <!-- Ethical Safeguards -->
           <div class="academic-block" style="grid-column: span 2;">
-            <h4><span>03 //</span> ETHICAL SAFEGUARDS STATEMENT</h4>
-            <div style="font-size:0.86rem; color:#c9d6cf; line-height:1.7;">
-              <p style="margin-bottom:10px;">
+            <h4><span>04 //</span> ETHICAL SAFEGUARDS STATEMENT</h4>
+            <div class="safeguards-content">
+              <p>
                 <strong>1. Respect for Real Chernobyl Victims:</strong> The 1986 disaster caused devastating loss of life, displacement, and generational trauma. The project explicitly labels itself as speculative alternate-history fiction on every viewport and does not suggest that real victims or real human errors were supernatural in origin.
               </p>
-              <p style="margin-bottom:10px;">
+              <p>
                 <strong>2. Separation of Documented History vs. Fiction:</strong> All fictional KGB cables, transcripts, and character dossiers are marked with fictional provenance tags to avoid disinformation or confusion with real historical state archives.
               </p>
               <p>
@@ -704,8 +729,8 @@
           </div>
 
           <!-- Production Roadmap -->
-          <div class="academic-block">
-            <h4><span>04 //</span> WEEKS 7–10 ROADMAP</h4>
+          <div class="academic-block" style="grid-column: span 2;">
+            <h4><span>05 //</span> WEEKS 7–10 ROADMAP</h4>
             <div class="roadmap-timeline">
               <div class="roadmap-step">
                 <div class="roadmap-week">WEEK 7 // SCRIPTS & RESEARCH</div>
@@ -764,7 +789,7 @@
     <div class="dialog-content" style="text-align:center;">
       <button type="button" class="dialog-close-btn" onclick="document.getElementById('lightboxDialog').close()" aria-label="Close image inspector">✕</button>
       <img id="lightboxImg" src="" alt="Enlarged artefact display" style="max-width:100%; max-height:75vh; border-radius:3px; box-shadow:0 0 20px rgba(0,0,0,0.8);">
-      <p id="lightboxCaption" style="margin-top:14px; font-size:0.88rem; color:#d6e2db; font-style:italic;"></p>
+      <p id="lightboxCaption" class="lightbox-caption"></p>
     </div>
   </dialog>
 
@@ -776,7 +801,8 @@
         <em>Project Yadro: The Chernobyl Tapes</em> is an alternate-history student transmedia project created for BCM 216 at the University of Wollongong (Autumn 2026). All characters, secret KGB documents, and supernatural events are entirely fictional. The project holds solemn reverence for the genuine firefighters, liquidators, and citizens affected by the 1986 Chernobyl disaster.
       </p>
       <p class="footer-credits">
-        BCM 216 Production Team: Salman Ghafouri, Jad Madineh, Mohammed Rayyan Afzal, Mohamed Amine Abbad, Nick Ghiaee.
+        BCM 216 Student Team: Salman Ghafouri, Jad Madineh, Mohammed Rayyan Afzal, Mohamed Amine Abbad, Nick Ghiaee.<br>
+        Academic Supervision & Evaluation: Dr. David Stevenson (Lecturer) &bull; Hamda Al Khaja (Tutor)
       </p>
     </div>
   </footer>
