@@ -2266,27 +2266,6 @@ body::before {
   font-family: var(--font-mono);
 }
 
-.roadmap-timeline {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.roadmap-step {
-  background: var(--bg-panel-light);
-  border-left: 3px solid var(--soviet-red);
-  padding: 10px 14px;
-  border-radius: 2px;
-  font-size: 0.82rem;
-}
-
-.roadmap-week {
-  color: var(--soviet-red);
-  font-weight: 700;
-  text-transform: uppercase;
-  margin-bottom: 2px;
-}
-
 /* --------------------------------------------------------------------------
    Native Dialog Modals (Modern Web Guidance Compliant)
    -------------------------------------------------------------------------- */
@@ -3583,16 +3562,6 @@ body.light-mode .safeguards-content {
   color: #191f1b;
 }
 
-body.light-mode .roadmap-step {
-  background: #faf6ee;
-  border-color: #d8cdba;
-  color: #191f1b;
-}
-
-body.light-mode .roadmap-week {
-  color: #9e5b00;
-}
-
 /* Modals & Dialogs */
 body.light-mode .dialog-content {
   background: #ffffff;
@@ -3907,7 +3876,6 @@ body.light-mode .badge-toast {
   .artefact-card,
   .academic-dossier-card,
   .academic-lens-callout,
-  .roadmap-step,
   .team-item,
   .ability-box,
   .gap-mystery-card {
