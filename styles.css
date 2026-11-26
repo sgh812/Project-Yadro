@@ -1723,7 +1723,7 @@ body::before {
    Forensic Comparison Scanner (1985 Archive vs Dec 2000 Field Recovery)
    -------------------------------------------------------------------------- */
 .artefact-top-stage {
-  min-height: 605px;
+  min-height: 642px;
   justify-content: space-between;
 }
 
@@ -1775,6 +1775,10 @@ body::before {
 
 .compare-state-pill.pill-clean {
   color: #a7f3d0;
+}
+
+.compare-state-pill.pill-amber {
+  color: var(--amber-warning);
 }
 
 .state-dot {
@@ -1900,8 +1904,12 @@ body::before {
   position: relative;
   overflow: hidden;
   border-bottom: 1px solid var(--border-heavy);
-  padding: 20px 16px 6px;
+  padding: 0 14px;
   box-sizing: border-box;
+}
+
+.dosimeter-header-bar {
+  max-width: 540px;
 }
 
 .dosimeter-sheets-grid {
@@ -1909,8 +1917,9 @@ body::before {
   grid-template-columns: 1fr 1fr;
   gap: 14px;
   width: 100%;
-  max-width: 500px;
+  max-width: 540px;
   margin: auto 0;
+  padding: 10px 0 8px;
 }
 
 .dosimeter-sheet-card {
@@ -3861,6 +3870,10 @@ body.light-mode .compare-state-pill.pill-worn {
 
 body.light-mode .compare-state-pill.pill-clean {
   color: #0e7a1d;
+}
+
+body.light-mode .compare-state-pill.pill-amber {
+  color: #8a4b00;
 }
 
 body.light-mode .compare-header-vs {
