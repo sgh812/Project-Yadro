@@ -1364,6 +1364,57 @@ body::before {
   justify-content: center;
 }
 
+.artefact-actions-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px dashed var(--border-medium);
+}
+
+.artefact-action-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.action-group-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.8px;
+  color: var(--amber-warning);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.action-btn-pair {
+  display: flex;
+  gap: 8px;
+}
+
+.action-btn-pair .btn-secondary {
+  flex: 1;
+  padding: 8px 10px;
+  font-size: 0.74rem;
+  justify-content: center;
+  min-width: 0;
+  gap: 6px;
+  text-decoration: none;
+}
+
+.action-btn-pair .btn-secondary .svg-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.lightbox-actions-bar {
+  margin-top: 14px;
+  display: flex;
+  justify-content: center;
+}
+
 .artefact-info {
   padding: 24px;
   display: flex;
@@ -2606,6 +2657,14 @@ body.light-mode .compare-instruction-bar {
 
 body.light-mode .artefact-name {
   color: #111412;
+}
+
+body.light-mode .artefact-actions-grid {
+  border-top-color: #c7beab;
+}
+
+body.light-mode .action-group-label {
+  color: #8a3b08;
 }
 
 body.light-mode .artefact-desc {

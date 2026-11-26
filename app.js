@@ -845,6 +845,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Lightbox for Artefacts
+  const lightboxDownloadBtn = document.getElementById('lightboxDownloadBtn');
+  const lightboxDownloadText = document.getElementById('lightboxDownloadText');
+
   document.querySelectorAll('.open-lightbox').forEach(el => {
     el.addEventListener('click', () => {
       const src = el.dataset.src;
@@ -852,6 +855,14 @@ document.addEventListener('DOMContentLoaded', () => {
       if (lightboxDialog && lightboxImg) {
         lightboxImg.src = src;
         lightboxCaption.textContent = caption || '';
+        if (lightboxDownloadBtn) {
+          lightboxDownloadBtn.href = src;
+          const filename = src.split('/').pop();
+          lightboxDownloadBtn.download = filename;
+          if (lightboxDownloadText) {
+            lightboxDownloadText.textContent = `DOWNLOAD (${filename})`;
+          }
+        }
         lightboxDialog.showModal();
       }
     });

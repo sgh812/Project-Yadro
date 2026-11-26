@@ -557,15 +557,34 @@
               <strong>1985 ARCHIVE:</strong> Constructivist visual optimism used by Soviet authorities to normalize civilian proximity to nuclear installations while secretly excavating weapons facilities below.<br>
               <strong>DEC 2000 SALVAGE:</strong> Retrieved during an unauthorized survey of the Pripyat administrative sector 14 years post-meltdown. Ash scoring, thermal stress, and paper embrittlement confirm prolonged exposure near the Reactor 4 sub-basement.
             </p>
-            <div class="artefact-actions-row">
-              <button type="button" class="btn-secondary open-lightbox" data-src="assets/poster.jpg" data-caption="Soviet Propaganda Poster (1985 Archival Restoration): 'Atomic Energy Fuels Progress / Chernobyl — Power for the People!' Designed to project utopian state superiority while concealing the sub-reactor antimatter laboratory.">
-                <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
-                <span>1985 PRINT</span>
-              </button>
-              <button type="button" class="btn-secondary open-lightbox" data-src="assets/worn-poster.jpg" data-caption="Salvaged Pripyat Propaganda Poster (Dec 2000 Field Recovery): Retrieved from a sealed administrative corridor 14 years post-meltdown. Thermal scorching and paper degradation match residual radiation spikes near Sub-Basement 4-B.">
-                <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
-                <span>DEC 2000 SALVAGE</span>
-              </button>
+            <div class="artefact-actions-grid">
+              <div class="artefact-action-group">
+                <span class="action-group-label">1985 ARCHIVAL RESTORATION:</span>
+                <div class="action-btn-pair">
+                  <button type="button" class="btn-secondary open-lightbox" data-src="assets/poster.jpg" data-caption="Soviet Propaganda Poster (1985 Archival Restoration): 'Atomic Energy Fuels Progress / Chernobyl — Power for the People!' Designed to project utopian state superiority while concealing the sub-reactor antimatter laboratory.">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                    <span>INSPECT (HD)</span>
+                  </button>
+                  <a href="assets/poster.jpg" download="Project_Yadro_1985_Soviet_Propaganda_Poster.jpg" class="btn-secondary" title="Download 1985 Archival Poster (Full Resolution JPG)">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    <span>DOWNLOAD</span>
+                  </a>
+                </div>
+              </div>
+
+              <div class="artefact-action-group">
+                <span class="action-group-label">DEC 2000 FIELD RECOVERY:</span>
+                <div class="action-btn-pair">
+                  <button type="button" class="btn-secondary open-lightbox" data-src="assets/worn-poster.jpg" data-caption="Salvaged Pripyat Propaganda Poster (Dec 2000 Field Recovery): Retrieved from a sealed administrative corridor 14 years post-meltdown. Thermal scorching and paper degradation match residual radiation spikes near Sub-Basement 4-B.">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                    <span>INSPECT (HD)</span>
+                  </button>
+                  <a href="assets/worn-poster.jpg" download="Project_Yadro_Dec2000_Salvaged_Poster.jpg" class="btn-secondary" title="Download Dec 2000 Salvaged Poster (Full Resolution JPG)">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    <span>DOWNLOAD</span>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </article>
@@ -836,6 +855,12 @@
       <button type="button" class="dialog-close-btn" onclick="document.getElementById('lightboxDialog').close()" aria-label="Close image inspector">✕</button>
       <img id="lightboxImg" src="" alt="Enlarged artefact display" style="max-width:100%; max-height:75vh; border-radius:3px; box-shadow:0 0 20px rgba(0,0,0,0.8);">
       <p id="lightboxCaption" class="lightbox-caption"></p>
+      <div class="lightbox-actions-bar">
+        <a id="lightboxDownloadBtn" href="" download class="btn-secondary" style="display:inline-flex; align-items:center; gap:8px; text-decoration:none;">
+          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span id="lightboxDownloadText">DOWNLOAD ARTEFACT</span>
+        </a>
+      </div>
     </div>
   </dialog>
 
