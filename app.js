@@ -511,6 +511,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const clueProgressFill = document.getElementById('clueProgressFill');
   const clueTrackerBar = document.getElementById('clueTrackerBar');
   const btnResetClues = document.getElementById('btnResetClues');
+  const lockedMemo6 = document.getElementById('lockedMemo6');
+  const lockedMemoProgress = document.getElementById('lockedMemoProgress');
   const secretMemo6 = document.getElementById('secretMemo6');
 
   let savedClueIndices = [];
@@ -545,6 +547,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (clueCountText) {
       clueCountText.textContent = `DECLASSIFIED CLUES: ${count} / ${total}`;
     }
+    if (lockedMemoProgress) {
+      lockedMemoProgress.textContent = `🔒 SEALED: ${count} / ${total} CLUES VERIFIED`;
+    }
     if (clueProgressFill) {
       clueProgressFill.style.width = `${pct}%`;
     }
@@ -561,6 +566,9 @@ document.addEventListener('DOMContentLoaded', () => {
       if (clueUnlockStatus) {
         clueUnlockStatus.textContent = '✓ CLEARANCE OVERRIDE COMPLETE — KGB Intercept #06 decrypted below!';
       }
+      if (lockedMemo6) {
+        lockedMemo6.hidden = true;
+      }
       if (secretMemo6) {
         secretMemo6.hidden = false;
       }
@@ -576,6 +584,9 @@ document.addEventListener('DOMContentLoaded', () => {
       secretUnlockedPreviously = false;
       if (clueUnlockStatus) {
         clueUnlockStatus.textContent = `Uncover ${total - count} more black redaction bar${total - count === 1 ? '' : 's'} to decrypt KGB Intercept #06`;
+      }
+      if (lockedMemo6) {
+        lockedMemo6.hidden = false;
       }
       if (secretMemo6) {
         secretMemo6.hidden = true;
@@ -765,7 +776,7 @@ document.addEventListener('DOMContentLoaded', () => {
       signature: "A. Yadro"
     },
     sokolov: {
-      name: "Officer Viktor Sokolov",
+      name: "Col. Viktor Sokolov",
       position: "Detention Order Authorising Officer",
       department: "KGB Directorate S",
       clearance: "C",

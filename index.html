@@ -35,42 +35,46 @@
 
   <!-- Mandatory Classification Notice & Ethical Top Bar -->
   <header class="classification-banner" role="banner">
-    <div class="banner-notice">
-      <span class="banner-badge">DECLASSIFIED</span>
-      <span>FICTIONAL ALTERNATE-HISTORY ARCHIVE — Created for BCM 216. All KGB records &amp; Project Yadro files are works of fiction created with respect for the real victims of the 1986 Chernobyl disaster.</span>
-    </div>
-    <div class="banner-controls">
-      <button type="button" class="btn-audio-toggle" id="btnAudioToggle" aria-pressed="false" aria-label="Toggle Geiger Audio Atmosphere">
-        <span class="audio-led" aria-hidden="true"></span>
-        <span class="btn-label">GEIGER AUDIO: MUTED</span>
-      </button>
-      <button type="button" class="btn-mode-toggle" id="btnModeToggle" aria-pressed="false" aria-label="Toggle Academic Evaluator Lens">
-        SWITCH: ACADEMIC DOSSIER
-      </button>
-      <button type="button" class="btn-theme-toggle" id="btnThemeToggle" aria-pressed="false" aria-label="Switch between Light Dossier and Dark Bunker Mode">
-        <span class="theme-icon" aria-hidden="true">☀</span>
-        <span class="theme-label">LIGHT DOSSIER</span>
-      </button>
+    <div class="banner-inner">
+      <div class="banner-notice">
+        <span class="banner-badge">DECLASSIFIED</span>
+        <span>FICTIONAL ALTERNATE-HISTORY ARCHIVE — Created for BCM 216. All KGB records &amp; Project Yadro files are works of fiction created with respect for the real victims of the 1986 Chernobyl disaster.</span>
+      </div>
+      <div class="banner-controls">
+        <button type="button" class="btn-audio-toggle" id="btnAudioToggle" aria-pressed="false" aria-label="Toggle Geiger Audio Atmosphere">
+          <span class="audio-led" aria-hidden="true"></span>
+          <span class="btn-label">GEIGER AUDIO: MUTED</span>
+        </button>
+        <button type="button" class="btn-mode-toggle" id="btnModeToggle" aria-pressed="false" aria-label="Toggle Academic Evaluator Lens">
+          SWITCH: ACADEMIC DOSSIER
+        </button>
+        <button type="button" class="btn-theme-toggle" id="btnThemeToggle" aria-pressed="false" aria-label="Switch between Light Dossier and Dark Bunker Mode">
+          <span class="theme-icon" aria-hidden="true">☀</span>
+          <span class="theme-label">LIGHT DOSSIER</span>
+        </button>
+      </div>
     </div>
   </header>
 
   <!-- Navigation Bar -->
   <nav class="archive-nav" aria-label="Archive">
-    <a href="#hero" class="nav-brand">
-      <span class="nav-emblem" aria-hidden="true">☢</span>
-      <div>
-        <div class="nav-title" lang="ru">ПРОЕКТ ЯДРО</div>
-        <div class="nav-subtitle">CASE 1986-Y // ARCHIVE TERMINAL</div>
-      </div>
-    </a>
-    <ul class="nav-links">
-      <li><a href="#audio-terminal">The Chernobyl Tapes</a></li>
-      <li><a href="#dossier">Subject: Dr. Yadro</a></li>
-      <li><a href="#timeline">Divergence Timeline</a></li>
-      <li><a href="#evidence">Evidence Wall</a></li>
-      <li><a href="#artefacts">Physical Artefacts</a></li>
-      <li><a href="#academic">Academic Dossier</a></li>
-    </ul>
+    <div class="nav-inner">
+      <a href="#hero" class="nav-brand">
+        <span class="nav-emblem" aria-hidden="true">☢</span>
+        <div>
+          <div class="nav-title" lang="ru">ПРОЕКТ ЯДРО</div>
+          <div class="nav-subtitle">CASE 1986-Y // ARCHIVE TERMINAL</div>
+        </div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#audio-terminal">The Chernobyl Tapes</a></li>
+        <li><a href="#dossier">Subject: Dr. Yadro</a></li>
+        <li><a href="#timeline">Divergence Timeline</a></li>
+        <li><a href="#evidence">Evidence Wall</a></li>
+        <li><a href="#artefacts">Physical Artefacts</a></li>
+        <li><a href="#academic">Academic Dossier</a></li>
+      </ul>
+    </div>
   </nav>
 
   <main class="main-container">
@@ -84,7 +88,7 @@
 
       <div class="hero-card">
         <div class="hero-stamp">СОВЕРШЕННО СЕКРЕТНО // TOP SECRET // KGB ARCHIVE 4</div>
-        <h1 id="main-content" tabindex="-1" class="hero-title">PROJECT YADRO: <span>THE CHERNOBYL TAPES</span></h1>
+        <h1 id="main-content" tabindex="-1" class="hero-title">PROJECT YADRO:<br><span>THE CHERNOBYL TAPES</span></h1>
         <p class="hero-tagline">AN INVESTIGATIVE TRANSMEDIA EXPERIENCE // BCM 216 (AUTUMN 2026)</p>
         
         <p class="hero-hook">
@@ -194,8 +198,8 @@
             </div>
             <div class="deck-scrubber">
               <span id="tapeElapsedDisplay">00:00</span>
-              <input type="range" id="tapeScrubber" min="0" max="35" value="0" aria-label="Tape scrub bar">
-              <span id="tapeDurationDisplay">00:35</span>
+              <input type="range" id="tapeScrubber" min="0" max="198" value="0" aria-label="Tape scrub bar">
+              <span id="tapeDurationDisplay">03:18</span>
             </div>
 
             <!-- Podcast Series Cover Art Sleeve -->
@@ -238,25 +242,45 @@
           <!-- Episode 1 Panel -->
           <div class="tape-panel-content" id="tapePanel1" role="tabpanel">
             <div class="tape-transcript-box">
-              <div class="transcript-line" role="button" tabindex="0" data-time="0" data-endtime="35">
+              <div class="transcript-line" role="button" tabindex="0" data-time="0" data-endtime="14">
                 <span class="transcript-time">[00:00]</span>
-                <span class="transcript-speaker">RADIO PRIPYAT:</span>
-                "Attention comrades. An unforeseen technical defect has occurred at the Vladimir Ilyich Lenin Nuclear Power Plant. Normal conditions remain preserved. There is no cause for alarm..."
+                <span class="transcript-speaker">SOVIET ANNOUNCER:</span>
+                "Citizens of the Soviet Union. Reports of an incident at the Chernobyl Nuclear Power Plant are being investigated. Authorities confirm that the situation remains under control."
               </div>
-              <div class="transcript-line" role="button" tabindex="0" data-time="35" data-endtime="82">
-                <span class="transcript-time">[00:35]</span>
+              <div class="transcript-line irradiated" role="button" tabindex="0" data-time="14" data-endtime="25">
+                <span class="transcript-time">[00:14]</span>
+                <span class="transcript-speaker">SUB-REACTOR OPERATIVE:</span>
+                "Control, this is Sub-Reactor Four! We've lost containment! Yadro is no longer in his cell! He's emitting radiation! Get everyone out!"
+              </div>
+              <div class="transcript-line" role="button" tabindex="0" data-time="25" data-endtime="38">
+                <span class="transcript-time">[00:25]</span>
+                <span class="transcript-speaker">SOVIET ANNOUNCER:</span>
+                "We return now to our scheduled programme. Listeners near the plant should keep their radios tuned to this station. Further instructions will be issued as necessary."
+              </div>
+              <div class="transcript-line" role="button" tabindex="0" data-time="38" data-endtime="56">
+                <span class="transcript-time">[00:38]</span>
                 <span class="transcript-speaker">INVESTIGATOR:</span>
-                "They told the residents to shut their windows and drink tea. But four floors beneath the graphite floor of Reactor 4, inside the unmapped Sub-Basement 4-B, lead shielding eighteen inches thick was dissolving like wax."
+                "What you just heard was recovered from a classified KGB recording dated 26 April 1986. For decades, its existence was denied. But one question remains: who, or what, was Dr Anatoly Yadro?"
               </div>
-              <div class="transcript-line" role="button" tabindex="0" data-time="82" data-endtime="135">
-                <span class="transcript-time">[01:22]</span>
-                <span class="transcript-speaker">KGB INTERCEPT #44:</span>
-                "Subject Dr. Yadro was inside the antimatter core compression chamber when the turbine surge triggered core rupture. His vital signs did not flatline. They ceased reading on biological instruments entirely..."
+              <div class="transcript-line" role="button" tabindex="0" data-time="56" data-endtime="98">
+                <span class="transcript-time">[00:56]</span>
+                <span class="transcript-speaker">INVESTIGATOR:</span>
+                "In 1983, Ukrainian nuclear physicist Anatoly Yadro disappeared from public record. Discovered by Chernobyl staff in December 2000 was this recording of his first briefing with KGB Colonel Sokolov."
               </div>
-              <div class="transcript-line irradiated" role="button" tabindex="0" data-time="135" data-endtime="185">
-                <span class="transcript-time">[02:15]</span>
-                <span class="transcript-speaker">FIELD SURVEILLANCE:</span>
-                "[Static bursts]... We hear clicking... not from our dosimeters... from the corridor walls! He's altering the lead! The door is turning to dust! [Geiger alarm peaks] [Signal loss]."
+              <div class="transcript-line" role="button" tabindex="0" data-time="98" data-endtime="150">
+                <span class="transcript-time">[01:38]</span>
+                <span class="transcript-speaker">COLONEL SOKOLOV &amp; YADRO:</span>
+                "We've established a research facility beneath Reactor 4. The nature of this research requires absolute secrecy—you'll be living and working here until further notice." — "No. I have a wife and a daughter. Let me telephone my wife."
+              </div>
+              <div class="transcript-line" role="button" tabindex="0" data-time="150" data-endtime="180">
+                <span class="transcript-time">[02:30]</span>
+                <span class="transcript-speaker">COLONEL SOKOLOV &amp; YADRO:</span>
+                "I believe you recognise these two individuals. They're in our custody. Neither will be harmed, provided you cooperate." — "My daughter is eight years old! Where have you taken them?!"
+              </div>
+              <div class="transcript-line" role="button" tabindex="0" data-time="180" data-endtime="205">
+                <span class="transcript-time">[03:00]</span>
+                <span class="transcript-speaker">INVESTIGATOR:</span>
+                "For the next three years, Yadro was held beneath Reactor Four. On 26 April 1986, the facility lost containment. Whatever happened to Yadro that night, the KGB could no longer keep him underground."
               </div>
             </div>
 
@@ -266,11 +290,11 @@
               <div class="comparison-grid">
                 <div class="comparison-col propaganda">
                   <h5>Official Soviet Narrative</h5>
-                  <p>"Minor industrial mishap. Negligible radioactive iodine release. Western alarmism strictly rejected."</p>
+                  <p>"Situation remains under control. Scheduled programming resumes; await further official instructions."</p>
                 </div>
                 <div class="comparison-col reality">
                   <h5>Recovered KGB Telemetry</h5>
-                  <p>"Sub-basement antimatter detonation verified. Lead containment transfigured into radioactive nitrogen gas."</p>
+                  <p>"Sub-Reactor 4 antimatter containment lost. Prisoner Yadro escaped cell emitting lethal ionising radiation."</p>
                 </div>
               </div>
             </div>
@@ -279,25 +303,30 @@
           <!-- Episode 2 Panel -->
           <div class="tape-panel-content" id="tapePanel2" role="tabpanel" style="display:none;">
             <div class="tape-transcript-box">
-              <div class="transcript-line" role="button" tabindex="0" data-time="0" data-endtime="40">
+              <div class="transcript-line" role="button" tabindex="0" data-time="0" data-endtime="34">
                 <span class="transcript-time">[00:00]</span>
-                <span class="transcript-speaker">NARRATOR:</span>
-                "In official history, the Soviet Union collapsed under the weight of perestroika, economic exhaustion, and political decay. But declassified military dossiers paint a far more terrifying picture..."
+                <span class="transcript-speaker">INVESTIGATOR:</span>
+                "The KGB listed Dr Anatoly Yadro among those killed at Chernobyl. Yet in 1989 his name surfaced in a radiation incident at a Soviet military depot, and by 1991 he was linked to anti-government strikes. I located former engineer Maksim Kovalenko."
               </div>
-              <div class="transcript-line" role="button" tabindex="0" data-time="40" data-endtime="95">
-                <span class="transcript-time">[00:40]</span>
-                <span class="transcript-speaker">KGB INTERNAL CABLE:</span>
-                "Incident Novaya Zemlya: Reinforced missile silos corroded into brittle salt within seconds. Radiation levels 2,000 times background. No atomic warhead was triggered. A single silhouette was recorded on thermal imaging."
+              <div class="transcript-line" role="button" tabindex="0" data-time="34" data-endtime="49">
+                <span class="transcript-time">[00:34]</span>
+                <span class="transcript-speaker">MAKSIM KOVALENKO:</span>
+                "I first met Anatoly in late 1983. We weren't supposed to speak to him outside working hours—he was a prisoner. The rest of us could go home."
               </div>
-              <div class="transcript-line" role="button" tabindex="0" data-time="95" data-endtime="145">
-                <span class="transcript-time">[01:35]</span>
-                <span class="transcript-speaker">DR. YADRO (AUDIO FRAGMENT):</span>
-                "You took Kateryna. You took Nina. You buried me in concrete under your steel monster. Now I am the decay in your bones. Every element you built your empire with belongs to me."
+              <div class="transcript-line irradiated" role="button" tabindex="0" data-time="49" data-endtime="101">
+                <span class="transcript-time">[00:49]</span>
+                <span class="transcript-speaker">MAKSIM KOVALENKO:</span>
+                "When Reactor 4 blew, Yadro walked up to a steel door blocking the corridor, put his hand against it, and the metal started bending. He asked where his family was, then asked me the exact same question 30 seconds later—nose bleeding, my dosimeter going mad."
               </div>
-              <div class="transcript-line" role="button" tabindex="0" data-time="145" data-endtime="185">
-                <span class="transcript-time">[02:25]</span>
-                <span class="transcript-speaker">INVESTIGATOR NOTE:</span>
-                "Did Yadro systematically dismantle Soviet infrastructure, or did his accelerating cognitive blackouts cause unintentional disasters that terrified Moscow into surrender?"
+              <div class="transcript-line" role="button" tabindex="0" data-time="101" data-endtime="155">
+                <span class="transcript-time">[01:41]</span>
+                <span class="transcript-speaker">MAKSIM KOVALENKO:</span>
+                "In 1991 I received copies of classified KGB documents, officials' signatures, and his family's arrest order with a note asking me to mail them to three radio stations. Within days of the broadcast, workers at two Soviet nuclear facilities went on strike."
+              </div>
+              <div class="transcript-line" role="button" tabindex="0" data-time="155" data-endtime="215">
+                <span class="transcript-time">[02:35]</span>
+                <span class="transcript-speaker">INVESTIGATOR:</span>
+                "The KGB accused Yadro of sabotage, espionage, and radiation incidents across the Union—yet never proved it. By December 1991, the Soviet Union had ceased to exist. How much can be attributed to one man remains a matter of debate."
               </div>
             </div>
 
@@ -591,6 +620,18 @@
             </p>
           </article>
 
+          <!-- Memo 6 Locked Encrypted Placeholder (Replaces empty 6th slot until all 10 clues are found) -->
+          <article class="dossier-paper locked-memo" id="lockedMemo6">
+            <div class="paper-pin" aria-hidden="true"></div>
+            <div class="paper-stamp locked-stamp">ENCRYPTED // 06</div>
+            <div class="paper-title">CLASSIFIED ADDENDUM #06 — LOCKED</div>
+            <p class="paper-body locked-memo-body">
+              <strong>CLEARANCE OVERRIDE REQUIRED:</strong><br>
+              Directorate S's final 1991 emergency cable remains sealed behind archival redactions. Uncover all <strong>10 black redaction bars</strong> across Files 1–5 to decrypt this transmission.
+            </p>
+            <div class="locked-memo-status" id="lockedMemoProgress">🔒 SEALED: 0 / 10 CLUES VERIFIED</div>
+          </article>
+
           <!-- Memo 6: Secret Unlocked KGB Addendum (Unlocked when all 10 redactions are revealed) -->
           <article class="dossier-paper secret-memo" id="secretMemo6" hidden>
             <div class="paper-pin secret-pin" aria-hidden="true"></div>
@@ -676,16 +717,16 @@
 
         <!-- Artefact 1: Soviet Propaganda Poster (Interactive 1985 vs Dec 2000 Comparison Slider) -->
         <article class="artefact-card">
-          <div class="poster-compare-wrapper">
-            <!-- Dedicated Forensic Comparator Header Bar (Unobscured Art) -->
+          <div class="poster-compare-wrapper artefact-top-stage">
+            <!-- Dedicated Forensic Comparator Header Bar (KGB Language & Weathering Overlay) -->
             <div class="compare-header-bar">
               <div class="compare-state-pill pill-worn">
                 <span class="state-dot red" aria-hidden="true"></span>
-                <span class="state-text">DEC 2000 SALVAGE</span>
+                <span class="state-text">DEC 2000 ORIGINAL (RU)</span>
               </div>
-              <div class="compare-header-vs">SCANNER</div>
+              <div class="compare-header-vs" aria-hidden="true">◄►</div>
               <div class="compare-state-pill pill-clean">
-                <span class="state-text">1985 ARCHIVAL</span>
+                <span class="state-text">1985 ARCHIVAL (EN)</span>
                 <span class="state-dot green" aria-hidden="true"></span>
               </div>
             </div>
@@ -706,7 +747,7 @@
               </div>
             </div>
             <div class="compare-instruction-bar">
-              <span>◄ DRAG SCANNER LINE TO EXAMINE RADIATION DEGRADATION ►</span>
+              <span>◄ DRAG SCANNER LINE TO COMPARE WEATHERED (RU) VS. RESTORED (EN) ►</span>
             </div>
           </div>
           <div class="artefact-info">
@@ -751,15 +792,19 @@
 
         <!-- Artefact 2: DP-5B Dosimeter Papercraft Blueprint (New 2-Sheet Design + PDF Print Kit) -->
         <article class="artefact-card">
-          <div class="dosimeter-preview-container">
+          <div class="dosimeter-preview-container artefact-top-stage">
             <div class="dosimeter-sheets-grid">
               <div class="dosimeter-sheet-card open-lightbox" role="button" tabindex="0" data-src="assets/dosimeter-page1.jpg" data-caption="Soviet ДП-5Б (DP-5B) Radiation Dosimeter Blueprint (Sheet 01: Main Body, Dial &amp; Assembly Specs — 120 x 70 x 35 mm). Print at 100% scale on A4 cardstock.">
-                <img src="assets/dosimeter-page1.jpg" alt="DP-5B Radiation Dosimeter Main Body Blueprint Sheet 1" class="dosimeter-thumb" loading="lazy" width="724" height="1024">
-                <span class="sheet-tag">SHEET 01 // MAIN BODY</span>
+                <div class="dosimeter-thumb-frame">
+                  <img src="assets/dosimeter-page1.jpg" alt="DP-5B Radiation Dosimeter Main Body Blueprint Sheet 1" class="dosimeter-thumb" loading="lazy" width="724" height="1024">
+                </div>
+                <span class="sheet-footer-tag">SHEET 01 // MAIN BODY</span>
               </div>
               <div class="dosimeter-sheet-card open-lightbox" role="button" tabindex="0" data-src="assets/dosimeter-page2.jpg" data-caption="Soviet ДП-5Б (DP-5B) Radiation Dosimeter Blueprint (Sheet 02: Carry Handle, Latches, Reference Model &amp; Historical Notes). Print at 100% scale on A4 cardstock.">
-                <img src="assets/dosimeter-page2.jpg" alt="DP-5B Radiation Dosimeter Accessories and Assembly Blueprint Sheet 2" class="dosimeter-thumb" loading="lazy" width="724" height="1024">
-                <span class="sheet-tag">SHEET 02 // ACCESSORIES &amp; LATCHES</span>
+                <div class="dosimeter-thumb-frame">
+                  <img src="assets/dosimeter-page2.jpg" alt="DP-5B Radiation Dosimeter Accessories and Assembly Blueprint Sheet 2" class="dosimeter-thumb" loading="lazy" width="724" height="1024">
+                </div>
+                <span class="sheet-footer-tag">SHEET 02 // ACCESSORIES</span>
               </div>
             </div>
             <div class="compare-instruction-bar">
@@ -770,12 +815,29 @@
             <div class="artefact-tag">ARTEFACT 02 // DIY PHYSICAL PROP</div>
             <h3 class="artefact-name">ДП-5Б (DP-5B) Dosimeter Blueprint (A4 Kit)</h3>
             <p class="artefact-desc">
-              Complete two-sheet Soviet radiation survey meter cardstock papercraft blueprint. Engineered to authentic scale (120 × 70 × 35 mm) with precision 50 mm print calibration lines, μR/h logarithmic dial, selector switches, decorative carry handle, and step-by-step assembly instructions.
+              Complete two-sheet Soviet radiation survey meter cardstock papercraft blueprint engineered to authentic scale (120 × 70 × 35 mm) with 50 mm print calibration, μR/h logarithmic dial, and selector switches.
             </p>
+
+            <!-- Compact 4-Step Build Protocol (Page 1 & 2 Assembly Guide) -->
+            <div class="dosimeter-build-steps">
+              <div class="build-steps-title">ASSEMBLY PROTOCOL (200–250 GSM CARDSTOCK):</div>
+              <ol class="build-steps-list">
+                <li><strong>1. Cut</strong> solid outer outline, keeping all 7 glue tabs.</li>
+                <li><strong>2. Score &amp; fold</strong> dashed lines inward to form body walls.</li>
+                <li><strong>3. Glue</strong> side tabs cleanly inside; seal back panel last.</li>
+                <li><strong>4. Attach</strong> decorative carry handle (80 mm span) &amp; top latches.</li>
+              </ol>
+            </div>
+
+            <!-- Historical Calibration Note -->
+            <div class="dosimeter-history-note">
+              <strong>HISTORICAL NOTE:</strong> Standard Chernobyl plant dosimeters topped out at <strong>3.6 R/h</strong> (see Hero Telemetry &amp; <em>19 May 1986</em> notebook entry)—whereas genuine military <strong>DP-5 series</strong> meters could measure up to <strong>200 R/h</strong>.
+            </div>
+
             <div class="artefact-specs-list">
-              <div class="spec-item"><strong>SCALE:</strong> 1:1 Actual Size (A4 / 200–250 gsm)</div>
-              <div class="spec-item"><strong>RANGE:</strong> 0.05 μR/h to 200 R/h scale</div>
-              <div class="spec-item"><strong>FORMAT:</strong> Vector Print-Ready PDF + HD Sheets</div>
+              <div class="spec-item"><strong>SCALE:</strong> 1:1 Actual Size (A4 · 120 × 70 × 35 mm)</div>
+              <div class="spec-item"><strong>RANGE:</strong> 0.05 μR/h to 200 R/h calibrated dial</div>
+              <div class="spec-item"><strong>FORMAT:</strong> Vector Print-Ready PDF + 2 HD Sheets</div>
             </div>
             <div class="artefact-actions-grid">
               <div class="action-btn-pair">
@@ -807,13 +869,15 @@
               <h4>ISSUE SOVIET ID BADGE</h4>
             </div>
             <div class="preset-inline-bar">
-              <span class="preset-label">PRESETS:</span>
-              <button type="button" class="btn-preset active" data-preset="yadro">Dr. Yadro</button>
-              <button type="button" class="btn-preset" data-preset="sokolov">Sokolov (KGB)</button>
-              <button type="button" class="btn-preset" data-preset="legasov">Legasov</button>
-              <button type="button" class="btn-preset" data-preset="stevenson" title="Dr. David Stevenson (Course Lecturer)">Dr. Stevenson (Lecturer)</button>
-              <button type="button" class="btn-preset" data-preset="hamda" title="Hamda Al Khaja (Course Tutor)">Hamda Al Khaja (Tutor)</button>
-              <button type="button" class="btn-preset" data-preset="evaluator">Evaluator</button>
+              <span class="preset-label">QUICK IDENTITY PRESETS:</span>
+              <div class="preset-grid-3x2">
+                <button type="button" class="btn-preset active" data-preset="yadro">Dr. Yadro</button>
+                <button type="button" class="btn-preset" data-preset="sokolov" title="KGB Colonel Viktor Sokolov">Col. Sokolov (KGB)</button>
+                <button type="button" class="btn-preset" data-preset="legasov">Dr. Legasov</button>
+                <button type="button" class="btn-preset" data-preset="stevenson" title="Dr. David Stevenson (Course Lecturer)">Dr. Stevenson (Lecturer)</button>
+                <button type="button" class="btn-preset" data-preset="hamda" title="Hamda Al Khaja (Course Tutor)">Hamda Al Khaja (Tutor)</button>
+                <button type="button" class="btn-preset" data-preset="evaluator">BCM 216 Evaluator</button>
+              </div>
             </div>
           </div>
 
@@ -842,14 +906,14 @@
             <div class="form-group-compact">
               <span class="compact-field-label" id="clearanceGroupLabel">ДОПУСК / CLEARANCE:</span>
               <div class="clearance-pills" role="radiogroup" aria-labelledby="clearanceGroupLabel">
-                <label class="clearance-pill" data-level="A">
-                  <input type="radio" name="clearanceRadio" value="A"> Level A
+                <label class="clearance-pill" data-level="A" title="Level A — General Facility Clearance">
+                  <input type="radio" name="clearanceRadio" value="A"> <span>LVL A · GEN</span>
                 </label>
-                <label class="clearance-pill" data-level="B">
-                  <input type="radio" name="clearanceRadio" value="B"> Level B
+                <label class="clearance-pill" data-level="B" title="Level B — Restricted Clearance">
+                  <input type="radio" name="clearanceRadio" value="B"> <span>LVL B · RESTR</span>
                 </label>
-                <label class="clearance-pill active" data-level="C">
-                  <input type="radio" name="clearanceRadio" value="C" checked> Level C (Secret)
+                <label class="clearance-pill active" data-level="C" title="Level C — Top Secret Clearance">
+                  <input type="radio" name="clearanceRadio" value="C" checked> <span>LVL C · SECRET</span>
                 </label>
               </div>
             </div>

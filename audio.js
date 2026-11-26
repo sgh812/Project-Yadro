@@ -118,7 +118,7 @@ class YadroAudioEngine {
     if (activeAudio && !isNaN(activeAudio.duration) && isFinite(activeAudio.duration) && activeAudio.duration > 0) {
       return Math.floor(activeAudio.duration);
     }
-    return 35;
+    return this.currentTape === 2 ? 207 : 198;
   }
 
   switchTape(tapeNumber = 1) {
