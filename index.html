@@ -528,15 +528,26 @@
         <!-- Artefact 1: Soviet Propaganda Poster (Interactive 1985 vs Dec 2000 Comparison Slider) -->
         <article class="artefact-card">
           <div class="poster-compare-wrapper">
+            <!-- Dedicated Forensic Comparator Header Bar (Unobscured Art) -->
+            <div class="compare-header-bar">
+              <div class="compare-state-pill pill-worn">
+                <span class="state-dot red"></span>
+                <span class="state-text">DEC 2000 SALVAGE</span>
+              </div>
+              <div class="compare-header-vs">SCANNER</div>
+              <div class="compare-state-pill pill-clean">
+                <span class="state-text">1985 ARCHIVAL</span>
+                <span class="state-dot green"></span>
+              </div>
+            </div>
+
             <div class="poster-compare" id="posterCompare" tabindex="0" role="slider" aria-label="1985 vs December 2000 Poster Comparison Scanner" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
               <!-- Bottom Layer: Restored 1985 Constructivist Print -->
               <img src="assets/poster.jpg" alt="1985 Restored Soviet Propaganda Poster" class="poster-img">
-              <span class="compare-label label-right">1985 ARCHIVAL RESTORATION</span>
 
               <!-- Top Layer: Weathered Dec 2000 Field Recovery (Clipped dynamically) -->
               <div class="poster-worn-layer" id="wornLayer">
                 <img src="assets/worn-poster.jpg" alt="December 2000 Recovered Worn Poster from Pripyat" class="poster-img">
-                <span class="compare-label label-left">DEC 2000 FIELD RECOVERY</span>
               </div>
 
               <!-- Draggable Divider Line & Knob -->

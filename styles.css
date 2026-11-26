@@ -1235,6 +1235,69 @@ body::before {
   position: relative;
   overflow: hidden;
   border-bottom: 1px solid var(--border-heavy);
+  padding: 0 12px;
+  box-sizing: border-box;
+}
+
+.compare-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 320px;
+  margin: 16px auto 0;
+  padding: 6px 12px;
+  background: #101311;
+  border: 1px solid var(--border-medium);
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  box-sizing: border-box;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+.compare-state-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  color: #c5beae;
+  text-transform: uppercase;
+}
+
+.compare-state-pill.pill-worn {
+  color: #ff8a80;
+}
+
+.compare-state-pill.pill-clean {
+  color: #a7f3d0;
+}
+
+.state-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.state-dot.red {
+  background: var(--soviet-red);
+  box-shadow: 0 0 6px rgba(186, 26, 26, 0.9);
+}
+
+.state-dot.green {
+  background: var(--phosphor-green);
+  box-shadow: 0 0 6px rgba(57, 255, 20, 0.9);
+}
+
+.compare-header-vs {
+  font-size: 0.62rem;
+  letter-spacing: 1px;
+  color: var(--amber-warning);
+  font-weight: 800;
+  opacity: 0.9;
 }
 
 .poster-compare {
@@ -1247,7 +1310,7 @@ body::before {
   background: #000;
   user-select: none;
   cursor: ew-resize;
-  margin: 16px auto 8px;
+  margin: 10px auto 8px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.85);
   border-radius: 3px;
   touch-action: pan-y;
@@ -2629,6 +2692,24 @@ body.light-mode .artefact-card {
 body.light-mode .poster-compare-wrapper {
   background: #f4eee2;
   border-bottom-color: #d8cdba;
+}
+
+body.light-mode .compare-header-bar {
+  background: #ffffff;
+  border-color: #b8a992;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+body.light-mode .compare-state-pill.pill-worn {
+  color: #b71c1c;
+}
+
+body.light-mode .compare-state-pill.pill-clean {
+  color: #0e7a1d;
+}
+
+body.light-mode .compare-header-vs {
+  color: #9e5b00;
 }
 
 body.light-mode .poster-compare {

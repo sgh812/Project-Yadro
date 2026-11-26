@@ -769,11 +769,15 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateSlider(clientX) {
       const rect = posterCompare.getBoundingClientRect();
       if (!rect.width) return;
-      let pos = ((clientX - rect.left) / rect.width) * 100;
-      pos = Math.max(0, Math.min(100, pos));
+      let rawPos = ((clientX - rect.left) / rect.width) * 100;
+      let pos = Math.max(0, Math.min(100, rawPos));
 
+      // Full reveal range for image layers
       wornLayer.style.clipPath = `inset(0 ${100 - pos}% 0 0)`;
-      compareHandle.style.left = `${pos}%`;
+
+      // Clamp knob handle so the text inside never gets clipped off by container boundaries
+      let handlePos = Math.max(7, Math.min(93, pos));
+      compareHandle.style.left = `${handlePos}%`;
       posterCompare.setAttribute('aria-valuenow', Math.round(pos));
     }
 
@@ -810,20 +814,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { passive: true });
 
     posterCompare.addEventListener('keydown', e => {
-      let currentPos = parseFloat(compareHandle.style.left);
-      if (isNaN(currentPos)) currentPos = 50;
+      let currentVal = parseInt(posterCompare.getAttribute('aria-valuenow'), 10);
+      if (isNaN(currentVal)) currentVal = 50;
 
       if (e.key === 'ArrowLeft') {
-        currentPos = Math.max(0, currentPos - 5);
-        wornLayer.style.clipPath = `inset(0 ${100 - currentPos}% 0 0)`;
-        compareHandle.style.left = `${currentPos}%`;
-        posterCompare.setAttribute('aria-valuenow', Math.round(currentPos));
+        currentVal = Math.max(0, currentVal - 5);
+        wornLayer.style.clipPath = `inset(0 ${100 - currentVal}% 0 0)`;
+        let handlePos = Math.max(7, Math.min(93, currentVal));
+        compareHandle.style.left = `${handlePos}%`;
+        posterCompare.setAttribute('aria-valuenow', currentVal);
         e.preventDefault();
       } else if (e.key === 'ArrowRight') {
-        currentPos = Math.min(100, currentPos + 5);
-        wornLayer.style.clipPath = `inset(0 ${100 - currentPos}% 0 0)`;
-        compareHandle.style.left = `${currentPos}%`;
-        posterCompare.setAttribute('aria-valuenow', Math.round(currentPos));
+        currentVal = Math.min(100, currentVal + 5);
+        wornLayer.style.clipPath = `inset(0 ${100 - currentVal}% 0 0)`;
+        let handlePos = Math.max(7, Math.min(93, currentVal));
+        compareHandle.style.left = `${handlePos}%`;
+        posterCompare.setAttribute('aria-valuenow', currentVal);
         e.preventDefault();
       }
     });
