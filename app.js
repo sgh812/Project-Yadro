@@ -161,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (shouldSpike) {
       renderLethalDosimetry();
-      audio.setGeigerIntensity('lethal');
+      audio.setGeigerIntensity('lethal', isContainmentAlertActive);
     } else {
       renderAmbientDosimetry();
       audio.setGeigerIntensity('ambient');
@@ -216,7 +216,8 @@ document.addEventListener('DOMContentLoaded', () => {
     isContainmentAlertActive = true;
     syncRadiationEffects();
 
-    if (playSound && !audio.isMuted) {
+    if (playSound) {
+      audio.playContainmentAlarm();
       audio.playSingleClick(0.6);
     }
 

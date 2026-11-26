@@ -10,10 +10,12 @@
 class YadroAudioEngine {
   constructor() {
     this.isMuted = true;
+    this.userExplicitlyMuted = false;
     this.isPlayingTape = false;
     this.currentTape = 1;
     this.tapeProgress = 0;
     this.listeners = [];
+    this.audioCtx = null;
 
     // Lightweight click sound (2.6 KB)
     this.clickAudio = new Audio('assets/geiger-click.wav');
@@ -78,15 +80,71 @@ class YadroAudioEngine {
     }
 
     if (!this.isMuted) {
+      this.userExplicitlyMuted = false;
       this.playSingleClick();
       this.ambientGeiger.currentTime = 0;
       this.ambientGeiger.play().catch(e => console.warn('Ambient play blocked:', e));
     } else {
+      this.userExplicitlyMuted = true;
       this.ambientGeiger.pause();
       this.lethalGeiger.pause();
     }
 
     return !this.isMuted;
+  }
+
+  playContainmentAlarm() {
+    try {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+      if (!this.audioCtx) {
+        this.audioCtx = new AudioCtx();
+      }
+      if (this.audioCtx.state === 'suspended') {
+        this.audioCtx.resume().catch(() => {});
+      }
+
+      const now = this.audioCtx.currentTime;
+      const pulseOffsets = [0, 0.48, 0.96];
+
+      pulseOffsets.forEach(offset => {
+        const start = now + offset;
+        const stop = start + 0.34;
+
+        const oscMain = this.audioCtx.createOscillator();
+        const oscSub = this.audioCtx.createOscillator();
+        const filter = this.audioCtx.createBiquadFilter();
+        const gain = this.audioCtx.createGain();
+
+        oscMain.type = 'sawtooth';
+        oscMain.frequency.setValueAtTime(520, start);
+        oscMain.frequency.exponentialRampToValueAtTime(340, stop);
+
+        oscSub.type = 'triangle';
+        oscSub.frequency.setValueAtTime(260, start);
+        oscSub.frequency.exponentialRampToValueAtTime(170, stop);
+
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(1250, start);
+
+        gain.gain.setValueAtTime(0.0001, start);
+        gain.gain.linearRampToValueAtTime(0.14, start + 0.03);
+        gain.gain.setValueAtTime(0.14, stop - 0.07);
+        gain.gain.exponentialRampToValueAtTime(0.0001, stop);
+
+        oscMain.connect(filter);
+        oscSub.connect(filter);
+        filter.connect(gain);
+        gain.connect(this.audioCtx.destination);
+
+        oscMain.start(start);
+        oscSub.start(start);
+        oscMain.stop(stop + 0.02);
+        oscSub.stop(stop + 0.02);
+      });
+    } catch (e) {
+      console.warn('Alarm synthesis error:', e);
+    }
   }
 
   playSingleClick(volume = 0.8) {
@@ -99,16 +157,17 @@ class YadroAudioEngine {
     }
   }
 
-  setGeigerIntensity(level) {
-    if (this.isMuted) return;
-
+  setGeigerIntensity(level, force = false) {
     if (level === 'lethal') {
+      if (!force && this.isMuted && this.userExplicitlyMuted) return;
       this.ambientGeiger.pause();
       this.lethalGeiger.currentTime = 0;
       this.lethalGeiger.play().catch(() => {});
     } else {
       this.lethalGeiger.pause();
-      this.ambientGeiger.play().catch(() => {});
+      if (!this.isMuted) {
+        this.ambientGeiger.play().catch(() => {});
+      }
     }
   }
 
