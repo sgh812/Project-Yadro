@@ -757,6 +757,79 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ------------------------------------------------------------------------
+  // 6.5. Forensic Comparison Scanner (1985 Archival vs Dec 2000 Salvaged Poster)
+  // ------------------------------------------------------------------------
+  const posterCompare = document.getElementById('posterCompare');
+  const wornLayer = document.getElementById('wornLayer');
+  const compareHandle = document.getElementById('compareHandle');
+
+  if (posterCompare && wornLayer && compareHandle) {
+    let isDragging = false;
+
+    function updateSlider(clientX) {
+      const rect = posterCompare.getBoundingClientRect();
+      if (!rect.width) return;
+      let pos = ((clientX - rect.left) / rect.width) * 100;
+      pos = Math.max(0, Math.min(100, pos));
+
+      wornLayer.style.clipPath = `inset(0 ${100 - pos}% 0 0)`;
+      compareHandle.style.left = `${pos}%`;
+      posterCompare.setAttribute('aria-valuenow', Math.round(pos));
+    }
+
+    posterCompare.addEventListener('mousedown', e => {
+      isDragging = true;
+      updateSlider(e.clientX);
+    });
+
+    window.addEventListener('mouseup', () => {
+      isDragging = false;
+    });
+
+    window.addEventListener('mousemove', e => {
+      if (isDragging) {
+        updateSlider(e.clientX);
+      }
+    });
+
+    posterCompare.addEventListener('touchstart', e => {
+      if (e.touches && e.touches[0]) {
+        isDragging = true;
+        updateSlider(e.touches[0].clientX);
+      }
+    }, { passive: true });
+
+    window.addEventListener('touchend', () => {
+      isDragging = false;
+    });
+
+    window.addEventListener('touchmove', e => {
+      if (isDragging && e.touches && e.touches[0]) {
+        updateSlider(e.touches[0].clientX);
+      }
+    }, { passive: true });
+
+    posterCompare.addEventListener('keydown', e => {
+      let currentPos = parseFloat(compareHandle.style.left);
+      if (isNaN(currentPos)) currentPos = 50;
+
+      if (e.key === 'ArrowLeft') {
+        currentPos = Math.max(0, currentPos - 5);
+        wornLayer.style.clipPath = `inset(0 ${100 - currentPos}% 0 0)`;
+        compareHandle.style.left = `${currentPos}%`;
+        posterCompare.setAttribute('aria-valuenow', Math.round(currentPos));
+        e.preventDefault();
+      } else if (e.key === 'ArrowRight') {
+        currentPos = Math.min(100, currentPos + 5);
+        wornLayer.style.clipPath = `inset(0 ${100 - currentPos}% 0 0)`;
+        compareHandle.style.left = `${currentPos}%`;
+        posterCompare.setAttribute('aria-valuenow', Math.round(currentPos));
+        e.preventDefault();
+      }
+    });
+  }
+
+  // ------------------------------------------------------------------------
   // 7. Native Dialog Modals (Modern Web Guidance Compliant)
   // ------------------------------------------------------------------------
   const storyDialog = document.getElementById('storyDialog');

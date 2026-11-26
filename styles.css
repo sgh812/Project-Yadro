@@ -1223,6 +1223,147 @@ body::before {
   transform: scale(1.03);
 }
 
+/* --------------------------------------------------------------------------
+   Forensic Comparison Scanner (1985 Archive vs Dec 2000 Field Recovery)
+   -------------------------------------------------------------------------- */
+.poster-compare-wrapper {
+  width: 100%;
+  background: #080a09;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border-heavy);
+}
+
+.poster-compare {
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+  aspect-ratio: 682 / 1024;
+  overflow: hidden;
+  border: 1px solid #2c332f;
+  background: #000;
+  user-select: none;
+  cursor: ew-resize;
+  margin: 16px auto 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.85);
+  border-radius: 3px;
+  touch-action: pan-y;
+}
+
+.poster-compare:focus-visible {
+  outline: 2px solid var(--phosphor-green);
+  outline-offset: 2px;
+}
+
+.poster-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.poster-worn-layer {
+  position: absolute;
+  inset: 0;
+  clip-path: inset(0 50% 0 0);
+  will-change: clip-path;
+}
+
+.compare-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 10;
+  will-change: left;
+}
+
+.compare-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--soviet-red);
+  box-shadow: 0 0 10px rgba(186, 26, 26, 0.9);
+}
+
+.compare-knob {
+  position: relative;
+  background: #111412;
+  color: #ece5d5;
+  border: 1.5px solid var(--soviet-red);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 2px;
+  letter-spacing: 0.8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.95);
+  white-space: nowrap;
+}
+
+.compare-label {
+  position: absolute;
+  top: 8px;
+  background: rgba(14, 16, 15, 0.9);
+  border: 1px solid #333;
+  color: #ece5d5;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  padding: 3px 6px;
+  letter-spacing: 0.5px;
+  pointer-events: none;
+  z-index: 5;
+  border-radius: 2px;
+}
+
+.label-left {
+  left: 8px;
+  border-left: 3px solid var(--soviet-red);
+}
+
+.label-right {
+  right: 8px;
+  border-right: 3px solid var(--phosphor-green);
+}
+
+.compare-instruction-bar {
+  width: 100%;
+  padding: 6px 12px 14px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--amber-warning);
+  letter-spacing: 0.5px;
+}
+
+.artefact-actions-row {
+  display: flex;
+  gap: 10px;
+  margin-top: auto;
+  flex-wrap: wrap;
+}
+
+.artefact-actions-row .btn-secondary {
+  flex: 1;
+  min-width: 130px;
+  padding: 8px 12px;
+  font-size: 0.78rem;
+  justify-content: center;
+}
+
 .artefact-info {
   padding: 24px;
   display: flex;
@@ -2432,6 +2573,35 @@ body.light-mode .memo-input-group input {
 body.light-mode .artefact-card {
   background: #ffffff;
   border-color: #d8cdba;
+}
+
+body.light-mode .poster-compare-wrapper {
+  background: #f4eee2;
+  border-bottom-color: #d8cdba;
+}
+
+body.light-mode .poster-compare {
+  background: #fbf7ee;
+  border-color: #b8a992;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+}
+
+body.light-mode .compare-knob {
+  background: #ffffff;
+  color: #111412;
+  border-color: var(--soviet-red);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+body.light-mode .compare-label {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: #b8a992;
+  color: #111412;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+body.light-mode .compare-instruction-bar {
+  color: #9e5b00;
 }
 
 body.light-mode .artefact-name {
