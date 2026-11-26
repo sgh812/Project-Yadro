@@ -4,17 +4,59 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   const audio = window.yadroAudio;
+  const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  // Helper: Keyboard activation for custom button-like elements (Enter on keydown, Space on keyup)
+  function bindKeyboardActivatable(el, handler) {
+    if (!el) return;
+    el.addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        handler(e);
+      } else if (e.key === ' ') {
+        e.preventDefault();
+      }
+    });
+    el.addEventListener('keyup', e => {
+      if (e.key === ' ') {
+        e.preventDefault();
+        handler(e);
+      }
+    });
+  }
+
+  // Accessible Toast Notification Helper
+  let toastTimeout = null;
+  function showToast(msg) {
+    let toast = document.getElementById('badgeToast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'badgeToast';
+      toast.className = 'badge-toast';
+      toast.setAttribute('role', 'status');
+      toast.setAttribute('aria-live', 'polite');
+      document.body.appendChild(toast);
+    }
+    toast.textContent = msg;
+    toast.classList.add('show');
+    if (toastTimeout) clearTimeout(toastTimeout);
+    toastTimeout = setTimeout(() => {
+      toast.classList.remove('show');
+    }, 3400);
+  }
 
   // ------------------------------------------------------------------------
-  // 1. Audio & Classification Controls
+  // 1. Audio, Academic Evaluator Lens & Theme Controls
   // ------------------------------------------------------------------------
   const btnAudioToggle = document.getElementById('btnAudioToggle');
   const btnModeToggle = document.getElementById('btnModeToggle');
+  const btnThemeToggle = document.getElementById('btnThemeToggle');
 
   if (btnAudioToggle) {
     btnAudioToggle.addEventListener('click', () => {
       const isUnmuted = audio.toggleMute();
       btnAudioToggle.classList.toggle('active', isUnmuted);
+      btnAudioToggle.setAttribute('aria-pressed', String(isUnmuted));
       const label = btnAudioToggle.querySelector('.btn-label');
       if (label) {
         label.textContent = isUnmuted ? 'GEIGER AUDIO: ACTIVE' : 'GEIGER AUDIO: MUTED';
@@ -22,32 +64,35 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Clearance Mode Switch (In-Universe vs Academic Dossier)
+  // Academic Evaluator Lens Switch (In-Universe vs Academic Theory Lens)
   if (btnModeToggle) {
     btnModeToggle.addEventListener('click', () => {
-      document.body.classList.toggle('academic-mode');
-      const isAcademic = document.body.classList.contains('academic-mode');
-      btnModeToggle.textContent = isAcademic ? 'SWITCH: IN-UNIVERSE ARCHIVE' : 'SWITCH: ACADEMIC DOSSIER';
+      const isAcademic = document.body.classList.toggle('academic-mode');
+      btnModeToggle.setAttribute('aria-pressed', String(isAcademic));
+      btnModeToggle.textContent = isAcademic ? 'EXIT: EVALUATOR LENS' : 'SWITCH: ACADEMIC DOSSIER';
+      audio.playSingleClick(0.2);
       if (isAcademic) {
-        document.getElementById('academic').scrollIntoView({ behavior: 'smooth' });
+        showToast('🎓 Academic Evaluator Lens ON — BCM 216 theory annotations shown across all sections');
+      } else {
+        showToast('☢ Returned to In-Universe KGB Archive View');
       }
     });
   }
 
   // Theme Switcher (Dark Bunker vs Light Manila Dossier)
-  const btnThemeToggle = document.getElementById('btnThemeToggle');
   const storedTheme = localStorage.getItem('yadro_theme');
 
   function updateThemeUI(isLight) {
+    document.documentElement.classList.toggle('light-mode', isLight);
+    document.body.classList.toggle('light-mode', isLight);
     if (!btnThemeToggle) return;
+    btnThemeToggle.setAttribute('aria-pressed', String(isLight));
     const icon = btnThemeToggle.querySelector('.theme-icon');
     const label = btnThemeToggle.querySelector('.theme-label');
     if (isLight) {
-      document.body.classList.add('light-mode');
       if (icon) icon.textContent = '🌙';
       if (label) label.textContent = 'DARK BUNKER';
     } else {
-      document.body.classList.remove('light-mode');
       if (icon) icon.textContent = '☀';
       if (label) label.textContent = 'LIGHT DOSSIER';
     }
@@ -66,15 +111,87 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Irradiated elements trigger higher Geiger frequency
+  // Live Spiking Radiation Telemetry + Irradiated Hover Sync
+  const telemetryDosimetry = document.getElementById('telemetryDosimetry');
+  let isRadiationSpiking = false;
+  let dosimetryInterval = null;
+
+  function renderAmbientDosimetry() {
+    if (!telemetryDosimetry || isRadiationSpiking) return;
+    const val = (3.44 + Math.random() * 0.16).toFixed(2);
+    telemetryDosimetry.textContent = `${val} R/h (METER PEGGED)`;
+    telemetryDosimetry.classList.remove('telemetry-spike');
+  }
+
+  function renderLethalDosimetry() {
+    if (!telemetryDosimetry) return;
+    const spike = Math.floor(14200 + Math.random() * 1950).toLocaleString();
+    telemetryDosimetry.textContent = `${spike} R/h — CRITICAL!`;
+    telemetryDosimetry.classList.add('telemetry-spike');
+  }
+
+  if (telemetryDosimetry && !reducedMotionQuery.matches) {
+    dosimetryInterval = setInterval(() => {
+      if (document.hidden) return;
+      if (isRadiationSpiking) {
+        renderLethalDosimetry();
+      } else {
+        renderAmbientDosimetry();
+      }
+    }, 1200);
+  }
+
   document.querySelectorAll('.irradiated').forEach(el => {
     el.addEventListener('mouseenter', () => {
+      isRadiationSpiking = true;
+      renderLethalDosimetry();
       audio.setGeigerIntensity('lethal');
     });
     el.addEventListener('mouseleave', () => {
+      isRadiationSpiking = false;
+      renderAmbientDosimetry();
       audio.setGeigerIntensity('ambient');
     });
   });
+
+  // ------------------------------------------------------------------------
+  // 1.5. Active Navigation Scroll-Spy (IntersectionObserver)
+  // ------------------------------------------------------------------------
+  const navLinks = Array.from(document.querySelectorAll('.nav-links a[href^="#"]'));
+  const archiveSections = Array.from(document.querySelectorAll('main .archive-section[id]'));
+
+  if (navLinks.length && archiveSections.length && 'IntersectionObserver' in window) {
+    const linkMap = new Map(navLinks.map(a => [a.getAttribute('href').slice(1), a]));
+
+    function setActiveNav(sectionId) {
+      navLinks.forEach(a => {
+        const isCurrent = a.getAttribute('href') === `#${sectionId}`;
+        a.classList.toggle('active', isCurrent);
+        if (isCurrent) {
+          a.setAttribute('aria-current', 'location');
+        } else {
+          a.removeAttribute('aria-current');
+        }
+      });
+    }
+
+    const sectionObserver = new IntersectionObserver(entries => {
+      const visible = entries
+        .filter(e => e.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+      if (visible.length > 0) {
+        const id = visible[0].target.id;
+        if (linkMap.has(id)) {
+          setActiveNav(id);
+        }
+      }
+    }, {
+      rootMargin: '-18% 0px -55% 0px',
+      threshold: [0.1, 0.35, 0.6]
+    });
+
+    archiveSections.forEach(sec => sectionObserver.observe(sec));
+  }
 
   // ------------------------------------------------------------------------
   // 2. Reel-to-Reel Tape Deck & Transcripts
@@ -84,16 +201,26 @@ document.addEventListener('DOMContentLoaded', () => {
   const vuNeedleLeft = document.getElementById('vuNeedleLeft');
   const vuNeedleRight = document.getElementById('vuNeedleRight');
   const tapeCounter = document.getElementById('tapeCounter');
+  const tapeElapsedDisplay = document.getElementById('tapeElapsedDisplay');
+  const tapeDurationDisplay = document.getElementById('tapeDurationDisplay');
   const tapeScrubber = document.getElementById('tapeScrubber');
   const btnTapePlay = document.getElementById('btnTapePlay');
   const btnTapeStop = document.getElementById('btnTapeStop');
   const btnTapePrev = document.getElementById('btnTapePrev');
   const btnTapeNext = document.getElementById('btnTapeNext');
 
+  let activeTapeId = 1;
   let vuInterval = null;
 
+  function formatTime(sec) {
+    const safe = Math.max(0, Math.floor(sec || 0));
+    const mins = Math.floor(safe / 60).toString().padStart(2, '0');
+    const secs = (safe % 60).toString().padStart(2, '0');
+    return `${mins}:${secs}`;
+  }
+
   function updateVU() {
-    if (audio.isPlayingTape) {
+    if (audio.isPlayingTape && !reducedMotionQuery.matches) {
       const angleL = -35 + Math.random() * 45;
       const angleR = -35 + Math.random() * 48;
       if (vuNeedleLeft) vuNeedleLeft.style.transform = `rotate(${angleL}deg)`;
@@ -127,16 +254,12 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    if (tapeCounter) {
-      const mins = Math.floor(state.progress / 60).toString().padStart(2, '0');
-      const secs = (state.progress % 60).toString().padStart(2, '0');
-      tapeCounter.textContent = `${mins}:${secs}`;
-    }
-    const tapeDurationDisplay = document.getElementById('tapeDurationDisplay');
+    const formattedNow = formatTime(state.progress);
+    if (tapeCounter) tapeCounter.textContent = formattedNow;
+    if (tapeElapsedDisplay) tapeElapsedDisplay.textContent = formattedNow;
+
     if (tapeDurationDisplay && state.duration) {
-      const dmins = Math.floor(state.duration / 60).toString().padStart(2, '0');
-      const dsecs = (state.duration % 60).toString().padStart(2, '0');
-      tapeDurationDisplay.textContent = `${dmins}:${dsecs}`;
+      tapeDurationDisplay.textContent = formatTime(state.duration);
     }
     if (tapeScrubber) {
       if (state.duration) tapeScrubber.max = state.duration;
@@ -218,7 +341,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (btnTapeNext) {
     btnTapeNext.addEventListener('click', () => {
-      audio.seekTape(Math.min(185, audio.tapeProgress + 15));
+      const maxDur = audio.getActiveDuration();
+      audio.seekTape(Math.min(maxDur, audio.tapeProgress + 15));
     });
   }
 
@@ -229,48 +353,52 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Tape Tab Switching
-  let activeTapeId = 1;
   const tapeTabs = document.querySelectorAll('.tape-tab-btn');
   const tapePanels = document.querySelectorAll('.tape-panel-content');
 
   tapeTabs.forEach(btn => {
     btn.addEventListener('click', () => {
-      tapeTabs.forEach(b => b.classList.remove('active'));
-      tapePanels.forEach(p => p.style.display = 'none');
+      tapeTabs.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      tapePanels.forEach(p => { p.style.display = 'none'; });
       btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
 
       activeTapeId = parseInt(btn.dataset.tape, 10);
       const targetPanel = document.getElementById(`tapePanel${activeTapeId}`);
       if (targetPanel) targetPanel.style.display = 'block';
 
-      audio.pauseTape();
-      audio.currentTape = activeTapeId;
-      audio.seekTape(0);
-      audio.notifyState();
+      audio.switchTape(activeTapeId);
     });
   });
 
-  // Transcript Line Clicking
+  // Transcript Line Activation (Click & Keyboard)
+  function activateTranscriptLine(line) {
+    const timeSec = parseInt(line.dataset.time, 10) || 0;
+    const activeDur = audio.getActiveDuration();
+    if (timeSec >= activeDur) {
+      highlightActiveTranscript(timeSec);
+      showToast(`Archive excerpt is ${formatTime(activeDur)} — upload full episode MP3/WAV to scrub to ${formatTime(timeSec)}`);
+      return;
+    }
+    audio.seekTape(timeSec);
+    if (!audio.isPlayingTape) audio.playTape(activeTapeId);
+  }
+
   document.querySelectorAll('.transcript-line').forEach(line => {
-    line.addEventListener('click', () => {
-      const timeSec = parseInt(line.dataset.time, 10) || 0;
-      audio.seekTape(timeSec);
-      if (!audio.isPlayingTape) audio.playTape(activeTapeId);
-    });
+    line.addEventListener('click', () => activateTranscriptLine(line));
+    bindKeyboardActivatable(line, () => activateTranscriptLine(line));
   });
 
   function highlightActiveTranscript(currentSec) {
     const activeLines = document.querySelectorAll(`#tapePanel${activeTapeId} .transcript-line`);
     activeLines.forEach(line => {
       const lineTime = parseInt(line.dataset.time, 10) || 0;
-      const nextTime = parseInt(line.dataset.endtime, 10) || 999;
-      if (currentSec >= lineTime && currentSec < nextTime) {
-        line.style.background = 'rgba(57, 255, 20, 0.15)';
-        line.style.borderLeft = '3px solid var(--phosphor-green)';
-      } else {
-        line.style.background = 'transparent';
-        line.style.borderLeft = 'none';
-      }
+      const nextTime = parseInt(line.dataset.endtime, 10) || 9999;
+      const isCurrent = currentSec >= lineTime && currentSec < nextTime;
+      line.classList.toggle('is-current-line', isCurrent);
     });
   }
 
@@ -285,7 +413,12 @@ document.addEventListener('DOMContentLoaded', () => {
       badgeClass: "type-fiction",
       realHistory: "Real History: The United States landed Apollo 11 on the moon on July 20, 1969.",
       divergence: "In Project Yadro, the Soviet Union touches down first, shifting the global Cold War balance of power and fueling state hubris that leads to unchecked, dangerous scientific experiments.",
-      citation: "Science Museum (2014) 'The first woman in space', Science Museum Blog."
+      citation: "Science Museum (2014) 'The first woman in space', Science Museum Blog.",
+      image: "assets/cosmonaut.jpg",
+      imageWidth: 2048,
+      imageHeight: 1588,
+      imageAlt: "Archival Soviet cosmonaut television broadcast still",
+      imageCaption: "Archival Soviet Space Program Television Transmission Still (Reference: Science Museum, 2014). Evokes the Soviet triumphalism anchoring Project Yadro's 1969 point of divergence."
     },
     1975: {
       year: "1975",
@@ -317,7 +450,7 @@ document.addEventListener('DOMContentLoaded', () => {
     "post": {
       year: "Post-1986",
       title: "The Alternate Collapse of the USSR",
-      type: "SPECULATIVE SPECULATION",
+      type: "SPECULATIVE NARRATIVE",
       badgeClass: "type-fiction",
       realHistory: "Real History: The Soviet Union dissolved in December 1991 due to economic strain, political reform, and geopolitical collapse.",
       divergence: "Mysterious localized radiation spikes and structural disintegration occur across Soviet command facilities. Leaked KGB cables debate whether Yadro's vengeance directly caused the collapse.",
@@ -328,65 +461,191 @@ document.addEventListener('DOMContentLoaded', () => {
   const timelineNodes = document.querySelectorAll('.timeline-node');
   const detailBox = document.getElementById('timelineDetailBox');
 
-  timelineNodes.forEach(node => {
-    node.addEventListener('click', () => {
-      timelineNodes.forEach(n => n.classList.remove('active'));
-      node.classList.add('active');
+  function selectTimelineNode(node) {
+    timelineNodes.forEach(n => {
+      n.classList.remove('active');
+      n.setAttribute('aria-pressed', 'false');
+    });
+    node.classList.add('active');
+    node.setAttribute('aria-pressed', 'true');
 
-      const key = node.dataset.key;
-      const data = timelineData[key];
-      if (data && detailBox) {
-        detailBox.innerHTML = `
-          <div class="timeline-detail-header">
-            <h4 class="detail-title">${data.year} // ${data.title}</h4>
-            <span class="timeline-type-badge ${data.badgeClass}">${data.type}</span>
+    const key = node.dataset.key;
+    const data = timelineData[key];
+    if (data && detailBox) {
+      const mediaHtml = data.image ? `
+        <figure class="timeline-archival-figure">
+          <img src="${data.image}" alt="${data.imageAlt}" class="timeline-archival-img open-lightbox" role="button" tabindex="0" loading="lazy" width="${data.imageWidth}" height="${data.imageHeight}" data-src="${data.image}" data-caption="${data.imageCaption}">
+          <figcaption>Archival Soviet Space Broadcast Still (Click to zoom)</figcaption>
+        </figure>
+      ` : '';
+
+      detailBox.innerHTML = `
+        <div class="timeline-detail-header">
+          <h4 class="detail-title">${data.year} // ${data.title}</h4>
+          <span class="timeline-type-badge ${data.badgeClass}">${data.type}</span>
+        </div>
+        <div class="timeline-detail-body ${data.image ? 'has-archival-media' : ''}">
+          <div class="timeline-detail-text">
+            <p class="detail-real-history"><strong>${data.realHistory}</strong></p>
+            <p class="detail-divergence">${data.divergence}</p>
+            <p class="detail-citation">Academic Reference: ${data.citation}</p>
           </div>
-          <p class="detail-real-history"><strong>${data.realHistory}</strong></p>
-          <p class="detail-divergence">${data.divergence}</p>
-          <p class="detail-citation">Academic Reference: ${data.citation}</p>
-        `;
-      }
-    });
-  });
-
-  // ------------------------------------------------------------------------
-  // 4. Redaction Reveal & Glitch Micro-Interactions
-  // ------------------------------------------------------------------------
-  document.querySelectorAll('.redacted').forEach(item => {
-    item.addEventListener('click', () => {
-      item.classList.toggle('revealed');
+          ${mediaHtml}
+        </div>
+      `;
       audio.playSingleClick(0.2);
-    });
+    }
+  }
+
+  timelineNodes.forEach(node => {
+    node.addEventListener('click', () => selectTimelineNode(node));
+    bindKeyboardActivatable(node, () => selectTimelineNode(node));
   });
 
   // ------------------------------------------------------------------------
-  // 5. Forensic Theory Poll & Investigator Notes
+  // 4. Redaction Reveal & Forensic Clue Unlock Mechanic (0 / 10 -> Secret Memo 6)
+  // ------------------------------------------------------------------------
+  const redactedClues = Array.from(document.querySelectorAll('#evidence .dossier-paper:not(.secret-memo) .redacted'));
+  const clueCountText = document.getElementById('clueCountText');
+  const clueUnlockStatus = document.getElementById('clueUnlockStatus');
+  const clueProgressFill = document.getElementById('clueProgressFill');
+  const clueTrackerBar = document.getElementById('clueTrackerBar');
+  const btnResetClues = document.getElementById('btnResetClues');
+  const secretMemo6 = document.getElementById('secretMemo6');
+
+  let savedClueIndices = [];
+  try {
+    const parsed = JSON.parse(localStorage.getItem('yadro_revealed_clues'));
+    if (Array.isArray(parsed)) savedClueIndices = parsed;
+  } catch (e) {
+    savedClueIndices = [];
+  }
+
+  let secretUnlockedPreviously = savedClueIndices.length === redactedClues.length && redactedClues.length > 0;
+
+  // Restore previously uncovered clues
+  redactedClues.forEach((item, idx) => {
+    if (savedClueIndices.includes(idx)) {
+      item.classList.add('revealed');
+      item.setAttribute('aria-pressed', 'true');
+    }
+  });
+
+  function updateClueTracker(triggerUnlockAlert = false) {
+    const total = redactedClues.length;
+    const revealedIndices = [];
+    redactedClues.forEach((item, idx) => {
+      if (item.classList.contains('revealed')) revealedIndices.push(idx);
+    });
+    const count = revealedIndices.length;
+    const pct = total > 0 ? Math.round((count / total) * 100) : 0;
+
+    localStorage.setItem('yadro_revealed_clues', JSON.stringify(revealedIndices));
+
+    if (clueCountText) {
+      clueCountText.textContent = `DECLASSIFIED CLUES: ${count} / ${total}`;
+    }
+    if (clueProgressFill) {
+      clueProgressFill.style.width = `${pct}%`;
+    }
+    if (btnResetClues) {
+      btnResetClues.style.display = count > 0 ? 'inline-flex' : 'none';
+    }
+
+    const allFound = total > 0 && count === total;
+    if (clueTrackerBar) {
+      clueTrackerBar.classList.toggle('all-decrypted', allFound);
+    }
+
+    if (allFound) {
+      if (clueUnlockStatus) {
+        clueUnlockStatus.textContent = '✓ CLEARANCE OVERRIDE COMPLETE — KGB Intercept #06 decrypted below!';
+      }
+      if (secretMemo6) {
+        secretMemo6.hidden = false;
+      }
+      if (triggerUnlockAlert && !secretUnlockedPreviously) {
+        secretUnlockedPreviously = true;
+        audio.playSingleClick(0.6);
+        showToast('🔓 ALL 10 CLUES UNCOVERED — Secret KGB Addendum #06 Decrypted!');
+        if (secretMemo6) {
+          secretMemo6.scrollIntoView({ behavior: reducedMotionQuery.matches ? 'auto' : 'smooth', block: 'nearest' });
+        }
+      }
+    } else {
+      secretUnlockedPreviously = false;
+      if (clueUnlockStatus) {
+        clueUnlockStatus.textContent = `Uncover ${total - count} more black redaction bar${total - count === 1 ? '' : 's'} to decrypt KGB Intercept #06`;
+      }
+      if (secretMemo6) {
+        secretMemo6.hidden = true;
+      }
+    }
+  }
+
+  function toggleRedaction(item) {
+    const isRevealed = item.classList.toggle('revealed');
+    item.setAttribute('aria-pressed', String(isRevealed));
+    audio.playSingleClick(0.25);
+    updateClueTracker(true);
+  }
+
+  redactedClues.forEach(item => {
+    item.addEventListener('click', () => toggleRedaction(item));
+    bindKeyboardActivatable(item, () => toggleRedaction(item));
+  });
+
+  if (btnResetClues) {
+    btnResetClues.addEventListener('click', () => {
+      redactedClues.forEach(item => {
+        item.classList.remove('revealed');
+        item.setAttribute('aria-pressed', 'false');
+      });
+      updateClueTracker(false);
+      audio.playSingleClick(0.25);
+      showToast('↺ All KGB redactions re-sealed');
+    });
+  }
+
+  updateClueTracker(false);
+
+  // ------------------------------------------------------------------------
+  // 5. Forensic Theory Poll & Investigator Notes (XSS-Safe DOM Rendering)
   // ------------------------------------------------------------------------
   const pollButtons = document.querySelectorAll('.poll-option-btn');
-  let pollData = JSON.parse(localStorage.getItem('yadro_poll_data')) || {
+  const pollStatusMsg = document.getElementById('pollStatusMsg');
+  let pollData = {
     opt1: 42,
     opt2: 31,
     opt3: 27,
     voted: false
   };
+  try {
+    const savedPoll = JSON.parse(localStorage.getItem('yadro_poll_data'));
+    if (savedPoll && typeof savedPoll.opt1 === 'number') pollData = savedPoll;
+  } catch (e) {}
 
   function renderPoll() {
     const total = pollData.opt1 + pollData.opt2 + pollData.opt3;
     pollButtons.forEach(btn => {
       const opt = btn.dataset.option;
       const count = pollData[opt];
-      const pct = Math.round((count / total) * 100);
+      const pct = total > 0 ? Math.round((count / total) * 100) : 0;
       const fill = btn.querySelector('.poll-fill');
       const pctLabel = btn.querySelector('.poll-pct');
       if (fill) fill.style.width = `${pct}%`;
       if (pctLabel) pctLabel.textContent = `${pct}% (${count} votes)`;
 
-      if (pollData.voted === opt) {
-        btn.classList.add('selected');
-      } else {
-        btn.classList.remove('selected');
-      }
+      const isSelected = pollData.voted === opt;
+      btn.classList.toggle('selected', isSelected);
+      btn.setAttribute('aria-pressed', String(isSelected));
     });
+
+    if (pollStatusMsg) {
+      pollStatusMsg.textContent = pollData.voted
+        ? `✓ Deduction logged in archive (${total} total investigator votes recorded).`
+        : `Select your forensic theory above to cast a vote (${total} responses so far).`;
+    }
   }
   renderPoll();
 
@@ -399,11 +658,12 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('yadro_poll_data', JSON.stringify(pollData));
         renderPoll();
         audio.playSingleClick(0.3);
+        showToast('✓ Forensic theory vote logged in KGB archive');
       }
     });
   });
 
-  // Memo Note Submission
+  // Memo Note Submission (Safe DOM API — prevents XSS)
   const memoInput = document.getElementById('memoInput');
   const btnPinMemo = document.getElementById('btnPinMemo');
   const memoList = document.getElementById('pinnedMemosList');
@@ -414,23 +674,61 @@ document.addEventListener('DOMContentLoaded', () => {
     "NOTE #31: Reactor 4 graphite core was melted from BELOW, not above."
   ];
 
-  let storedMemos = JSON.parse(localStorage.getItem('yadro_memos')) || defaultMemos;
+  let storedMemos = [...defaultMemos];
+  try {
+    const savedMemos = JSON.parse(localStorage.getItem('yadro_memos'));
+    if (Array.isArray(savedMemos)) storedMemos = savedMemos;
+  } catch (e) {}
 
   function renderMemos() {
     if (!memoList) return;
-    memoList.innerHTML = storedMemos.map(m => `<div class="pinned-memo-tag">📌 ${m}</div>`).join('');
+    memoList.textContent = '';
+    storedMemos.forEach((memoText, idx) => {
+      const tag = document.createElement('div');
+      tag.className = 'pinned-memo-tag';
+
+      const textSpan = document.createElement('span');
+      textSpan.textContent = `📌 ${memoText}`;
+      tag.appendChild(textSpan);
+
+      const removeBtn = document.createElement('button');
+      removeBtn.type = 'button';
+      removeBtn.className = 'btn-delete-memo';
+      removeBtn.setAttribute('aria-label', `Remove note: ${memoText}`);
+      removeBtn.title = 'Remove pinned note';
+      removeBtn.textContent = '×';
+      removeBtn.addEventListener('click', () => {
+        storedMemos.splice(idx, 1);
+        localStorage.setItem('yadro_memos', JSON.stringify(storedMemos));
+        renderMemos();
+        audio.playSingleClick(0.2);
+      });
+
+      tag.appendChild(removeBtn);
+      memoList.appendChild(tag);
+    });
   }
   renderMemos();
 
+  function submitMemo() {
+    if (!memoInput) return;
+    const val = memoInput.value.trim();
+    if (val) {
+      storedMemos.push(`EVALUATOR NOTE: ${val}`);
+      localStorage.setItem('yadro_memos', JSON.stringify(storedMemos));
+      renderMemos();
+      memoInput.value = '';
+      audio.playSingleClick(0.3);
+      showToast('📌 Note pinned to Evidence Wall');
+    }
+  }
+
   if (btnPinMemo && memoInput) {
-    btnPinMemo.addEventListener('click', () => {
-      const val = memoInput.value.trim();
-      if (val) {
-        storedMemos.push(`EVALUATOR NOTE: ${val}`);
-        localStorage.setItem('yadro_memos', JSON.stringify(storedMemos));
-        renderMemos();
-        memoInput.value = '';
-        audio.playSingleClick(0.3);
+    btnPinMemo.addEventListener('click', submitMemo);
+    memoInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        submitMemo();
       }
     });
   }
@@ -445,17 +743,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const idNumInput = document.getElementById('idNumInput');
   const sigInput = document.getElementById('idSigInput');
   const btnDownloadId = document.getElementById('btnDownloadId');
-  const photoUpload = document.getElementById('idPhotoUpload');
-  const clearancePills = document.querySelectorAll('.clearance-pill, .clearance-badge-card');
+  const clearancePills = document.querySelectorAll('.clearance-pill');
   const presetButtons = document.querySelectorAll('.btn-preset');
 
-  let baseCardImg = new Image();
+  const baseCardImg = new Image();
   baseCardImg.src = 'assets/id-card.jpg';
 
-  let defaultPhotoImg = new Image();
+  const defaultPhotoImg = new Image();
   defaultPhotoImg.src = 'assets/yadro-badge-photo.jpg';
 
-  let userUploadedPhoto = null;
   let activeClearance = 'C';
 
   // Preset Configurations
@@ -466,8 +762,7 @@ document.addEventListener('DOMContentLoaded', () => {
       department: "Dept. 4 (Sub-Reactor Lab)",
       clearance: "C",
       idNum: "86-Y-7102",
-      signature: "A. Yadro",
-      useDefaultPhoto: true
+      signature: "A. Yadro"
     },
     voronin: {
       name: "Major Oleg Voronin",
@@ -475,8 +770,7 @@ document.addEventListener('DOMContentLoaded', () => {
       department: "KGB Directorate S",
       clearance: "C",
       idNum: "83-K-0914",
-      signature: "O. Voronin",
-      useDefaultPhoto: true
+      signature: "O. Voronin"
     },
     legasov: {
       name: "Dr. Boris Legasov",
@@ -484,8 +778,7 @@ document.addEventListener('DOMContentLoaded', () => {
       department: "Kurchatov Institute",
       clearance: "B",
       idNum: "86-A-4401",
-      signature: "B. Legasov",
-      useDefaultPhoto: true
+      signature: "B. Legasov"
     },
     stevenson: {
       name: "Dr. David Stevenson",
@@ -493,8 +786,7 @@ document.addEventListener('DOMContentLoaded', () => {
       department: "BCM 216 Assessment Directorate",
       clearance: "C",
       idNum: "26-DS-LECT",
-      signature: "D. Stevenson",
-      useDefaultPhoto: true
+      signature: "D. Stevenson"
     },
     hamda: {
       name: "Hamda Al Khaja",
@@ -502,8 +794,7 @@ document.addEventListener('DOMContentLoaded', () => {
       department: "BCM 216 Tutorial Directorate",
       clearance: "B",
       idNum: "26-HK-TUTR",
-      signature: "H. Al Khaja",
-      useDefaultPhoto: true
+      signature: "H. Al Khaja"
     },
     evaluator: {
       name: "BCM 216 Evaluator",
@@ -511,8 +802,7 @@ document.addEventListener('DOMContentLoaded', () => {
       department: "Univ. Assessment Panel",
       clearance: "A",
       idNum: "26-EVAL-001",
-      signature: "Evaluator",
-      useDefaultPhoto: true
+      signature: "Evaluator"
     }
   };
 
@@ -537,10 +827,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    if (data.useDefaultPhoto) {
-      userUploadedPhoto = null;
-    }
-
     presetButtons.forEach(btn => {
       btn.classList.toggle('active', btn.dataset.preset === presetKey);
     });
@@ -555,7 +841,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Clearance badge/pill selection
+  // Clearance pill selection
   clearancePills.forEach(pill => {
     pill.addEventListener('click', () => {
       clearancePills.forEach(c => c.classList.remove('active'));
@@ -587,7 +873,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 2. Draw Photo in Frame [X:52, Y:288, W:222, H:318]
-    const activePhoto = userUploadedPhoto || (defaultPhotoImg.complete && defaultPhotoImg.naturalWidth > 0 ? defaultPhotoImg : null);
+    const activePhoto = (defaultPhotoImg.complete && defaultPhotoImg.naturalWidth > 0) ? defaultPhotoImg : null;
 
     ctx.save();
     ctx.beginPath();
@@ -596,7 +882,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (activePhoto) {
       ctx.drawImage(activePhoto, 52, 288, 222, 318);
-      // Sepia / Soviet grain overlay
       ctx.fillStyle = 'rgba(60, 45, 25, 0.15)';
       ctx.fillRect(52, 288, 222, 318);
     } else {
@@ -610,7 +895,6 @@ document.addEventListener('DOMContentLoaded', () => {
     ctx.restore();
 
     // 3. Official Soviet Department Personnel Round Stamp on Photo Corner
-    // Positioned at X=250, Y=540 overlapping the photo and document line
     ctx.save();
     ctx.translate(250, 540);
     ctx.strokeStyle = 'rgba(160, 30, 30, 0.65)';
@@ -635,25 +919,25 @@ document.addEventListener('DOMContentLoaded', () => {
     ctx.fillText('ПРБ № 04', 0, 18);
     ctx.restore();
 
-    // 4. Fill in Document Fields — Pixel-accurate to Underlines!
+    // 4. Fill in Document Fields — Pixel-accurate with maxWidth clamping to prevent overflow
     ctx.textAlign = 'left';
     ctx.textBaseline = 'alphabetic';
     ctx.fillStyle = '#111312';
 
-    // A. NAME (Underline starts at X=436, Y=319)
+    // A. NAME (Underline X=436..950, Y=319)
     ctx.font = 'bold 21px "Courier Prime", "IBM Plex Mono", monospace';
     const nameVal = nameInput ? nameInput.value.toUpperCase() : "DR. ANATOLY YADRO";
-    ctx.fillText(nameVal, 448, 311);
+    ctx.fillText(nameVal, 448, 311, 495);
 
-    // B. POSITION (Underline starts at X=548, Y=368)
+    // B. POSITION (Underline X=548..950, Y=368)
     ctx.font = 'bold 18px "Courier Prime", "IBM Plex Mono", monospace';
     const posVal = posInput ? posInput.value.toUpperCase() : "LEAD NUCLEAR PHYSICIST";
-    ctx.fillText(posVal, 558, 360);
+    ctx.fillText(posVal, 558, 360, 385);
 
-    // C. DEPARTMENT (Underline starts at X=527, Y=418)
+    // C. DEPARTMENT (Underline X=527..950, Y=418)
     ctx.font = 'bold 17px "Courier Prime", "IBM Plex Mono", monospace';
     const deptVal = deptInput ? deptInput.value.toUpperCase() : "DEPT. 4 (SUB-REACTOR LABORATORY)";
-    ctx.fillText(deptVal, 538, 410);
+    ctx.fillText(deptVal, 538, 410, 405);
 
     // D. CLEARANCE CHECKBOXES (A: 603, B: 680, C: 760, Y: 452)
     ctx.textAlign = 'center';
@@ -686,22 +970,21 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.restore();
     }
 
-    // E. ID NUMBER (Underline starts at X=417, Y=518)
+    // E. ID NUMBER (Underline X=417..740, Y=518)
     ctx.textAlign = 'left';
     ctx.textBaseline = 'alphabetic';
     ctx.fillStyle = '#111312';
     ctx.font = 'bold 21px "Courier Prime", "IBM Plex Mono", monospace';
     const idVal = idNumInput ? idNumInput.value : "86-Y-7102";
-    ctx.fillText(idVal, 428, 511);
+    ctx.fillText(idVal, 428, 511, 305);
 
-    // F. SIGNATURE (Underline starts at X=530, Y=589)
+    // F. SIGNATURE (Underline X=530..750, Y=589)
     ctx.font = 'italic 28px "Special Elite", "Courier Prime", cursive';
-    ctx.fillStyle = '#152542'; // Authentic vintage dark blue-black fountain pen ink
+    ctx.fillStyle = '#152542';
     const sigVal = sigInput ? sigInput.value : "A. Yadro";
-    ctx.fillText(sigVal, 548, 582);
+    ctx.fillText(sigVal, 548, 582, 200);
   }
 
-  // Ensure fonts and images are ready before rendering
   baseCardImg.onload = () => {
     document.fonts.ready.then(() => drawIdCard());
   };
@@ -712,37 +995,6 @@ document.addEventListener('DOMContentLoaded', () => {
   [nameInput, posInput, deptInput, idNumInput, sigInput].forEach(inp => {
     if (inp) inp.addEventListener('input', drawIdCard);
   });
-
-  if (photoUpload) {
-    photoUpload.addEventListener('change', e => {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = evt => {
-          userUploadedPhoto = new Image();
-          userUploadedPhoto.onload = drawIdCard;
-          userUploadedPhoto.src = evt.target.result;
-        };
-        reader.readAsDataURL(file);
-      }
-    });
-  }
-
-  // Toast notification helper
-  function showToast(msg) {
-    let toast = document.getElementById('badgeToast');
-    if (!toast) {
-      toast = document.createElement('div');
-      toast.id = 'badgeToast';
-      toast.className = 'badge-toast';
-      document.body.appendChild(toast);
-    }
-    toast.textContent = msg;
-    toast.classList.add('show');
-    setTimeout(() => {
-      toast.classList.remove('show');
-    }, 3200);
-  }
 
   if (btnDownloadId && idCanvas) {
     btnDownloadId.addEventListener('click', () => {
@@ -766,19 +1018,19 @@ document.addEventListener('DOMContentLoaded', () => {
   if (posterCompare && wornLayer && compareHandle) {
     let isDragging = false;
 
+    function applySliderPercent(pos) {
+      const clamped = Math.max(0, Math.min(100, pos));
+      wornLayer.style.clipPath = `inset(0 ${100 - clamped}% 0 0)`;
+      const handlePos = Math.max(7, Math.min(93, clamped));
+      compareHandle.style.left = `${handlePos}%`;
+      posterCompare.setAttribute('aria-valuenow', Math.round(clamped));
+    }
+
     function updateSlider(clientX) {
       const rect = posterCompare.getBoundingClientRect();
       if (!rect.width) return;
-      let rawPos = ((clientX - rect.left) / rect.width) * 100;
-      let pos = Math.max(0, Math.min(100, rawPos));
-
-      // Full reveal range for image layers
-      wornLayer.style.clipPath = `inset(0 ${100 - pos}% 0 0)`;
-
-      // Clamp knob handle so the text inside never gets clipped off by container boundaries
-      let handlePos = Math.max(7, Math.min(93, pos));
-      compareHandle.style.left = `${handlePos}%`;
-      posterCompare.setAttribute('aria-valuenow', Math.round(pos));
+      const rawPos = ((clientX - rect.left) / rect.width) * 100;
+      applySliderPercent(rawPos);
     }
 
     posterCompare.addEventListener('mousedown', e => {
@@ -818,31 +1070,31 @@ document.addEventListener('DOMContentLoaded', () => {
       if (isNaN(currentVal)) currentVal = 50;
 
       if (e.key === 'ArrowLeft') {
-        currentVal = Math.max(0, currentVal - 5);
-        wornLayer.style.clipPath = `inset(0 ${100 - currentVal}% 0 0)`;
-        let handlePos = Math.max(7, Math.min(93, currentVal));
-        compareHandle.style.left = `${handlePos}%`;
-        posterCompare.setAttribute('aria-valuenow', currentVal);
+        applySliderPercent(currentVal - 5);
         e.preventDefault();
       } else if (e.key === 'ArrowRight') {
-        currentVal = Math.min(100, currentVal + 5);
-        wornLayer.style.clipPath = `inset(0 ${100 - currentVal}% 0 0)`;
-        let handlePos = Math.max(7, Math.min(93, currentVal));
-        compareHandle.style.left = `${handlePos}%`;
-        posterCompare.setAttribute('aria-valuenow', currentVal);
+        applySliderPercent(currentVal + 5);
+        e.preventDefault();
+      } else if (e.key === 'Home') {
+        applySliderPercent(0);
+        e.preventDefault();
+      } else if (e.key === 'End') {
+        applySliderPercent(100);
         e.preventDefault();
       }
     });
   }
 
   // ------------------------------------------------------------------------
-  // 7. Native Dialog Modals (Modern Web Guidance Compliant)
+  // 7. Native Dialog Modals & Delegated Lightbox (Modern Web Guidance Compliant)
   // ------------------------------------------------------------------------
   const storyDialog = document.getElementById('storyDialog');
   const btnOpenStory = document.getElementById('btnOpenStory');
   const lightboxDialog = document.getElementById('lightboxDialog');
   const lightboxImg = document.getElementById('lightboxImg');
   const lightboxCaption = document.getElementById('lightboxCaption');
+  const lightboxDownloadBtn = document.getElementById('lightboxDownloadBtn');
+  const lightboxDownloadText = document.getElementById('lightboxDownloadText');
 
   if (btnOpenStory && storyDialog) {
     btnOpenStory.addEventListener('click', () => {
@@ -850,28 +1102,49 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Lightbox for Artefacts
-  const lightboxDownloadBtn = document.getElementById('lightboxDownloadBtn');
-  const lightboxDownloadText = document.getElementById('lightboxDownloadText');
-
-  document.querySelectorAll('.open-lightbox').forEach(el => {
-    el.addEventListener('click', () => {
-      const src = el.dataset.src;
-      const caption = el.dataset.caption;
-      if (lightboxDialog && lightboxImg) {
-        lightboxImg.src = src;
-        lightboxCaption.textContent = caption || '';
-        if (lightboxDownloadBtn) {
-          lightboxDownloadBtn.href = src;
-          const filename = src.split('/').pop();
-          lightboxDownloadBtn.download = filename;
-          if (lightboxDownloadText) {
-            lightboxDownloadText.textContent = `DOWNLOAD (${filename})`;
-          }
+  function openLightboxForElement(el) {
+    const src = el.dataset.src;
+    const caption = el.dataset.caption;
+    if (lightboxDialog && lightboxImg && src) {
+      lightboxImg.src = src;
+      lightboxCaption.textContent = caption || '';
+      if (lightboxDownloadBtn) {
+        lightboxDownloadBtn.href = src;
+        const filename = src.split('/').pop();
+        lightboxDownloadBtn.download = filename;
+        if (lightboxDownloadText) {
+          lightboxDownloadText.textContent = `DOWNLOAD (${filename})`;
         }
-        lightboxDialog.showModal();
       }
-    });
+      lightboxDialog.showModal();
+    }
+  }
+
+  // Event delegation supports both static and dynamically rendered lightbox triggers
+  document.addEventListener('click', e => {
+    const trigger = e.target.closest('.open-lightbox');
+    if (trigger) {
+      openLightboxForElement(trigger);
+    }
+  });
+
+  document.addEventListener('keydown', e => {
+    const trigger = e.target.closest('.open-lightbox[role="button"]');
+    if (!trigger) return;
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      openLightboxForElement(trigger);
+    } else if (e.key === ' ') {
+      e.preventDefault();
+    }
+  });
+
+  document.addEventListener('keyup', e => {
+    const trigger = e.target.closest('.open-lightbox[role="button"]');
+    if (trigger && e.key === ' ') {
+      e.preventDefault();
+      openLightboxForElement(trigger);
+    }
   });
 
   // Light dismiss for dialogs (click outside)
