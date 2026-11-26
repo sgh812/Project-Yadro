@@ -1412,6 +1412,95 @@ body::before {
   letter-spacing: 0.5px;
 }
 
+/* Dosimeter Multi-Sheet Container & Grid */
+.dosimeter-preview-container {
+  width: 100%;
+  background: #080a09;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border-heavy);
+  padding: 16px 16px 6px;
+  box-sizing: border-box;
+}
+
+.dosimeter-sheets-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  width: 100%;
+  max-width: 440px;
+}
+
+.dosimeter-sheet-card {
+  position: relative;
+  border: 1px solid #2c332f;
+  background: #111413;
+  border-radius: 3px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  aspect-ratio: 724 / 1024;
+  display: flex;
+  flex-direction: column;
+}
+
+.dosimeter-sheet-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--soviet-red);
+  box-shadow: 0 4px 16px rgba(186, 26, 26, 0.4);
+}
+
+.dosimeter-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.sheet-tag {
+  position: absolute;
+  bottom: 6px;
+  left: 6px;
+  right: 6px;
+  background: rgba(14, 16, 15, 0.92);
+  border: 1px solid #333;
+  color: #ece5d5;
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  font-weight: 700;
+  padding: 3px 4px;
+  letter-spacing: 0.5px;
+  text-align: center;
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+.artefact-specs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin: 12px 0 14px;
+  padding: 10px 12px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--border-medium);
+  border-left: 3px solid var(--amber-warning);
+  border-radius: 2px;
+}
+
+.artefact-specs-list .spec-item {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: #c5beae;
+  letter-spacing: 0.4px;
+}
+
+.artefact-specs-list .spec-item strong {
+  color: var(--amber-warning);
+}
+
 .artefact-actions-row {
   display: flex;
   gap: 10px;
@@ -2689,9 +2778,40 @@ body.light-mode .artefact-card {
   border-color: #d8cdba;
 }
 
-body.light-mode .poster-compare-wrapper {
+body.light-mode .poster-compare-wrapper,
+body.light-mode .dosimeter-preview-container {
   background: #f4eee2;
   border-bottom-color: #d8cdba;
+}
+
+body.light-mode .dosimeter-sheet-card {
+  background: #ffffff;
+  border-color: #d8cdba;
+}
+
+body.light-mode .dosimeter-sheet-card:hover {
+  border-color: var(--soviet-red);
+  box-shadow: 0 4px 16px rgba(186, 26, 26, 0.2);
+}
+
+body.light-mode .sheet-tag {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: #b8a992;
+  color: #111412;
+}
+
+body.light-mode .artefact-specs-list {
+  background: #f7f2e7;
+  border-color: #d8cdba;
+  border-left-color: #9e5b00;
+}
+
+body.light-mode .artefact-specs-list .spec-item {
+  color: #2b332e;
+}
+
+body.light-mode .artefact-specs-list .spec-item strong {
+  color: #9e5b00;
 }
 
 body.light-mode .compare-header-bar {
