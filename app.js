@@ -141,16 +141,137 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 1200);
   }
 
-  document.querySelectorAll('.irradiated').forEach(el => {
-    el.addEventListener('mouseenter', () => {
-      isRadiationSpiking = true;
+  const radiationVignette = document.getElementById('radiationVignette');
+  const containmentAlertBanner = document.getElementById('containmentAlertBanner');
+  const containmentAlertText = document.getElementById('containmentAlertText');
+  const btnTestAlert = document.getElementById('btnTestAlert');
+  const btnDismissAlert = document.getElementById('btnDismissAlert');
+
+  const hoveredIrradiated = new Set();
+  const focusedIrradiated = new Set();
+  let isContainmentAlertActive = false;
+  let containmentAlertTimer = null;
+  let containmentHideTimer = null;
+  let lastTriggerSource = null;
+
+  function syncRadiationEffects() {
+    const hoverActive = hoveredIrradiated.size > 0 || focusedIrradiated.size > 0;
+    const shouldSpike = hoverActive || isContainmentAlertActive;
+    isRadiationSpiking = shouldSpike;
+
+    if (shouldSpike) {
       renderLethalDosimetry();
       audio.setGeigerIntensity('lethal');
-    });
-    el.addEventListener('mouseleave', () => {
-      isRadiationSpiking = false;
+    } else {
       renderAmbientDosimetry();
       audio.setGeigerIntensity('ambient');
+    }
+
+    if (radiationVignette) {
+      radiationVignette.classList.toggle('is-active', hoverActive && !isContainmentAlertActive);
+      radiationVignette.classList.toggle('is-alert', isContainmentAlertActive);
+    }
+
+    if (btnTestAlert) {
+      btnTestAlert.setAttribute('aria-pressed', String(isContainmentAlertActive));
+    }
+  }
+
+  function clearContainmentAlert(restoreFocus = false) {
+    if (containmentAlertTimer) {
+      clearTimeout(containmentAlertTimer);
+      containmentAlertTimer = null;
+    }
+    if (containmentHideTimer) {
+      clearTimeout(containmentHideTimer);
+      containmentHideTimer = null;
+    }
+
+    isContainmentAlertActive = false;
+    syncRadiationEffects();
+
+    if (containmentAlertBanner && !containmentAlertBanner.hidden) {
+      containmentAlertBanner.classList.remove('is-visible');
+      containmentHideTimer = setTimeout(() => {
+        if (!isContainmentAlertActive) {
+          containmentAlertBanner.hidden = true;
+        }
+      }, reducedMotionQuery.matches ? 0 : 280);
+    }
+
+    if (restoreFocus && lastTriggerSource && typeof lastTriggerSource.focus === 'function') {
+      lastTriggerSource.focus();
+      lastTriggerSource = null;
+    }
+  }
+
+  function triggerContainmentAlert({
+    message = 'SUB-REACTOR 4 CONTAINMENT BREACH // RADIATION SURGE DETECTED',
+    durationMs = 3200,
+    playSound = true
+  } = {}) {
+    if (containmentAlertTimer) clearTimeout(containmentAlertTimer);
+    if (containmentHideTimer) clearTimeout(containmentHideTimer);
+
+    isContainmentAlertActive = true;
+    syncRadiationEffects();
+
+    if (playSound && !audio.isMuted) {
+      audio.playSingleClick(0.6);
+    }
+
+    if (containmentAlertBanner) {
+      if (containmentAlertText) {
+        containmentAlertText.textContent = message;
+      }
+      containmentAlertBanner.hidden = false;
+      requestAnimationFrame(() => {
+        containmentAlertBanner.classList.add('is-visible');
+      });
+    }
+
+    containmentAlertTimer = setTimeout(() => {
+      clearContainmentAlert(false);
+    }, durationMs);
+  }
+
+  if (btnTestAlert) {
+    btnTestAlert.addEventListener('click', () => {
+      if (isContainmentAlertActive) {
+        clearContainmentAlert(false);
+        return;
+      }
+      lastTriggerSource = btnTestAlert;
+      triggerContainmentAlert({
+        message: 'SUB-REACTOR 4 CONTAINMENT BREACH // RADIATION SURGE DETECTED',
+        durationMs: 3200,
+        playSound: true
+      });
+    });
+  }
+
+  if (btnDismissAlert) {
+    btnDismissAlert.addEventListener('click', () => {
+      clearContainmentAlert(true);
+    });
+  }
+
+  document.querySelectorAll('.irradiated').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      hoveredIrradiated.add(el);
+      syncRadiationEffects();
+    });
+    el.addEventListener('mouseleave', () => {
+      hoveredIrradiated.delete(el);
+      syncRadiationEffects();
+    });
+    el.addEventListener('focusin', () => {
+      focusedIrradiated.add(el);
+      syncRadiationEffects();
+    });
+    el.addEventListener('focusout', () => {
+      focusedIrradiated.delete(el);
+      syncRadiationEffects();
     });
   });
 
@@ -576,6 +697,11 @@ document.addEventListener('DOMContentLoaded', () => {
         secretUnlockedPreviously = true;
         audio.playSingleClick(0.6);
         showToast('🔓 ALL 10 CLUES UNCOVERED — Secret KGB Addendum #06 Decrypted!');
+        triggerContainmentAlert({
+          message: 'DECRYPTION SURGE // SECRET KGB ADDENDUM #06 UNLOCKED',
+          durationMs: 2600,
+          playSound: false
+        });
         if (secretMemo6) {
           secretMemo6.scrollIntoView({ behavior: reducedMotionQuery.matches ? 'auto' : 'smooth', block: 'nearest' });
         }

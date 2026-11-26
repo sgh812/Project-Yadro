@@ -103,7 +103,10 @@
           </div>
           <div class="telemetry-item">
             <span class="telemetry-label">DOSIMETRY RECORDING</span>
-            <span class="telemetry-value danger irradiated" id="telemetryDosimetry">3.60 R/h (METER PEGGED)</span>
+            <div class="telemetry-dosimetry-row">
+              <span class="telemetry-value danger irradiated" id="telemetryDosimetry">3.60 R/h (METER PEGGED)</span>
+              <button type="button" class="btn-containment-test" id="btnTestAlert" aria-pressed="false" title="Trigger simulated 3-second Sub-Reactor 4 containment breach alert">⚠ TEST ALERT</button>
+            </div>
           </div>
           <div class="telemetry-item">
             <span class="telemetry-label">PRIMARY ARTEFACT</span>
@@ -1203,6 +1206,14 @@
       </div>
     </div>
   </dialog>
+
+  <!-- Subtle Reactive Radiation Edge Vignette & Containment Alert Banner -->
+  <div class="radiation-vignette" id="radiationVignette" aria-hidden="true"></div>
+  <div class="containment-alert-banner" id="containmentAlertBanner" role="status" aria-live="polite" hidden>
+    <span class="containment-alert-icon" aria-hidden="true">⚠</span>
+    <span class="containment-alert-text" id="containmentAlertText">SUB-REACTOR 4 CONTAINMENT BREACH // RADIATION SURGE DETECTED</span>
+    <button type="button" class="btn-dismiss-alert" id="btnDismissAlert" aria-label="Dismiss containment alert">×</button>
+  </div>
 
   <!-- Footer -->
   <footer class="archive-footer" role="contentinfo">

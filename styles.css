@@ -472,6 +472,43 @@ body::before {
   text-shadow: 0 0 8px var(--phosphor-glow);
 }
 
+.telemetry-dosimetry-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-containment-test {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 26px;
+  padding: 3px 9px;
+  background: rgba(198, 40, 40, 0.14);
+  border: 1px solid rgba(255, 82, 82, 0.45);
+  border-radius: 3px;
+  color: #ff8a80;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+}
+
+.btn-containment-test:hover,
+.btn-containment-test[aria-pressed="true"] {
+  background: var(--soviet-red);
+  border-color: #ff8a80;
+  color: #ffffff;
+}
+
+.btn-containment-test:active {
+  transform: translateY(1px);
+}
+
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
@@ -2353,6 +2390,132 @@ body::before {
   transform: translateY(0);
 }
 
+/* Reactive Radiation Edge Vignette & Containment Alert Banner */
+.radiation-vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 900;
+  opacity: 0;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(198, 40, 40, 0) 54%,
+    rgba(198, 40, 40, 0.24) 86%,
+    rgba(142, 0, 0, 0.44) 100%
+  );
+  transition: opacity 0.4s ease;
+}
+
+.radiation-vignette::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 82, 82, 0) 58%,
+    rgba(255, 82, 82, 0.22) 90%,
+    rgba(198, 40, 40, 0.36) 100%
+  );
+  opacity: 0;
+}
+
+.radiation-vignette.is-active {
+  opacity: 0.78;
+}
+
+.radiation-vignette.is-alert {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .radiation-vignette.is-active::after {
+    animation: radiation-vignette-breathe 2.4s ease-in-out infinite;
+  }
+
+  .radiation-vignette.is-alert::after {
+    animation: radiation-vignette-breathe 1.6s ease-in-out infinite;
+  }
+}
+
+@keyframes radiation-vignette-breathe {
+  0%, 100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.95;
+  }
+}
+
+.containment-alert-banner {
+  position: fixed;
+  top: 64px;
+  left: 50%;
+  z-index: 950;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: min(680px, calc(100vw - 32px));
+  padding: 10px 14px 10px 16px;
+  background: rgba(26, 10, 10, 0.96);
+  border: 1px solid #ff5252;
+  border-left: 4px solid var(--soviet-red);
+  border-radius: 4px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.72), 0 0 18px rgba(198, 40, 40, 0.38);
+  color: #ffe5e5;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  opacity: 0;
+  transform: translate(-50%, -10px);
+  transition: opacity 0.28s ease, transform 0.28s ease;
+}
+
+.containment-alert-banner[hidden] {
+  display: none;
+}
+
+.containment-alert-banner.is-visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.containment-alert-icon {
+  color: var(--amber-warning);
+  font-size: 1rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.containment-alert-text {
+  flex: 1;
+  line-height: 1.35;
+}
+
+.btn-dismiss-alert {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  min-height: 28px;
+  padding: 0 6px;
+  background: transparent;
+  border: 1px solid rgba(255, 138, 128, 0.35);
+  border-radius: 3px;
+  color: #ffb3b3;
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.btn-dismiss-alert:hover {
+  background: var(--soviet-red);
+  border-color: #ff8a80;
+  color: #ffffff;
+}
+
 /* --------------------------------------------------------------------------
    6. Academic & Ethics Dossier (Professor View)
    -------------------------------------------------------------------------- */
@@ -3252,6 +3415,19 @@ body.light-mode .telemetry-value.telemetry-spike {
   text-shadow: 0 0 8px rgba(183, 28, 28, 0.3);
 }
 
+body.light-mode .btn-containment-test {
+  background: rgba(198, 40, 40, 0.08);
+  border-color: rgba(183, 28, 28, 0.45);
+  color: #9b1c1c;
+}
+
+body.light-mode .btn-containment-test:hover,
+body.light-mode .btn-containment-test[aria-pressed="true"] {
+  background: #b71c1c;
+  border-color: #b71c1c;
+  color: #ffffff;
+}
+
 /* Reel Deck Terminal Simulator */
 body.light-mode .reel-deck-card {
   background: #ffffff;
@@ -4103,6 +4279,37 @@ body.light-mode .badge-toast {
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
 }
 
+body.light-mode .radiation-vignette {
+  background: radial-gradient(
+    ellipse at center,
+    rgba(183, 28, 28, 0) 58%,
+    rgba(183, 28, 28, 0.16) 88%,
+    rgba(142, 0, 0, 0.28) 100%
+  );
+}
+
+body.light-mode .containment-alert-banner {
+  background: #fff4f2;
+  border-color: #b71c1c;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.2), 0 0 14px rgba(183, 28, 28, 0.18);
+  color: #5f0f0f;
+}
+
+body.light-mode .containment-alert-icon {
+  color: #b71c1c;
+}
+
+body.light-mode .btn-dismiss-alert {
+  border-color: rgba(183, 28, 28, 0.35);
+  color: #7f1d1d;
+}
+
+body.light-mode .btn-dismiss-alert:hover {
+  background: #b71c1c;
+  border-color: #b71c1c;
+  color: #ffffff;
+}
+
 /* --------------------------------------------------------------------------
    Responsive Mobile Breakpoints (Tablets & Phones)
    -------------------------------------------------------------------------- */
@@ -4113,6 +4320,13 @@ body.light-mode .badge-toast {
     padding: 10px 14px;
     font-size: 0.76rem;
     gap: 10px;
+  }
+
+  .containment-alert-banner {
+    top: 12px;
+    width: calc(100vw - 24px);
+    padding: 9px 12px;
+    font-size: 0.72rem;
   }
 
   .banner-controls {
@@ -4340,6 +4554,9 @@ body.light-mode .badge-toast {
   .compare-handle,
   .id-generator-wrapper,
   .badge-toast,
+  .radiation-vignette,
+  .containment-alert-banner,
+  .btn-containment-test,
   #btnOpenStory {
     display: none !important;
   }
