@@ -3,7 +3,7 @@
 
 **Project Yadro** is an alternate-history, Cold War sci-fi and psychological horror transmedia franchise created for BCM 216 at the University of Wollongong. Rather than a single linear story, the project distributes its narrative across four distinct media pillars:
 1. **Primary Artefact (Audio Podcast):** *The Chernobyl Tapes* (Episode 1: *The Man Beneath Reactor 4*, Episode 2: *Who Destroyed the Soviet Union?*) playable through a simulated Soviet reel-to-reel audio terminal with custom MP3/WAV team recording upload.
-2. **Narrative Extension (Short Story):** *The Man in the Lead Apron* (Dr. Anatoly Yadro's pre-1986 biography & abduction, presented in an accessible native modal reader).
+2. **Narrative Extension (Short Story):** *Anatoly Yadro | Private Notebook (1986–1991)* — 10 dated post-disaster entries tracing Yadro's growing abilities, cognitive blackouts, and desperate search for his wife Kateryna and daughter Nina (interactive transcribed reader + downloadable 3-page handwritten PDF).
 3. **Digital Investigation (Classified KGB Archive):** Interactive leaked memos with a 10-clue forensic redaction unlock system, contradictory eyewitness logs, participatory theory poll, and investigator corkboard notes.
 4. **Diegetic Physical Artefacts:** Interactive 1985 vs. December 2000 Soviet propaganda poster comparison scanner, a two-sheet printable 1:1 DIY ДП-5Б (DP-5B) dosimeter cardstock blueprint (with print-ready vector PDF), and an interactive HTML5 Canvas Soviet Research ID badge generator.
 

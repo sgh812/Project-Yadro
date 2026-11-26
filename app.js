@@ -670,7 +670,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const defaultMemos = [
     "NOTE #14: Semipalatinsk test site registered 14.2 R/h spike with no active detonation.",
-    "NOTE #22: Yadro's family was moved to Voronezh in Jan 1986. No record after April.",
+    "NOTE #22: Kateryna & Nina Yadro vanished from Pripyat records in 1983 under Sokolov's order.",
     "NOTE #31: Reactor 4 graphite core was melted from BELOW, not above."
   ];
 
@@ -764,13 +764,13 @@ document.addEventListener('DOMContentLoaded', () => {
       idNum: "86-Y-7102",
       signature: "A. Yadro"
     },
-    voronin: {
-      name: "Major Oleg Voronin",
-      position: "Senior Directorate Officer",
+    sokolov: {
+      name: "Officer Viktor Sokolov",
+      position: "Detention Order Authorising Officer",
       department: "KGB Directorate S",
       clearance: "C",
       idNum: "83-K-0914",
-      signature: "O. Voronin"
+      signature: "V. Sokolov"
     },
     legasov: {
       name: "Dr. Boris Legasov",
@@ -1090,17 +1090,55 @@ document.addEventListener('DOMContentLoaded', () => {
   // ------------------------------------------------------------------------
   const storyDialog = document.getElementById('storyDialog');
   const btnOpenStory = document.getElementById('btnOpenStory');
+  const btnOpenStoryCard = document.getElementById('btnOpenStoryCard');
   const lightboxDialog = document.getElementById('lightboxDialog');
   const lightboxImg = document.getElementById('lightboxImg');
   const lightboxCaption = document.getElementById('lightboxCaption');
   const lightboxDownloadBtn = document.getElementById('lightboxDownloadBtn');
   const lightboxDownloadText = document.getElementById('lightboxDownloadText');
 
-  if (btnOpenStory && storyDialog) {
-    btnOpenStory.addEventListener('click', () => {
+  function openNotebookModal() {
+    if (storyDialog) {
       storyDialog.showModal();
-    });
+      audio.playSingleClick(0.2);
+    }
   }
+
+  if (btnOpenStory) btnOpenStory.addEventListener('click', openNotebookModal);
+  if (btnOpenStoryCard) btnOpenStoryCard.addEventListener('click', openNotebookModal);
+
+  // Interactive Notebook Page & Handwritten PDF Tab Switcher
+  const notebookTabBtns = document.querySelectorAll('.notebook-tab-btn');
+  const notebookPagesStage = document.getElementById('notebookPagesStage');
+  const notebookSheets = document.querySelectorAll('[data-nb-page]');
+  const notebookPdfPanel = document.getElementById('notebookPdfPanel');
+  const notebookPdfFrame = document.getElementById('notebookPdfFrame');
+
+  notebookTabBtns.forEach(tabBtn => {
+    tabBtn.addEventListener('click', () => {
+      const target = tabBtn.dataset.nbTab;
+      notebookTabBtns.forEach(b => {
+        const isActive = b === tabBtn;
+        b.classList.toggle('active', isActive);
+        b.setAttribute('aria-selected', String(isActive));
+      });
+
+      if (target === 'pdf') {
+        if (notebookPagesStage) notebookPagesStage.style.display = 'none';
+        if (notebookPdfPanel) notebookPdfPanel.hidden = false;
+        if (notebookPdfFrame && !notebookPdfFrame.getAttribute('src') && notebookPdfFrame.dataset.src) {
+          notebookPdfFrame.src = notebookPdfFrame.dataset.src;
+        }
+      } else {
+        if (notebookPdfPanel) notebookPdfPanel.hidden = true;
+        if (notebookPagesStage) notebookPagesStage.style.display = 'flex';
+        notebookSheets.forEach(sheet => {
+          sheet.hidden = (target !== 'all' && sheet.dataset.nbPage !== target);
+        });
+      }
+      audio.playSingleClick(0.2);
+    });
+  });
 
   function openLightboxForElement(el) {
     const src = el.dataset.src;
