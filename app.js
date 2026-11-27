@@ -880,6 +880,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const deptInput = document.getElementById('idDeptInput');
   const idNumInput = document.getElementById('idNumInput');
   const sigInput = document.getElementById('idSigInput');
+  const idPhotoInput = document.getElementById('idPhotoUpload');
+  const btnTriggerIdPhoto = document.getElementById('btnTriggerIdPhoto');
+  const btnResetIdPhoto = document.getElementById('btnResetIdPhoto');
+  const idPhotoStatus = document.getElementById('idPhotoStatus');
   const btnDownloadId = document.getElementById('btnDownloadId');
   const clearancePills = document.querySelectorAll('.clearance-pill');
   const presetButtons = document.querySelectorAll('.btn-preset');
@@ -890,7 +894,62 @@ document.addEventListener('DOMContentLoaded', () => {
   const defaultPhotoImg = new Image();
   defaultPhotoImg.src = 'assets/yadro-badge-photo.jpg';
 
+  let customPhotoImg = null;
+  let customPhotoObjectUrl = null;
   let activeClearance = 'C';
+
+  if (btnTriggerIdPhoto && idPhotoInput) {
+    btnTriggerIdPhoto.addEventListener('click', () => {
+      idPhotoInput.click();
+    });
+  }
+
+  if (idPhotoInput) {
+    idPhotoInput.addEventListener('change', e => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      if (!file.type.startsWith('image/')) {
+        showToast('⚠ Please select a valid image file (JPG, PNG, WebP).');
+        idPhotoInput.value = '';
+        return;
+      }
+
+      if (customPhotoObjectUrl) {
+        URL.revokeObjectURL(customPhotoObjectUrl);
+      }
+      customPhotoObjectUrl = URL.createObjectURL(file);
+
+      const uploadedImg = new Image();
+      uploadedImg.onload = () => {
+        customPhotoImg = uploadedImg;
+        if (btnResetIdPhoto) btnResetIdPhoto.hidden = false;
+        if (idPhotoStatus) idPhotoStatus.textContent = file.name;
+        drawIdCard();
+        audio.playSingleClick(0.25);
+        showToast('📷 Custom badge photo applied!');
+      };
+      uploadedImg.onerror = () => {
+        showToast('⚠ Could not load that image file.');
+      };
+      uploadedImg.src = customPhotoObjectUrl;
+    });
+  }
+
+  if (btnResetIdPhoto) {
+    btnResetIdPhoto.addEventListener('click', () => {
+      customPhotoImg = null;
+      if (customPhotoObjectUrl) {
+        URL.revokeObjectURL(customPhotoObjectUrl);
+        customPhotoObjectUrl = null;
+      }
+      if (idPhotoInput) idPhotoInput.value = '';
+      btnResetIdPhoto.hidden = true;
+      if (idPhotoStatus) idPhotoStatus.textContent = 'Default: Dr. Yadro portrait';
+      drawIdCard();
+      audio.playSingleClick(0.2);
+      showToast('↺ Restored default Dr. Yadro portrait');
+    });
+  }
 
   // Preset Configurations
   const presets = {
@@ -1010,8 +1069,10 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.fillRect(0, 0, width, height);
     }
 
-    // 2. Draw Photo in Frame [X:52, Y:288, W:222, H:318]
-    const activePhoto = (defaultPhotoImg.complete && defaultPhotoImg.naturalWidth > 0) ? defaultPhotoImg : null;
+    // 2. Draw Photo in Frame [X:52, Y:288, W:222, H:318] with proportional cover-crop
+    const activePhoto = (customPhotoImg && customPhotoImg.complete && customPhotoImg.naturalWidth > 0)
+      ? customPhotoImg
+      : ((defaultPhotoImg.complete && defaultPhotoImg.naturalWidth > 0) ? defaultPhotoImg : null);
 
     ctx.save();
     ctx.beginPath();
@@ -1019,7 +1080,26 @@ document.addEventListener('DOMContentLoaded', () => {
     ctx.clip();
 
     if (activePhoto) {
-      ctx.drawImage(activePhoto, 52, 288, 222, 318);
+      const frameX = 52;
+      const frameY = 288;
+      const frameW = 222;
+      const frameH = 318;
+      const imgAspect = activePhoto.naturalWidth / activePhoto.naturalHeight;
+      const frameAspect = frameW / frameH;
+      let sx = 0;
+      let sy = 0;
+      let sw = activePhoto.naturalWidth;
+      let sh = activePhoto.naturalHeight;
+
+      if (imgAspect > frameAspect) {
+        sw = activePhoto.naturalHeight * frameAspect;
+        sx = (activePhoto.naturalWidth - sw) / 2;
+      } else {
+        sh = activePhoto.naturalWidth / frameAspect;
+        sy = (activePhoto.naturalHeight - sh) / 2;
+      }
+
+      ctx.drawImage(activePhoto, sx, sy, sw, sh, frameX, frameY, frameW, frameH);
       ctx.fillStyle = 'rgba(60, 45, 25, 0.15)';
       ctx.fillRect(52, 288, 222, 318);
     } else {

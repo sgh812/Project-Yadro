@@ -2333,6 +2333,73 @@ body::before {
   box-shadow: 0 0 8px rgba(198, 40, 40, 0.3);
 }
 
+.id-photo-upload-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  padding: 8px 10px;
+  background: rgba(18, 22, 20, 0.72);
+  border: 1px dashed #2e3832;
+  border-radius: 4px;
+}
+
+.btn-id-photo-upload,
+.btn-id-photo-reset {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 30px;
+  padding: 5px 10px;
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-id-photo-upload {
+  background: #17211b;
+  border: 1px solid #35473c;
+  color: var(--text-primary);
+}
+
+.btn-id-photo-upload:hover {
+  background: #1f2e25;
+  border-color: var(--phosphor-green);
+  color: var(--phosphor-green);
+}
+
+.btn-id-photo-reset {
+  background: rgba(198, 40, 40, 0.12);
+  border: 1px solid rgba(255, 82, 82, 0.4);
+  color: #ff8a80;
+}
+
+.btn-id-photo-reset:hover {
+  background: var(--soviet-red);
+  border-color: #ff8a80;
+  color: #ffffff;
+}
+
+.btn-id-photo-reset[hidden] {
+  display: none;
+}
+
+.id-photo-status {
+  flex: 1;
+  min-width: 120px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .btn-download-compact {
   width: 100%;
   padding: 9px 16px;
@@ -4151,6 +4218,38 @@ body.light-mode .form-group-compact input {
 body.light-mode .form-group-compact label {
   color: #4a5750;
   font-weight: 600;
+}
+
+body.light-mode .id-photo-upload-row {
+  background: #faf6ee;
+  border-color: #c8bba4;
+}
+
+body.light-mode .btn-id-photo-upload {
+  background: #ffffff;
+  border-color: #b8a992;
+  color: #191f1b;
+}
+
+body.light-mode .btn-id-photo-upload:hover {
+  border-color: var(--soviet-red);
+  color: var(--soviet-red);
+}
+
+body.light-mode .btn-id-photo-reset {
+  background: rgba(198, 40, 40, 0.08);
+  border-color: rgba(183, 28, 28, 0.4);
+  color: #9b1c1c;
+}
+
+body.light-mode .btn-id-photo-reset:hover {
+  background: #b71c1c;
+  border-color: #b71c1c;
+  color: #ffffff;
+}
+
+body.light-mode .id-photo-status {
+  color: #4a5750;
 }
 
 body.light-mode .clearance-badge-card,
